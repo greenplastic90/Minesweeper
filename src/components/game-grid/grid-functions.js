@@ -1,15 +1,15 @@
 import { easy, medium, hard } from '../difficulty-options'
 
-export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingIndex, length) => {
+export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingIndex, width) => {
 	const arr = Array.apply(null, Array(numOfFields))
 	//* starting index and srounding fields can't have mines
 	//* creating an array of indexs that can't have mines
 	const mineFreeIndexs = []
 
-	const topLeftIndex = startingIndex - length - 1
-	const bottomLeftIndex = startingIndex + length - 1
+	const topLeftIndex = startingIndex - width - 1
+	const bottomLeftIndex = startingIndex + width - 1
 
-	for (let i = topLeftIndex; i <= bottomLeftIndex; i = i + length) {
+	for (let i = topLeftIndex; i <= bottomLeftIndex; i = i + width) {
 		for (let j = i; j < i + 3; j++) {
 			mineFreeIndexs.push(j)
 		}
@@ -26,30 +26,30 @@ export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingI
 			}
 		}
 	}
-	return generateArrayWithValues(arr, length)
+	return generateArrayWithValues(arr, width)
 }
 
-export const generateArrayWithValues = (mineArray, length) => {
+export const generateArrayWithValues = (mineArray, width) => {
 	const arr = mineArray
 
 	arr.forEach((item, i) => {
 		if (!(item === 'mine')) {
-			let topLeftIndex = i - length - 1
-			let bottomLeftIndex = i + length - 1
+			let topLeftIndex = i - width - 1
+			let bottomLeftIndex = i + width - 1
 			let numOfLoops = 3
 			//* if indext on the far left side of grid
-			if (!(i % length)) {
-				topLeftIndex = i - length
-				bottomLeftIndex = i + length
+			if (!(i % width)) {
+				topLeftIndex = i - width
+				bottomLeftIndex = i + width
 				numOfLoops = 2
 			}
 			//* if index on the far right side of grid
-			if (i % length === length - 1) {
+			if (i % width === width - 1) {
 				numOfLoops = 2
 			}
 
 			let count = 0
-			for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + length) {
+			for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 				for (let k = j; k < j + numOfLoops; k++) {
 					if (arr[k] === 'mine') count++
 				}
@@ -69,4 +69,29 @@ export const localStorageDifficulty = () => {
 	} else {
 		return easy
 	}
+}
+
+export const checkFieldsAroundIndex = (i, valuesArray, width) => {
+	let topLeftIndex = i - width - 1
+	let bottomLeftIndex = i + width - 1
+	let numOfLoops = 3
+	//* if indext on the far left side of grid
+	if (!(i % width)) {
+		topLeftIndex = i - width
+		bottomLeftIndex = i + width
+		numOfLoops = 2
+	}
+	//* if index on the far right side of grid
+	if (i % width === width - 1) {
+		numOfLoops = 2
+	}
+	const arrayOfIndexesToExpose = []
+
+	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
+		for (let k = j; k < j + numOfLoops; k++) {
+			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine' && k !== i)
+				arrayOfIndexesToExpose.push(k)
+		}
+	}
+	console.log(arrayOfIndexesToExpose)
 }

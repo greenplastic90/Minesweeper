@@ -1,8 +1,23 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { checkFieldsAroundIndex } from './grid-functions'
 
-const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, OnFieldLeftClick, isExposed }) => {
+const Field = ({
+	index,
+	fieldWidth,
+	mineWidth,
+	bgIsLight,
+	value,
+	firstClick,
+	setFirstClick,
+	setClickIndex,
+	setExposedArray,
+	isExposed,
+	boardWidth,
+	valuesArray,
+}) => {
 	const [bgColor, setBgColor] = useState()
+	// const [isExposed, setIsExposed] = useState(false)
 
 	// set bgColor
 	useEffect(() => {
@@ -21,16 +36,28 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, OnFieldLeftClic
 		}
 	}, [bgIsLight, isExposed])
 
+	const OnFieldLeftClick = () => {
+		if (!firstClick) {
+			setFirstClick(index)
+		}
+		setExposedArray((currentArray) => {
+			currentArray[index] = true
+			return [...currentArray]
+		})
+		setClickIndex(index)
+		checkFieldsAroundIndex(index, valuesArray, boardWidth)
+	}
+
 	return (
 		<VStack
 			onClick={() => {
-				OnFieldLeftClick(index, value)
+				OnFieldLeftClick()
 			}}
 			w={fieldWidth}
 			h={fieldWidth}
 			bgColor={bgColor}
 			justifyContent={'center'}>
-			{value === 'mine' ? <Mine width={mineWidth} /> : <Text>{value}</Text>}
+			{value === 'mine' ? <Mine width={mineWidth} /> : isExposed && <Text>{value}</Text>}
 		</VStack>
 	)
 }

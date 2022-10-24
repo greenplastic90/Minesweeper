@@ -7,41 +7,27 @@ import GameGrid from './game-grid/GameGrid'
 import { localStorageDifficulty } from './game-grid/grid-functions'
 
 const Game = () => {
-	const [difficulty, setDifficulty] = useState(easy)
+	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	const [fields, setFields] = useState([])
 	const [fieldsData, setFieldsData] = useState([])
 	const [valuesArray, setvaluesArray] = useState([])
+	const [exposedArray, setExposedArray] = useState([])
 	const [firstClick, setFirstClick] = useState(false)
-	const [firstClickIndex, setFirstClickIndex] = useState(null)
+	const [clickIndex, setClickIndex] = useState(null)
+	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
+
+	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
+		setExposedArray([])
 		setvaluesArray([])
 		setFirstClick(false)
-		setFirstClickIndex(null)
+		setClickIndex(null)
 		setFields([])
 		setFieldsData([])
 	}
-
-	const OnFieldLeftClick = (index, value) => {
-		//? Change index clicked to exposed
-		setFieldsData((currentArr) => {
-			currentArr[index].isExposed = true
-			return currentArr
-		})
-		if (!firstClick) {
-			setFirstClick(true)
-			setFirstClickIndex(index)
-		}
-		//? isZero
-		//? isNumber
-		//? isMine
-	}
-
-	useEffect(() => {
-		setDifficulty(localStorageDifficulty())
-	}, [])
 
 	return (
 		<VStack>
@@ -56,10 +42,13 @@ const Game = () => {
 				setvaluesArray={setvaluesArray}
 				firstClick={firstClick}
 				setFirstClick={setFirstClick}
-				firstClickIndex={firstClickIndex}
-				setFirstClickIndex={setFirstClickIndex}
-				OnFieldLeftClick={OnFieldLeftClick}
+				clickIndex={clickIndex}
+				setClickIndex={setClickIndex}
+				// OnFieldLeftClick={OnFieldLeftClick}
 				resetToggle={resetToggle}
+				exposedArray={exposedArray}
+				setExposedArray={setExposedArray}
+				numberOfFields={numberOfFields}
 			/>
 		</VStack>
 	)

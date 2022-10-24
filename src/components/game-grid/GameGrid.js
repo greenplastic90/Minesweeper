@@ -1,7 +1,7 @@
 import { GridItem, SimpleGrid } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import Field from './Field'
-import { generateRandomFieldValueArray } from './grid-functions'
+import { checkFieldsAroundIndex, generateRandomFieldValueArray } from './grid-functions'
 
 const GameGrid = ({
 	difficulty,
@@ -13,10 +13,12 @@ const GameGrid = ({
 	setvaluesArray,
 	firstClick,
 	setFirstClick,
-	firstClickIndex,
-	setFirstClickIndex,
-	OnFieldLeftClick,
+	clickIndex,
+	setClickIndex,
 	resetToggle,
+	exposedArray,
+	setExposedArray,
+	numberOfFields,
 }) => {
 	//* create initial fieldsData
 	useEffect(() => {
@@ -40,13 +42,13 @@ const GameGrid = ({
 				fieldWidth: difficulty.box_width,
 				mineWidth: difficulty.mine_width,
 				bgIsLight: setBgColorShade(i),
-				isExposed: false,
-				value: null,
+				isExposed: exposedArray[i],
+				value: valuesArray[i],
 			})
 		}
 
 		setFieldsData(fieldsArray)
-	}, [difficulty, setFieldsData, resetToggle])
+	}, [difficulty, setFieldsData, resetToggle, valuesArray, exposedArray])
 
 	//* Generate values after first click
 	useEffect(() => {
@@ -54,14 +56,19 @@ const GameGrid = ({
 			setvaluesArray(
 				generateRandomFieldValueArray(
 					difficulty.mines,
-					difficulty.horizontal_boxes * difficulty.vertical_boxes,
-					firstClickIndex,
+					numberOfFields,
+					firstClick,
 					difficulty.horizontal_boxes
 				)
 			)
 		}
-	}, [difficulty, firstClick, firstClickIndex, setvaluesArray])
+	}, [difficulty, firstClick, numberOfFields, setvaluesArray])
 
+	// useEffect(() => {
+	// 	checkFieldsAroundIndex(clickIndex, valuesArray, difficulty.horizontal_boxes)
+	// }, [clickIndex, difficulty, setExposedArray, valuesArray])
+
+	//* Updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {
 		const fieldCompsArr = []
 		fieldsData.forEach((f, i) =>
@@ -74,14 +81,30 @@ const GameGrid = ({
 					value={f.value}
 					firstClick={firstClick}
 					setFirstClick={setFirstClick}
-					setFirstClickIndex={setFirstClickIndex}
-					OnFieldLeftClick={OnFieldLeftClick}
-					isExposed={f.isExposed}
+					setClickIndex={setClickIndex}
+					exposedArray={exposedArray}
+					setExposedArray={setExposedArray}
+					isExposed={exposedArray[i]}
+					numberOfFields={numberOfFields}
+					boardWidth={difficulty.horizontal_boxes}
+					valuesArray={valuesArray}
+					// OnFieldLeftClick={OnFieldLeftClick}
 				/>
 			)
 		)
 		setFields(fieldCompsArr)
-	}, [difficulty, fieldsData, firstClick, setFields, setFirstClick, setFirstClickIndex])
+	}, [
+		difficulty,
+		exposedArray,
+		fieldsData,
+		firstClick,
+		numberOfFields,
+		setExposedArray,
+		setFields,
+		setFirstClick,
+		setClickIndex,
+		valuesArray,
+	])
 
 	return (
 		<SimpleGrid columns={difficulty.horizontal_boxes}>
