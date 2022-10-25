@@ -1,6 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { getAllSurroundingIndexsToExpose, getFieldsAroundIndex } from './grid-functions'
+import { getAllSurroundingIndexsToExpose } from './grid-functions'
 
 const Field = ({
 	index,
@@ -10,12 +10,11 @@ const Field = ({
 	value,
 	firstClick,
 	setFirstClick,
-	setClickIndex,
-	exposedArray,
 	setExposedArray,
 	isExposed,
 	boardWidth,
 	valuesArray,
+	setMineClicked,
 }) => {
 	const [bgColor, setBgColor] = useState()
 	// const [isExposed, setIsExposed] = useState(false)
@@ -39,23 +38,19 @@ const Field = ({
 
 	const OnFieldLeftClick = () => {
 		//* only happens first click to set the values of the fields
-		if (!firstClick) {
+		if (!firstClick && firstClick !== 0) {
 			setFirstClick(index)
 		}
 		//* nothing happens if field already exposed
 		if (!isExposed) {
-			setClickIndex(index)
-
-			//? Mine
-			if (value === 'mine') console.log('Boom!')
-			//! End Game
-
-			//? Number
-			if (value && value !== 'mine') {
+			//? Value
+			if (value) {
 				setExposedArray((currentArray) => {
 					currentArray[index] = true
 					return [...currentArray]
 				})
+				//? Mine
+				if (value === 'mine') setMineClicked(true)
 			}
 			//? Zero
 			if (value === 0) {
@@ -78,7 +73,13 @@ const Field = ({
 			h={fieldWidth}
 			bgColor={bgColor}
 			justifyContent={'center'}>
-			{value === 'mine' ? <Mine width={mineWidth} /> : <Text>{value}</Text>}
+			{isExposed ? (
+				value === 'mine' ? (
+					<Mine width={mineWidth} />
+				) : value !== 0 ? (
+					<Text>{value}</Text>
+				) : null
+			) : null}
 		</VStack>
 	)
 }

@@ -10,9 +10,8 @@ const Game = () => {
 	const [fields, setFields] = useState([])
 	const [fieldsData, setFieldsData] = useState([])
 	const [valuesArray, setvaluesArray] = useState([])
-
+	const [mineClicked, setMineClicked] = useState(false)
 	const [firstClick, setFirstClick] = useState(null)
-	const [clickIndex, setClickIndex] = useState(null)
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
 
@@ -23,8 +22,8 @@ const Game = () => {
 		setResetToggle((current) => !current)
 		setExposedArray(Array.apply(null, Array(numberOfFields)))
 		setvaluesArray([])
-		setFirstClick(false)
-		setClickIndex(null)
+		setFirstClick(null)
+		setMineClicked(false)
 		setFields([])
 		setFieldsData([])
 	}
@@ -42,9 +41,8 @@ const Game = () => {
 				setvaluesArray={setvaluesArray}
 				firstClick={firstClick}
 				setFirstClick={setFirstClick}
-				clickIndex={clickIndex}
-				setClickIndex={setClickIndex}
-				// OnFieldLeftClick={OnFieldLeftClick}
+				mineClicked={mineClicked}
+				setMineClicked={setMineClicked}
 				resetToggle={resetToggle}
 				exposedArray={exposedArray}
 				setExposedArray={setExposedArray}

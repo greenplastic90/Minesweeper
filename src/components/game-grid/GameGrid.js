@@ -1,11 +1,7 @@
 import { GridItem, SimpleGrid } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import Field from './Field'
-import {
-	checkFieldsAroundIndex,
-	generateRandomFieldValueArray,
-	getAllSurroundingIndexsToExpose,
-} from './grid-functions'
+import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose } from './grid-functions'
 
 const GameGrid = ({
 	difficulty,
@@ -17,8 +13,8 @@ const GameGrid = ({
 	setvaluesArray,
 	firstClick,
 	setFirstClick,
-	clickIndex,
-	setClickIndex,
+	mineClicked,
+	setMineClicked,
 	resetToggle,
 	exposedArray,
 	setExposedArray,
@@ -54,9 +50,9 @@ const GameGrid = ({
 		setFieldsData(fieldsArray)
 	}, [difficulty, setFieldsData, resetToggle, valuesArray, exposedArray])
 
-	//* Generate values after first click
+	//* generate valuesArray after firstClick
 	useEffect(() => {
-		if (firstClick) {
+		if (firstClick || firstClick === 0) {
 			setvaluesArray(
 				generateRandomFieldValueArray(
 					difficulty.mines,
@@ -68,11 +64,9 @@ const GameGrid = ({
 		}
 	}, [difficulty, firstClick, numberOfFields, setExposedArray, setvaluesArray])
 
+	//* once firstClick then ValuesArray is Created, expose fields based on the firstClick
 	useEffect(() => {
-		console.log('firstClick ->', firstClick)
-		console.log('valuesArray ->', valuesArray)
-		if (firstClick && valuesArray.length > 0) {
-			console.log('hi')
+		if (valuesArray.length > 0) {
 			const allSurroundingIndexs = getAllSurroundingIndexsToExpose(
 				firstClick,
 				valuesArray,
@@ -86,7 +80,7 @@ const GameGrid = ({
 		}
 	}, [difficulty, firstClick, setExposedArray, valuesArray])
 
-	//* Updates fields whenever valuesArray or exposedArray are updated
+	//* updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {
 		const fieldCompsArr = []
 		fieldsData.forEach((f, i) =>
@@ -99,14 +93,12 @@ const GameGrid = ({
 					value={f.value}
 					firstClick={firstClick}
 					setFirstClick={setFirstClick}
-					setClickIndex={setClickIndex}
-					exposedArray={exposedArray}
 					setExposedArray={setExposedArray}
 					isExposed={exposedArray[i]}
 					numberOfFields={numberOfFields}
 					boardWidth={difficulty.horizontal_boxes}
 					valuesArray={valuesArray}
-					// OnFieldLeftClick={OnFieldLeftClick}
+					setMineClicked={setMineClicked}
 				/>
 			)
 		)
@@ -120,9 +112,12 @@ const GameGrid = ({
 		setExposedArray,
 		setFields,
 		setFirstClick,
-		setClickIndex,
+		setMineClicked,
 		valuesArray,
 	])
+
+	//* EndGame when mineClicked
+	useEffect(() => {}, [mineClicked])
 
 	return (
 		<SimpleGrid columns={difficulty.horizontal_boxes}>
