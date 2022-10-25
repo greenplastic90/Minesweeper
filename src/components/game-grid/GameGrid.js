@@ -64,10 +64,6 @@ const GameGrid = ({
 		}
 	}, [difficulty, firstClick, numberOfFields, setvaluesArray])
 
-	// useEffect(() => {
-	// 	checkFieldsAroundIndex(clickIndex, valuesArray, difficulty.horizontal_boxes)
-	// }, [clickIndex, difficulty, setExposedArray, valuesArray])
-
 	//* Updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {
 		const fieldCompsArr = []

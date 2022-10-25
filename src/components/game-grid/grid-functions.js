@@ -71,7 +71,7 @@ export const localStorageDifficulty = () => {
 	}
 }
 
-export const checkFieldsAroundIndex = (i, valuesArray, width) => {
+export const getFieldsAroundIndex = (i, valuesArray, width) => {
 	let topLeftIndex = i - width - 1
 	let bottomLeftIndex = i + width - 1
 	let numOfLoops = 3
@@ -89,9 +89,9 @@ export const checkFieldsAroundIndex = (i, valuesArray, width) => {
 
 	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 		for (let k = j; k < j + numOfLoops; k++) {
-			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine' && k !== i)
+			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine')
 				arrayOfIndexesToExpose.push(k)
 		}
 	}
-	console.log(arrayOfIndexesToExpose)
+	return arrayOfIndexesToExpose
 }

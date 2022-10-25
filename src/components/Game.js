@@ -1,8 +1,7 @@
 import { VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 
-import { easy } from './difficulty-options'
 import GameGrid from './game-grid/GameGrid'
 import { localStorageDifficulty } from './game-grid/grid-functions'
 
@@ -11,17 +10,18 @@ const Game = () => {
 	const [fields, setFields] = useState([])
 	const [fieldsData, setFieldsData] = useState([])
 	const [valuesArray, setvaluesArray] = useState([])
-	const [exposedArray, setExposedArray] = useState([])
-	const [firstClick, setFirstClick] = useState(false)
+
+	const [firstClick, setFirstClick] = useState(null)
 	const [clickIndex, setClickIndex] = useState(null)
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
+	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
-		setExposedArray([])
+		setExposedArray(Array.apply(null, Array(numberOfFields)))
 		setvaluesArray([])
 		setFirstClick(false)
 		setClickIndex(null)
