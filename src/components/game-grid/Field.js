@@ -1,6 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { getFieldsAroundIndex } from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsAroundIndex } from './grid-functions'
 
 const Field = ({
 	index,
@@ -37,32 +37,6 @@ const Field = ({
 		}
 	}, [bgIsLight, isExposed])
 
-	const getAllSurroundingIndexs = (indexWithValueZero) => {
-		const surroundingIndexsThatAreZero = []
-		const surroundingIndexsThatAreZeroThatAreChecked = []
-		let allSurroundingIndexsToExpose = []
-
-		const getImmediateSurroundingIndexs = (zeroValueIndex) => {
-			const surroundingIndexs = getFieldsAroundIndex(zeroValueIndex, valuesArray, boardWidth)
-			allSurroundingIndexsToExpose = [
-				...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs]),
-			]
-			surroundingIndexs.forEach((index) => {
-				if (valuesArray[index] === 0 && !surroundingIndexsThatAreZero.includes(index)) {
-					surroundingIndexsThatAreZero.push(index)
-				}
-				surroundingIndexsThatAreZeroThatAreChecked.push(zeroValueIndex)
-			})
-			surroundingIndexsThatAreZero.forEach((index) => {
-				if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index))
-					getImmediateSurroundingIndexs(index)
-			})
-		}
-		getImmediateSurroundingIndexs(indexWithValueZero)
-
-		return allSurroundingIndexsToExpose
-	}
-
 	const OnFieldLeftClick = () => {
 		//* only happens first click to set the values of the fields
 		if (!firstClick) {
@@ -85,10 +59,8 @@ const Field = ({
 			}
 			//? Zero
 			if (value === 0) {
-				const allSurroundingIndexs = getAllSurroundingIndexs(index)
-				console.log(allSurroundingIndexs)
+				const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
 				setExposedArray((currentArray) => {
-					console.log(currentArray)
 					return currentArray.map((field, i) =>
 						allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field
 					)

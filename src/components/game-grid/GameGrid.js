@@ -1,7 +1,11 @@
 import { GridItem, SimpleGrid } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import Field from './Field'
-import { checkFieldsAroundIndex, generateRandomFieldValueArray } from './grid-functions'
+import {
+	checkFieldsAroundIndex,
+	generateRandomFieldValueArray,
+	getAllSurroundingIndexsToExpose,
+} from './grid-functions'
 
 const GameGrid = ({
 	difficulty,
@@ -62,7 +66,25 @@ const GameGrid = ({
 				)
 			)
 		}
-	}, [difficulty, firstClick, numberOfFields, setvaluesArray])
+	}, [difficulty, firstClick, numberOfFields, setExposedArray, setvaluesArray])
+
+	useEffect(() => {
+		console.log('firstClick ->', firstClick)
+		console.log('valuesArray ->', valuesArray)
+		if (firstClick && valuesArray.length > 0) {
+			console.log('hi')
+			const allSurroundingIndexs = getAllSurroundingIndexsToExpose(
+				firstClick,
+				valuesArray,
+				difficulty.horizontal_boxes
+			)
+			setExposedArray((currentArray) => {
+				return currentArray.map((field, i) =>
+					allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field
+				)
+			})
+		}
+	}, [difficulty, firstClick, setExposedArray, valuesArray])
 
 	//* Updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {

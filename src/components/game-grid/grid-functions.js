@@ -95,3 +95,29 @@ export const getFieldsAroundIndex = (i, valuesArray, width) => {
 	}
 	return arrayOfIndexesToExpose
 }
+
+export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray, boardWidth) => {
+	const surroundingIndexsThatAreZero = []
+	const surroundingIndexsThatAreZeroThatAreChecked = []
+	let allSurroundingIndexsToExpose = []
+
+	const getImmediateSurroundingIndexs = (zeroValueIndex) => {
+		const surroundingIndexs = getFieldsAroundIndex(zeroValueIndex, valuesArray, boardWidth)
+		allSurroundingIndexsToExpose = [
+			...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs]),
+		]
+		surroundingIndexs.forEach((index) => {
+			if (valuesArray[index] === 0 && !surroundingIndexsThatAreZero.includes(index)) {
+				surroundingIndexsThatAreZero.push(index)
+			}
+			surroundingIndexsThatAreZeroThatAreChecked.push(zeroValueIndex)
+		})
+		surroundingIndexsThatAreZero.forEach((index) => {
+			if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index))
+				getImmediateSurroundingIndexs(index)
+		})
+	}
+	getImmediateSurroundingIndexs(indexWithValueZero)
+
+	return allSurroundingIndexsToExpose
+}
