@@ -1,6 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { getAllSurroundingIndexsToExpose } from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsAroundIndex } from './grid-functions'
 
 const Field = ({
 	index,
@@ -63,6 +63,10 @@ const Field = ({
 			}
 		}
 	}
+	//* determain what sides have a border
+	useEffect(() => {
+		const surroundingIndexs = getFieldsAroundIndex(index, valuesArray, boardWidth)
+	}, [boardWidth, index, valuesArray])
 
 	return (
 		<VStack
@@ -71,6 +75,7 @@ const Field = ({
 			}}
 			w={fieldWidth}
 			h={fieldWidth}
+			_hover={{ bg: 'teal.600' }}
 			bgColor={bgColor}
 			justifyContent={'center'}>
 			{isExposed ? (
