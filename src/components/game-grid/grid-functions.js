@@ -96,7 +96,7 @@ export const getFieldsSurroundingIndexWithNoMines = (i, valuesArray, width) => {
 	return arrayOfIndexes
 }
 
-export const getFieldsSurroundingExludingIndex = (i, arr, width) => {
+export const getFieldsSurroundingExludingIndex = (i, numberOfFields, width) => {
 	let topLeftIndex = i - width - 1
 	let bottomLeftIndex = i + width - 1
 	let numOfLoops = 3
@@ -114,7 +114,7 @@ export const getFieldsSurroundingExludingIndex = (i, arr, width) => {
 
 	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 		for (let k = j; k < j + numOfLoops; k++) {
-			if (k < 0) {
+			if (k >= 0 && k < numberOfFields) {
 				arrayOfIndexes.push(k)
 			}
 		}

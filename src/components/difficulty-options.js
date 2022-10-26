@@ -22,12 +22,3 @@ export const hard = {
 	box_width: '25px',
 	mine_width: '12px',
 }
-
-export const fake = {
-	name: 'Hard',
-	mines: 99,
-	horizontal_boxes: 24,
-	vertical_boxes: 20,
-	box_width: '25px',
-	mine_width: '12px',
-}

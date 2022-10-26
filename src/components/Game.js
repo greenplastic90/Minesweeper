@@ -27,10 +27,10 @@ const Game = () => {
 		setFields([])
 		setFieldsData([])
 	}
-
+	//* resets exposedArray with proper numberOfFields when difficulty changes or reset button is clicked
 	useEffect(() => {
 		setExposedArray(Array.apply(null, Array(numberOfFields)))
-	}, [numberOfFields])
+	}, [numberOfFields, resetToggle])
 
 	return (
 		<VStack>

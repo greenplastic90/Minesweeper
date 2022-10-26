@@ -15,6 +15,9 @@ const basicColors = {
 	red: '#C61A24',
 	orange: '#FD7B08',
 	purple: '#660091',
+	pink: '#FFC0CB',
+	aquamarine: '#7FFFD4',
+	yellow: '#FFFF00',
 }
 
 const colors = {
@@ -31,6 +34,7 @@ const colors = {
 		brown_hover_dark: basicColors.brown_ultra_light,
 		brown_light: basicColors.brown_light,
 		brown_hover_light: basicColors.brown_ultra_ultra_light,
+		border: basicColors.green_darkest,
 	},
 	numbers: {
 		one: basicColors.blue,
@@ -38,6 +42,12 @@ const colors = {
 		three: basicColors.red,
 		four: basicColors.purple,
 		five: basicColors.orange,
+		six: basicColors.pink,
+		seven: basicColors.yellow,
+		eight: basicColors.aquamarine,
+		//pink
+		//torquise
+		//yellow
 	},
 }
 
