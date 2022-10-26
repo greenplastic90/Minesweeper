@@ -17,24 +17,38 @@ const Field = ({
 	setMineClicked,
 }) => {
 	const [bgColor, setBgColor] = useState()
-	// const [isExposed, setIsExposed] = useState(false)
+	const [bgHoverColor, setBgHoverColor] = useState()
 
-	//* set bgColor
+	//* set bgColor and bgHoverColor
 	useEffect(() => {
 		if (bgIsLight) {
 			if (isExposed) {
 				setBgColor('field.brown_light')
+				//* don't want to add a hover effect if the field is Zero
+				if (value) {
+					setBgHoverColor('field.brown_hover_light')
+				} else {
+					setBgHoverColor()
+				}
 			} else {
 				setBgColor('field.green_light')
+				setBgHoverColor('field.green_hover_light')
 			}
 		} else {
 			if (isExposed) {
 				setBgColor('field.brown_dark')
+				//* don't want to add a hover effect if the field is Zero
+				if (value) {
+					setBgHoverColor('field.brown_hover_dark')
+				} else {
+					setBgHoverColor()
+				}
 			} else {
 				setBgColor('field.green_dark')
+				setBgHoverColor('field.green_hover_dark')
 			}
 		}
-	}, [bgIsLight, isExposed])
+	}, [bgIsLight, isExposed, value])
 
 	const OnFieldLeftClick = () => {
 		//* only happens first click to set the values of the fields
@@ -75,8 +89,8 @@ const Field = ({
 			}}
 			w={fieldWidth}
 			h={fieldWidth}
-			_hover={{ bg: 'teal.600' }}
 			bgColor={bgColor}
+			_hover={{ bg: bgHoverColor }}
 			justifyContent={'center'}>
 			{isExposed ? (
 				value === 'mine' ? (

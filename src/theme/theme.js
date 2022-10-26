@@ -3,8 +3,8 @@ import { extendTheme } from '@chakra-ui/react'
 const basicColors = {
 	green_darkest: '#5F6421',
 	green_dark: '#2E7E2E',
-	green_medium: '#93CB39',
-	green_light: '#B3DE6A',
+	green_medium: '#ACD05E',
+	green_light: '#B3D665',
 	green_ultra_ultra_light: '#C6E089',
 	green_ultra_light: '#C0DC83',
 	brown_dark: '#CDAA87',
