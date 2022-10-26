@@ -93,6 +93,7 @@ const GameGrid = ({
 					value={f.value}
 					firstClick={firstClick}
 					setFirstClick={setFirstClick}
+					exposedArray={exposedArray}
 					setExposedArray={setExposedArray}
 					isExposed={exposedArray[i]}
 					numberOfFields={numberOfFields}

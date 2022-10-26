@@ -1,6 +1,11 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { getAllSurroundingIndexsToExpose, getFieldsAroundIndex } from './grid-functions'
+import {
+	getAllSurroundingIndexsToExpose,
+	getFieldsSurroundingExludingIndex,
+	getFieldsSurroundingIndexWithNoMines,
+	removeItemOnce,
+} from './grid-functions'
 
 const Field = ({
 	index,
@@ -10,6 +15,7 @@ const Field = ({
 	value,
 	firstClick,
 	setFirstClick,
+	exposedArray,
 	setExposedArray,
 	isExposed,
 	boardWidth,
@@ -51,7 +57,8 @@ const Field = ({
 	}, [bgIsLight, isExposed, value])
 
 	const OnFieldLeftClick = () => {
-		//* only happens first click to set the values of the fields
+		//* only happens on first click to set the values of the fields
+		//* need this to work when firstClick has the index 0
 		if (!firstClick && firstClick !== 0) {
 			setFirstClick(index)
 		}
@@ -79,7 +86,11 @@ const Field = ({
 	}
 	//* determain what sides have a border
 	useEffect(() => {
-		const surroundingIndexs = getFieldsAroundIndex(index, valuesArray, boardWidth)
+		if (valuesArray.length > 0) {
+			const surroundingIndexs = getFieldsSurroundingExludingIndex(index, valuesArray, boardWidth)
+			const surroundingIndexsWithFieldIndexRemoved = removeItemOnce(surroundingIndexs, index)
+			console.log(surroundingIndexs)
+		}
 	}, [boardWidth, index, valuesArray])
 
 	return (

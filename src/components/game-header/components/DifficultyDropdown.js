@@ -4,9 +4,9 @@ import { localStorageDifficulty } from '../../game-grid/grid-functions'
 const DifficultyDropdown = ({ setDifficulty, resetGame }) => {
 	const handelDifficultyChange = (diff) => {
 		localStorage.setItem('mineSweeperDiffuculty', diff)
-		resetGame()
 
 		setDifficulty(localStorageDifficulty())
+		resetGame()
 	}
 	return (
 		<Select

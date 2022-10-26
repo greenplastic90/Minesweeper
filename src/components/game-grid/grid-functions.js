@@ -71,7 +71,7 @@ export const localStorageDifficulty = () => {
 	}
 }
 
-export const getFieldsAroundIndex = (i, valuesArray, width) => {
+export const getFieldsSurroundingIndexWithNoMines = (i, valuesArray, width) => {
 	let topLeftIndex = i - width - 1
 	let bottomLeftIndex = i + width - 1
 	let numOfLoops = 3
@@ -85,15 +85,41 @@ export const getFieldsAroundIndex = (i, valuesArray, width) => {
 	if (i % width === width - 1) {
 		numOfLoops = 2
 	}
-	const arrayOfIndexesToExpose = []
+	const arrayOfIndexes = []
 
 	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 		for (let k = j; k < j + numOfLoops; k++) {
 			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine')
-				arrayOfIndexesToExpose.push(k)
+				arrayOfIndexes.push(k)
 		}
 	}
-	return arrayOfIndexesToExpose
+	return arrayOfIndexes
+}
+
+export const getFieldsSurroundingExludingIndex = (i, arr, width) => {
+	let topLeftIndex = i - width - 1
+	let bottomLeftIndex = i + width - 1
+	let numOfLoops = 3
+	//* if indext on the far left side of grid
+	if (!(i % width)) {
+		topLeftIndex = i - width
+		bottomLeftIndex = i + width
+		numOfLoops = 2
+	}
+	//* if index on the far right side of grid
+	if (i % width === width - 1) {
+		numOfLoops = 2
+	}
+	const arrayOfIndexes = []
+
+	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
+		for (let k = j; k < j + numOfLoops; k++) {
+			if (k < 0) {
+				arrayOfIndexes.push(k)
+			}
+		}
+	}
+	return arrayOfIndexes
 }
 
 export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray, boardWidth) => {
@@ -102,7 +128,11 @@ export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray,
 	let allSurroundingIndexsToExpose = []
 
 	const getImmediateSurroundingIndexs = (zeroValueIndex) => {
-		const surroundingIndexs = getFieldsAroundIndex(zeroValueIndex, valuesArray, boardWidth)
+		const surroundingIndexs = getFieldsSurroundingIndexWithNoMines(
+			zeroValueIndex,
+			valuesArray,
+			boardWidth
+		)
 		allSurroundingIndexsToExpose = [
 			...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs]),
 		]
@@ -120,4 +150,11 @@ export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray,
 	getImmediateSurroundingIndexs(indexWithValueZero)
 
 	return allSurroundingIndexsToExpose
+}
+export function removeItemOnce(arr, value) {
+	const index = arr.indexOf(value)
+	if (index > -1) {
+		arr.splice(index, 1)
+	}
+	return arr
 }

@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 
 import GameGrid from './game-grid/GameGrid'
@@ -20,13 +20,17 @@ const Game = () => {
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
-		setExposedArray(Array.apply(null, Array(numberOfFields)))
+
 		setvaluesArray([])
 		setFirstClick(null)
 		setMineClicked(false)
 		setFields([])
 		setFieldsData([])
 	}
+
+	useEffect(() => {
+		setExposedArray(Array.apply(null, Array(numberOfFields)))
+	}, [numberOfFields])
 
 	return (
 		<VStack>
