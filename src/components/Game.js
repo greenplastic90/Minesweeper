@@ -34,7 +34,12 @@ const Game = () => {
 
 	return (
 		<VStack>
-			<GameHeader difficulty={difficulty} setDifficulty={setDifficulty} resetGame={resetGame} />
+			<GameHeader
+				difficulty={difficulty}
+				setDifficulty={setDifficulty}
+				resetGame={resetGame}
+				firstClick={firstClick}
+			/>
 			<GameGrid
 				difficulty={difficulty}
 				fields={fields}

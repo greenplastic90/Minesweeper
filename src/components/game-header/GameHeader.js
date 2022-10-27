@@ -5,7 +5,7 @@ import Flags from './components/Flags'
 import ResetBtn from './components/ResetBtn'
 import Timer from './components/Timer'
 
-const GameHeader = ({ difficulty, setDifficulty, resetGame }) => {
+const GameHeader = ({ difficulty, setDifficulty, resetGame, firstClick }) => {
 	return (
 		<HStack
 			w={'-webkit-fill-available'}
@@ -14,11 +14,11 @@ const GameHeader = ({ difficulty, setDifficulty, resetGame }) => {
 		>
 			{/* dropdown */}
 			<DifficultyDropdown setDifficulty={setDifficulty} resetGame={resetGame} />
-			<HStack>
+			<HStack w='full' justify={'center'}>
 				{/* flags */}
 				<Flags numOfMines={difficulty.mines} />
 				{/* timer */}
-				<Timer />
+				<Timer firstClick={firstClick} />
 			</HStack>
 			{/* rest button */}
 			<ResetBtn setDifficulty={setDifficulty} resetGame={resetGame} />

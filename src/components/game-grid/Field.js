@@ -120,6 +120,7 @@ const Field = ({
 						if (fieldIndex + 1 === index) newBorder = { ...newBorder, left: true }
 						if (fieldIndex - 1 === index) newBorder = { ...newBorder, right: true }
 					}
+					//* if the field adjacent is exposed
 					if (exposedArray[fieldIndex]) {
 						if (fieldIndex + boardWidth === index) newBorder = { ...newBorder, top: false }
 						if (fieldIndex - boardWidth === index) newBorder = { ...newBorder, bottom: false }
@@ -138,6 +139,7 @@ const Field = ({
 			onClick={() => {
 				OnFieldLeftClick()
 			}}
+            
 			w={fieldWidth}
 			h={fieldWidth}
 			bgColor={bgColor}
