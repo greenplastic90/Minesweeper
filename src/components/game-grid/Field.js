@@ -1,5 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { BsFillFlagFill } from 'react-icons/bs'
 import {
 	getAllSurroundingIndexsToExpose,
 	getFieldsSurroundingExludingIndex,
@@ -19,6 +20,8 @@ const Field = ({
 	boardWidth,
 	valuesArray,
 	setMineClicked,
+	setFlagsArray,
+	hasFlag,
 }) => {
 	const [bgColor, setBgColor] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -70,32 +73,46 @@ const Field = ({
 	}, [value])
 
 	const OnFieldLeftClick = () => {
-		//* only happens on first click to set the values of the fields
-		//* need this to work when firstClick has the index 0
-		if (!firstClick && firstClick !== 0) {
-			setFirstClick(index)
-		}
-		//* nothing happens if field already exposed
-		if (!isExposed) {
-			//? Value
-			if (value) {
-				setExposedArray((currentArray) => {
-					currentArray[index] = true
-					return [...currentArray]
-				})
-				//? Mine
-				if (value === 'mine') setMineClicked(true)
+		if (!hasFlag) {
+			//* only happens on first click to set the values of the fields
+			//* need this to work when firstClick has the index 0
+			if (!firstClick && firstClick !== 0) {
+				setFirstClick(index)
 			}
-			//? Zero
-			if (value === 0) {
-				const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
-				setExposedArray((currentArray) => {
-					return currentArray.map((field, i) =>
-						allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field
+			//* nothing happens if field already exposed
+			if (!isExposed) {
+				//? Value
+				if (value) {
+					setExposedArray((currentArray) => {
+						currentArray[index] = true
+						return [...currentArray]
+					})
+					//? Mine
+					if (value === 'mine') setMineClicked(true)
+				}
+				//? Zero
+				if (value === 0) {
+					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(
+						index,
+						valuesArray,
+						boardWidth
 					)
-				})
+					setExposedArray((currentArray) => {
+						return currentArray.map((field, i) =>
+							allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field
+						)
+					})
+				}
 			}
 		}
+	}
+	const onFieldRightClick = (e) => {
+		e.preventDefault()
+		setFlagsArray((current) => {
+			current[index] = current[index] ? false : true
+
+			return [...current]
+		})
 	}
 
 	//* get the index surrounding this fields index
@@ -134,12 +151,22 @@ const Field = ({
 		}
 	}, [boardWidth, exposedArray, index, isExposed, surroundingIndexs])
 
+	//* remove flag if exposed
+	useEffect(() => {
+		if (hasFlag && isExposed) {
+			setFlagsArray((current) => {
+				current[index] = false
+				return [...current]
+			})
+		}
+	})
+
 	return (
 		<VStack
-			onClick={() => {
-				OnFieldLeftClick()
+			onContextMenu={onFieldRightClick}
+			onClick={(e) => {
+				OnFieldLeftClick(e)
 			}}
-            
 			w={fieldWidth}
 			h={fieldWidth}
 			bgColor={bgColor}
@@ -161,6 +188,8 @@ const Field = ({
 						{value}
 					</Text>
 				) : null
+			) : hasFlag ? (
+				<BsFillFlagFill />
 			) : null}
 		</VStack>
 	)

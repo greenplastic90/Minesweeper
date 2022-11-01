@@ -19,6 +19,8 @@ const GameGrid = ({
 	exposedArray,
 	setExposedArray,
 	numberOfFields,
+	flagsArray,
+	setFlagsArray,
 }) => {
 	//* create initial fieldsData
 	useEffect(() => {
@@ -100,6 +102,8 @@ const GameGrid = ({
 					boardWidth={difficulty.horizontal_boxes}
 					valuesArray={valuesArray}
 					setMineClicked={setMineClicked}
+					setFlagsArray={setFlagsArray}
+					hasFlag={flagsArray[i]}
 				/>
 			)
 		)
@@ -109,10 +113,12 @@ const GameGrid = ({
 		exposedArray,
 		fieldsData,
 		firstClick,
+		flagsArray,
 		numberOfFields,
 		setExposedArray,
 		setFields,
 		setFirstClick,
+		setFlagsArray,
 		setMineClicked,
 		valuesArray,
 	])

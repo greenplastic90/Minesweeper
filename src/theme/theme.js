@@ -12,6 +12,7 @@ const basicColors = {
 	brown_ultra_light: '#DDCBB6',
 	brown_ultra_ultra_light: '#E7D2BA',
 	blue: '#175FC7',
+    light_blue: '#4295A5',
 	red: '#C61A24',
 	orange: '#FD7B08',
 	purple: '#660091',
@@ -42,9 +43,9 @@ const colors = {
 		three: basicColors.red,
 		four: basicColors.purple,
 		five: basicColors.orange,
-		six: basicColors.pink,
-		seven: basicColors.yellow,
-		eight: basicColors.aquamarine,
+		six: basicColors.light_blue,
+		seven: basicColors.pink,
+		eight: basicColors.yellow,
 		//pink
 		//torquise
 		//yellow

@@ -14,13 +14,14 @@ const Game = () => {
 	const [firstClick, setFirstClick] = useState(null)
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
+	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
+	const [numberOfFlags, setNumberOfFlags] = useState(0)
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
-
 		setvaluesArray([])
 		setFirstClick(null)
 		setMineClicked(false)
@@ -30,7 +31,19 @@ const Game = () => {
 	//* resets exposedArray with proper numberOfFields when difficulty changes or reset button is clicked
 	useEffect(() => {
 		setExposedArray(Array.apply(null, Array(numberOfFields)))
-	}, [numberOfFields, resetToggle])
+		setFlagsArray(Array.apply(null, Array(numberOfFields)))
+		setNumberOfFlags(difficulty.mines)
+	}, [difficulty, numberOfFields, resetToggle])
+
+	//* updated number of flags based on how many flags in flagsArray
+	useEffect(() => {
+		setNumberOfFlags((current) => {
+			// flags array has `true` values on indexs with a flag
+			const numOfFlagsInArray = flagsArray.filter((flag) => flag).length
+			console.log(numOfFlagsInArray)
+			return difficulty.mines - numOfFlagsInArray
+		})
+	}, [flagsArray, difficulty])
 
 	return (
 		<VStack>
@@ -39,6 +52,7 @@ const Game = () => {
 				setDifficulty={setDifficulty}
 				resetGame={resetGame}
 				firstClick={firstClick}
+				numberOfFlags={numberOfFlags}
 			/>
 			<GameGrid
 				difficulty={difficulty}
@@ -56,6 +70,8 @@ const Game = () => {
 				exposedArray={exposedArray}
 				setExposedArray={setExposedArray}
 				numberOfFields={numberOfFields}
+				flagsArray={flagsArray}
+				setFlagsArray={setFlagsArray}
 			/>
 		</VStack>
 	)
