@@ -3,10 +3,12 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Field from './Field'
-import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose } from './grid-functions'
+import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomShakeArray } from './grid-functions'
 
 const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray }) => {
 	const [runAnimation, setRunAnumation] = useState(false)
+	const animationDuration = 0.5
+	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: animationDuration } })
 
 	//* create initial fieldsData
 	useEffect(() => {
@@ -58,23 +60,27 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	//* updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {
 		const fieldCompsArr = []
-		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} fieldWidth={f.fieldWidth} mineWidth={f.mineWidth} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} />))
+		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} fieldWidth={f.fieldWidth} mineWidth={f.mineWidth} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} />))
 		setFields(fieldCompsArr)
 	}, [difficulty, exposedArray, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray])
 
 	//* EndGame when mineClicked
 	useEffect(() => {}, [mineClicked])
 
-	const handleAnimation = () => {
+	//* randomize shake animation
+	useEffect(() => {
+		setShakeAnimation((current) => {
+			return { ...current, y: randomShakeArray(), x: randomShakeArray() }
+		})
+	}, [runAnimation])
+
+	const handleShakeAnimation = () => {
 		setRunAnumation(true)
-		setTimeout(() => setRunAnumation(false), 1000)
-	}
-	const variants = {
-		shake: { y: [0, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 0], x: [0, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 0], transition: { duration: 0.5 } },
+		setTimeout(() => setRunAnumation(false), 1000 * animationDuration)
 	}
 
 	return (
-		<SimpleGrid as={motion.div} onClick={() => handleAnimation()} variants={variants} animate={runAnimation ? 'shake' : 'null'} columns={difficulty.horizontal_boxes}>
+		<SimpleGrid as={motion.div} animate={runAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field, i) => (
 				<GridItem key={i}>{field}</GridItem>
 			))}

@@ -1,7 +1,7 @@
 import { extendTheme } from '@chakra-ui/react'
 
 const basicColors = {
-	green_darkest: '#5F6421',
+	green_darkest: '#3B6421',
 	green_dark: '#2E7E2E',
 	green_medium: '#ACD05E',
 	green_light: '#B3D665',
@@ -12,7 +12,7 @@ const basicColors = {
 	brown_ultra_light: '#DDCBB6',
 	brown_ultra_ultra_light: '#E7D2BA',
 	blue: '#175FC7',
-    light_blue: '#4295A5',
+	light_blue: '#4295A5',
 	red: '#C61A24',
 	orange: '#FD7B08',
 	purple: '#660091',

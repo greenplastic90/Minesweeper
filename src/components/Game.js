@@ -57,7 +57,7 @@ const Game = () => {
 	}, [exposedArray, valuesArray])
 
 	return (
-		<VStack>
+		<VStack spacing={0}>
 			<GameHeader difficulty={difficulty} setDifficulty={setDifficulty} resetGame={resetGame} firstClick={firstClick} numberOfFlags={numberOfFlags} />
 			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} />
 		</VStack>

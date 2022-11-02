@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
 
-const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag }) => {
+const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation }) => {
 	const [bgColor, setBgColor] = useState()
 	const [valueColor, setValueColor] = useState()
 	const [bgHoverColor, setBgHoverColor] = useState()
@@ -59,6 +59,7 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 			//* need this to work when firstClick has the index 0
 			if (!firstClick && firstClick !== 0) {
 				setFirstClick(index)
+				handleShakeAnimation()
 			}
 			//* nothing happens if field already exposed
 			if (!isExposed) {
@@ -69,10 +70,15 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 						return [...currentArray]
 					})
 					//? Mine
-					if (value === 'mine') setMineClicked(true)
+
+					if (value === 'mine') {
+						setMineClicked(true)
+						handleShakeAnimation()
+					}
 				}
 				//? Zero
 				if (value === 0) {
+					handleShakeAnimation()
 					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
 					setExposedArray((currentArray) => {
 						return currentArray.map((field, i) => (allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field))

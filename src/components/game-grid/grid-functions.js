@@ -143,10 +143,20 @@ export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray,
 
 	return allSurroundingIndexsToExpose
 }
-export function removeItemOnce(arr, value) {
+
+export const removeItemOnce = (arr, value) => {
 	const index = arr.indexOf(value)
 	if (index > -1) {
 		arr.splice(index, 1)
+	}
+	return arr
+}
+
+export const randomShakeArray = () => {
+	const arr = []
+
+	for (let i = 0; i < 12; i++) {
+		arr.push(Math.floor(Math.random() * 2) - 1)
 	}
 	return arr
 }
