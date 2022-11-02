@@ -1,28 +1,9 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import {
-	getAllSurroundingIndexsToExpose,
-	getFieldsSurroundingExludingIndex,
-} from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
 
-const Field = ({
-	index,
-	fieldWidth,
-	mineWidth,
-	bgIsLight,
-	value,
-	firstClick,
-	setFirstClick,
-	exposedArray,
-	setExposedArray,
-	isExposed,
-	boardWidth,
-	valuesArray,
-	setMineClicked,
-	setFlagsArray,
-	hasFlag,
-}) => {
+const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag }) => {
 	const [bgColor, setBgColor] = useState()
 	const [valueColor, setValueColor] = useState()
 	const [bgHoverColor, setBgHoverColor] = useState()
@@ -92,15 +73,9 @@ const Field = ({
 				}
 				//? Zero
 				if (value === 0) {
-					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(
-						index,
-						valuesArray,
-						boardWidth
-					)
+					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
 					setExposedArray((currentArray) => {
-						return currentArray.map((field, i) =>
-							allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field
-						)
+						return currentArray.map((field, i) => (allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field))
 					})
 				}
 			}
@@ -110,7 +85,6 @@ const Field = ({
 		e.preventDefault()
 		setFlagsArray((current) => {
 			current[index] = current[index] ? false : true
-
 			return [...current]
 		})
 	}
@@ -118,9 +92,7 @@ const Field = ({
 	//* get the index surrounding this fields index
 	useEffect(() => {
 		if (exposedArray.length > 0) {
-			setSurroundingIndexs(
-				getFieldsSurroundingExludingIndex(index, exposedArray.length, boardWidth)
-			)
+			setSurroundingIndexs(getFieldsSurroundingExludingIndex(index, exposedArray.length, boardWidth))
 		}
 	}, [boardWidth, index, exposedArray])
 

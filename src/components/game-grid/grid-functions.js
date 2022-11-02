@@ -89,8 +89,7 @@ export const getFieldsSurroundingIndexWithNoMines = (i, valuesArray, width) => {
 
 	for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 		for (let k = j; k < j + numOfLoops; k++) {
-			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine')
-				arrayOfIndexes.push(k)
+			if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine') arrayOfIndexes.push(k)
 		}
 	}
 	return arrayOfIndexes
@@ -128,14 +127,8 @@ export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray,
 	let allSurroundingIndexsToExpose = []
 
 	const getImmediateSurroundingIndexs = (zeroValueIndex) => {
-		const surroundingIndexs = getFieldsSurroundingIndexWithNoMines(
-			zeroValueIndex,
-			valuesArray,
-			boardWidth
-		)
-		allSurroundingIndexsToExpose = [
-			...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs]),
-		]
+		const surroundingIndexs = getFieldsSurroundingIndexWithNoMines(zeroValueIndex, valuesArray, boardWidth)
+		allSurroundingIndexsToExpose = [...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs])]
 		surroundingIndexs.forEach((index) => {
 			if (valuesArray[index] === 0 && !surroundingIndexsThatAreZero.includes(index)) {
 				surroundingIndexsThatAreZero.push(index)
@@ -143,8 +136,7 @@ export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray,
 			surroundingIndexsThatAreZeroThatAreChecked.push(zeroValueIndex)
 		})
 		surroundingIndexsThatAreZero.forEach((index) => {
-			if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index))
-				getImmediateSurroundingIndexs(index)
+			if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index)) getImmediateSurroundingIndexs(index)
 		})
 	}
 	getImmediateSurroundingIndexs(indexWithValueZero)
