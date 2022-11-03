@@ -1,6 +1,7 @@
 import { extendTheme } from '@chakra-ui/react'
 
 const basicColors = {
+	white: '#FFFFFF',
 	green_darkest: '#3B6421',
 	green_dark: '#2E7E2E',
 	green_medium: '#ACD05E',
@@ -24,6 +25,8 @@ const basicColors = {
 const colors = {
 	brand: {
 		header: basicColors.green_darkest,
+		header_dropdown: basicColors.white,
+		header_text: basicColors.white,
 	},
 
 	field: {

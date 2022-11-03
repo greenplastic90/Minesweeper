@@ -7,7 +7,7 @@ import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomS
 
 const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray }) => {
 	const [runAnimation, setRunAnumation] = useState(false)
-	const animationDuration = 0.5
+	const animationDuration = 0.4
 	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: animationDuration } })
 
 	//* create initial fieldsData

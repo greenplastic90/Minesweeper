@@ -8,7 +8,8 @@ const ResetBtn = ({ setDifficulty, resetGame }) => {
 			onClick={() => {
 				setDifficulty(localStorageDifficulty())
 				resetGame()
-			}}>
+			}}
+			fontWeight={'bold'}>
 			Reset
 		</Button>
 	)

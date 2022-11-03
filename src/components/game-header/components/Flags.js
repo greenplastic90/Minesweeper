@@ -5,7 +5,9 @@ const Flags = ({ numberOfFlags }) => {
 	return (
 		<HStack>
 			<BsFillFlagFill />
-			<Text>{numberOfFlags}</Text>
+			<Text fontWeight={'bold'} color={'brand.header_text'}>
+				{numberOfFlags}
+			</Text>
 		</HStack>
 	)
 }

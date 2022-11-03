@@ -7,15 +7,15 @@ import { localStorageDifficulty } from './game-grid/grid-functions'
 
 const Game = () => {
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
+	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [fields, setFields] = useState([])
 	const [fieldsData, setFieldsData] = useState([])
 	const [mineClicked, setMineClicked] = useState(false)
 	const [firstClick, setFirstClick] = useState(null)
-	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [valuesArray, setvaluesArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
-	const [numberOfFlags, setNumberOfFlags] = useState(0)
+	const [numberOfFlags, setNumberOfFlags] = useState(difficulty.mines)
 	const [playerLost, setPlayerLost] = useState(false)
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid

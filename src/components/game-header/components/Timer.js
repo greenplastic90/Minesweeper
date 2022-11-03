@@ -16,6 +16,7 @@ const Timer = ({ firstClick }) => {
 		})
 	}
 
+	//* starts timer when after first click
 	useEffect(() => {
 		let startOnes, startTens, startHundreds
 
@@ -43,11 +44,17 @@ const Timer = ({ firstClick }) => {
 
 	return (
 		<HStack>
-			<ImClock2 />
+			<ImClock2 color={'#f5c242'} />
 			<HStack spacing={0}>
-				<Text>{hundreds}</Text>
-				<Text>{tens}</Text>
-				<Text>{ones}</Text>
+				<Text fontWeight={'bold'} color={'brand.header_text'}>
+					{hundreds}
+				</Text>
+				<Text fontWeight={'bold'} color={'brand.header_text'}>
+					{tens}
+				</Text>
+				<Text fontWeight={'bold'} color={'brand.header_text'}>
+					{ones}
+				</Text>
 			</HStack>
 		</HStack>
 	)

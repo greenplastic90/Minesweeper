@@ -1,4 +1,5 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
@@ -9,6 +10,7 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 	const [bgHoverColor, setBgHoverColor] = useState()
 	const [border, setBorder] = useState({ top: false, bottom: false, left: false, right: false })
 	const [surroundingIndexs, setSurroundingIndexs] = useState([])
+	const [exposeAnimation, setExposeAnimation] = useState({})
 
 	//* set bgColor and bgHoverColor
 	useEffect(() => {
@@ -53,7 +55,8 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 		if (value === 8) setValueColor('numbers.eight')
 	}, [value])
 
-	const OnFieldLeftClick = () => {
+	const OnFieldLeftClick = (e) => {
+		e.preventDefault()
 		if (!hasFlag) {
 			//* only happens on first click to set the values of the fields
 			//* need this to work when firstClick has the index 0
@@ -162,13 +165,14 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 				value === 'mine' ? (
 					<Mine width={mineWidth} />
 				) : value !== 0 ? (
-					<Text fontWeight={'bold'} color={valueColor}>
+					<Text cursor={'default'} fontWeight={'bold'} color={valueColor}>
 						{value}
 					</Text>
 				) : null
 			) : hasFlag ? (
 				<BsFillFlagFill />
 			) : null}
+			{/* <Box as={motion.div} zIndex={-1} pos={'absolute'} w={fieldWidth} h={fieldWidth} bgColor={bgColor} animate={{ x: [0, 100, 0], transition: { duration: 1 } }} /> */}
 		</VStack>
 	)
 }

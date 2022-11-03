@@ -10,7 +10,7 @@ const GameHeader = ({ difficulty, setDifficulty, resetGame, firstClick, numberOf
 		<HStack zIndex={1} w={'-webkit-fill-available'} justifyContent={'space-between'} bgColor={'brand.header'} p='10px'>
 			{/* dropdown */}
 			<DifficultyDropdown setDifficulty={setDifficulty} resetGame={resetGame} />
-			<HStack w='full' justify={'center'}>
+			<HStack justify={'center'}>
 				{/* flags */}
 				<Flags numberOfFlags={numberOfFlags} />
 				{/* timer */}

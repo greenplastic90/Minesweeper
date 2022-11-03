@@ -156,7 +156,7 @@ export const randomShakeArray = () => {
 	const arr = []
 
 	for (let i = 0; i < 12; i++) {
-		arr.push(Math.floor(Math.random() * 2) - 1)
+		arr.push(Math.floor(Math.random() * 3) - 2)
 	}
 	return arr
 }

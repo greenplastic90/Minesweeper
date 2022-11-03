@@ -9,10 +9,7 @@ const DifficultyDropdown = ({ setDifficulty, resetGame }) => {
 		resetGame()
 	}
 	return (
-		<Select
-			defaultValue={localStorage.getItem('mineSweeperDiffuculty')}
-			onChange={(e) => handelDifficultyChange(e.target.value)}
-			w={'fit-content'}>
+		<Select fontWeight={'bold'} bgColor={'brand.header_dropdown'} defaultValue={localStorage.getItem('mineSweeperDiffuculty')} onChange={(e) => handelDifficultyChange(e.target.value)} w={'fit-content'}>
 			<option value='easy'>Easy</option>
 			<option value='medium'>Medium</option>
 			<option value='hard'>Hard</option>
