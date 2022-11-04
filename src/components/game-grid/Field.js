@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
 
-const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation }) => {
 	const [bgColor, setBgColor] = useState()
 	const [valueColor, setValueColor] = useState()
 	const [bgHoverColor, setBgHoverColor] = useState()
 	const [border, setBorder] = useState({ top: false, bottom: false, left: false, right: false })
 	const [surroundingIndexs, setSurroundingIndexs] = useState([])
 	const [exposeAnimation, setExposeAnimation] = useState({})
+
+	const { mine_width, box_width, value_size } = difficulty
 
 	//* set bgColor and bgHoverColor
 	useEffect(() => {
@@ -148,8 +150,8 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 			onClick={(e) => {
 				OnFieldLeftClick(e)
 			}}
-			w={fieldWidth}
-			h={fieldWidth}
+			w={box_width}
+			h={box_width}
 			bgColor={bgColor}
 			_hover={{ bg: bgHoverColor }}
 			justifyContent={'center'}
@@ -161,16 +163,14 @@ const Field = ({ index, fieldWidth, mineWidth, bgIsLight, value, firstClick, set
 			borderTopColor={border.top && 'field.border'}
 			borderBottom={border.bottom && '2px solid'}
 			borderBottomColor={border.bottom && 'field.border'}>
-			{isExposed ? (
-				value === 'mine' ? (
-					<Mine width={mineWidth} />
-				) : value !== 0 ? (
-					<Text cursor={'default'} fontWeight={'bold'} color={valueColor}>
-						{value}
-					</Text>
-				) : null
+			{value === 'mine' ? (
+				<Mine width={mine_width} />
+			) : value !== 0 ? (
+				<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
+					{value}
+				</Text>
 			) : hasFlag ? (
-				<BsFillFlagFill />
+				<BsFillFlagFill size={value_size} color={'#DF4826'} />
 			) : null}
 			{/* <Box as={motion.div} zIndex={-1} pos={'absolute'} w={fieldWidth} h={fieldWidth} bgColor={bgColor} animate={{ x: [0, 100, 0], transition: { duration: 1 } }} /> */}
 		</VStack>

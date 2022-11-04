@@ -7,10 +7,10 @@ import Timer from './components/Timer'
 
 const GameHeader = ({ difficulty, setDifficulty, resetGame, firstClick, numberOfFlags }) => {
 	return (
-		<HStack zIndex={1} w={'-webkit-fill-available'} justifyContent={'space-between'} bgColor={'brand.header'} p='10px'>
+		<HStack pos={'relative'} zIndex={1} w={'-webkit-fill-available'} justifyContent={'space-between'} bgColor={'brand.header'} p='10px'>
 			{/* dropdown */}
 			<DifficultyDropdown setDifficulty={setDifficulty} resetGame={resetGame} />
-			<HStack justify={'center'}>
+			<HStack justify={'center'} spacing={'10px'}>
 				{/* flags */}
 				<Flags numberOfFlags={numberOfFlags} />
 				{/* timer */}

@@ -5,6 +5,7 @@ export const easy = {
 	vertical_boxes: 8,
 	box_width: '45px',
 	mine_width: '18px',
+	value_size: '30px',
 }
 export const medium = {
 	name: 'Medium',
@@ -13,6 +14,7 @@ export const medium = {
 	vertical_boxes: 14,
 	box_width: '30px',
 	mine_width: '12px',
+	value_size: '20px',
 }
 export const hard = {
 	name: 'Hard',
@@ -21,4 +23,5 @@ export const hard = {
 	vertical_boxes: 20,
 	box_width: '25px',
 	mine_width: '12px',
+	value_size: '17px',
 }

@@ -7,7 +7,7 @@ import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomS
 
 const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray }) => {
 	const [runAnimation, setRunAnumation] = useState(false)
-	const animationDuration = 0.4
+	const animationDuration = 0.6
 	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: animationDuration } })
 
 	//* create initial fieldsData
@@ -29,8 +29,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 		for (let i = 0; i < numOfFieldsToCreate; i++) {
 			fieldsArray.push({
 				index: i,
-				fieldWidth: difficulty.box_width,
-				mineWidth: difficulty.mine_width,
+				difficulty: difficulty,
 				bgIsLight: setBgColorShade(i),
 				isExposed: exposedArray[i],
 				value: valuesArray[i],
@@ -60,7 +59,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	//* updates fields whenever valuesArray or exposedArray are updated
 	useEffect(() => {
 		const fieldCompsArr = []
-		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} fieldWidth={f.fieldWidth} mineWidth={f.mineWidth} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} />))
+		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} />))
 		setFields(fieldCompsArr)
 	}, [difficulty, exposedArray, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray])
 

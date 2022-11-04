@@ -43,16 +43,16 @@ const Timer = ({ firstClick }) => {
 	}, [firstClick])
 
 	return (
-		<HStack>
-			<ImClock2 color={'#f5c242'} />
+		<HStack spacing={'4px'}>
+			<ImClock2 color={'#f5c242'} fontSize={'20px'} />
 			<HStack spacing={0}>
-				<Text fontWeight={'bold'} color={'brand.header_text'}>
+				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
 					{hundreds}
 				</Text>
-				<Text fontWeight={'bold'} color={'brand.header_text'}>
+				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
 					{tens}
 				</Text>
-				<Text fontWeight={'bold'} color={'brand.header_text'}>
+				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
 					{ones}
 				</Text>
 			</HStack>

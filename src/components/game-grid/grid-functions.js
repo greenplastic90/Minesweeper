@@ -3,7 +3,7 @@ import { easy, medium, hard } from '../difficulty-options'
 export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingIndex, width) => {
 	const arr = Array.apply(null, Array(numOfFields))
 	//* starting index and srounding fields can't have mines
-	//* creating an array of indexs that can't have mines
+	//* creating an array of indexs that can't have mines (ones surrounding startingIndex)
 	const mineFreeIndexs = []
 
 	const topLeftIndex = startingIndex - width - 1
@@ -18,7 +18,7 @@ export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingI
 	let mineCount = numOfMines
 	//* populate array with random mines
 	while (mineCount > 0) {
-		const randomIndex = Math.floor(Math.random() * numOfFields + 1)
+		const randomIndex = Math.floor(Math.random() * numOfFields)
 		if (!mineFreeIndexs.includes(randomIndex)) {
 			if (!arr[randomIndex]) {
 				arr[randomIndex] = 'mine'
@@ -26,6 +26,7 @@ export const generateRandomFieldValueArray = (numOfMines, numOfFields, startingI
 			}
 		}
 	}
+
 	return generateArrayWithValues(arr, width)
 }
 
