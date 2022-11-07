@@ -4,7 +4,7 @@ import Game from './components/Game'
 
 function App() {
 	return (
-		<VStack w={'full'} h={'100vh'} justifyContent={'center'} bgColor={'gray.300'}>
+		<VStack w={'full'} h={'100vh'} justifyContent={'center'} bgColor={'green.400'}>
 			<Game />
 		</VStack>
 	)

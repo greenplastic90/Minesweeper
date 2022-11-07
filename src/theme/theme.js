@@ -3,6 +3,7 @@ import { extendTheme } from '@chakra-ui/react'
 const basicColors = {
 	white: '#FFFFFF',
 	green_darkest: '#3B6421',
+	green_border: '#75A32D',
 	green_dark: '#2E7E2E',
 	green_medium: '#ACD05E',
 	green_light: '#B3D665',
@@ -38,7 +39,7 @@ const colors = {
 		brown_hover_dark: basicColors.brown_ultra_light,
 		brown_light: basicColors.brown_light,
 		brown_hover_light: basicColors.brown_ultra_ultra_light,
-		border: basicColors.green_darkest,
+		border: basicColors.green_border,
 	},
 	numbers: {
 		one: basicColors.blue,

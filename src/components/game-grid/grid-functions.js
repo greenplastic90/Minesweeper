@@ -155,9 +155,15 @@ export const removeItemOnce = (arr, value) => {
 
 export const randomShakeArray = () => {
 	const arr = []
+	const arrLength = 35
 
-	for (let i = 0; i < 12; i++) {
-		arr.push(Math.floor(Math.random() * 3) - 2)
+	for (let i = 0; i < arrLength; i++) {
+		//* keeps first and last items in the array are 0
+		if (i === 0 || i === arrLength - 1) {
+			arr.push(0)
+		} else {
+			arr.push(getRandomInt(-1, 1))
+		}
 	}
 	return arr
 }

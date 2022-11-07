@@ -12,19 +12,60 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	const [border, setBorder] = useState({ top: false, bottom: false, left: false, right: false })
 	const [surroundingIndexs, setSurroundingIndexs] = useState([])
 	const [exposeAnimation, setExposeAnimation] = useState(false)
-
-	const { mine_width, box_width, value_size } = difficulty
+	//* created to delay showing value till animation starts
+	const [showValue, setShowValue] = useState(false)
+	const { mine_width, box_width, value_size, border_width } = difficulty
 	const borderStyle = {
-		width: '2px solid',
+		width: border_width,
 		color: 'field.border',
 	}
 	const exposeAnimationDuration = 1.5
+	const [exposeValueFieldAnimation, setExposeValueFieldAnimation] = useState({ scale: [1, 0], transition: { duration: exposeAnimationDuration } })
 
-	const [exposeValueFieldAnimation, setExposeValueFieldAnimation] = useState({ scale: [0.75, 0], transition: { duration: exposeAnimationDuration } })
+	const OnFieldLeftClick = (e) => {
+		e.preventDefault()
 
-	const handleExposingAnimation = () => {
-		setExposeAnimation(true)
-		setTimeout(() => setExposeAnimation(false), 1000 * 2)
+		if (!hasFlag) {
+			//* only happens on first click to set the values of the fields
+			//* need this to work when firstClick has the index 0
+			if (!firstClick && firstClick !== 0) {
+				setFirstClick(index)
+				handleShakeAnimation()
+			}
+			//* nothing happens if field already exposed
+			if (!isExposed) {
+				//? Value
+				if (value) {
+					setExposedArray((currentArray) => {
+						currentArray[index] = true
+						return [...currentArray]
+					})
+					setExposedIndexesToAnimate([index])
+					//? Mine
+
+					if (value === 'mine') {
+						setMineClicked(true)
+						handleShakeAnimation()
+					}
+				}
+				//? Zero
+				if (value === 0) {
+					handleShakeAnimation()
+					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
+					setExposedIndexesToAnimate(allSurroundingIndexs)
+					setExposedArray((currentArray) => {
+						return currentArray.map((field, i) => (allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field))
+					})
+				}
+			}
+		}
+	}
+	const onFieldRightClick = (e) => {
+		e.preventDefault()
+		setFlagsArray((current) => {
+			current[index] = current[index] ? false : true
+			return [...current]
+		})
 	}
 
 	//* set bgColor, bgHoverColor, bgColorAnimatedField
@@ -72,52 +113,6 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		if (value === 8) setValueColor('numbers.eight')
 	}, [value])
 
-	const OnFieldLeftClick = (e) => {
-		e.preventDefault()
-		handleExposingAnimation()
-		if (!hasFlag) {
-			//* only happens on first click to set the values of the fields
-			//* need this to work when firstClick has the index 0
-			if (!firstClick && firstClick !== 0) {
-				setFirstClick(index)
-				handleShakeAnimation()
-			}
-			//* nothing happens if field already exposed
-			if (!isExposed) {
-				//? Value
-				if (value) {
-					setExposedArray((currentArray) => {
-						currentArray[index] = true
-						return [...currentArray]
-					})
-					setExposedIndexesToAnimate([index])
-					//? Mine
-
-					if (value === 'mine') {
-						setMineClicked(true)
-						handleShakeAnimation()
-					}
-				}
-				//? Zero
-				if (value === 0) {
-					handleShakeAnimation()
-					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
-					setExposedIndexesToAnimate(allSurroundingIndexs)
-					setExposedArray((currentArray) => {
-						return currentArray.map((field, i) => (allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field))
-					})
-				}
-			}
-		}
-	}
-	const onFieldRightClick = (e) => {
-		e.preventDefault()
-		setFlagsArray((current) => {
-			current[index] = current[index] ? false : true
-			return [...current]
-		})
-	}
-
 	//* get the index surrounding this fields index
 	useEffect(() => {
 		if (exposedArray.length > 0) {
@@ -161,22 +156,26 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 			})
 		}
 	})
-
+	//* if index is in exposedIndexesToAnimate create, exposeAnimation
 	useEffect(() => {
 		if (exposedIndexesToAnimate.includes(index)) {
+			console.log(index, exposedIndexesToAnimate)
 			setExposeAnimation(true)
 			setTimeout(() => setExposeAnimation(false), 1000 * exposeAnimationDuration)
 
-			//* expose animation
-			const yUp = getRandomInt(-30, -60)
+			//* created to delay showing value till animation starts
+			setTimeout(() => setShowValue(true), 1000 * 0.01)
+
+			//* expose animation values
+			const yUp = getRandomInt(0, -100)
 			const yDown = getRandomInt(50, 80)
 			const x = getRandomInt(-80, 80)
-			const rotate = getRandomInt(30, 190)
+			const rotate = x > 0 ? getRandomInt(30, 190) : getRandomInt(-190, -30)
 			setExposeValueFieldAnimation((current) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
 		}
-	}, [exposedIndexesToAnimate, index, isExposed, setExposeValueFieldAnimation])
+	}, [exposedIndexesToAnimate, index, setExposeValueFieldAnimation])
 
 	return (
 		<Box pos={'relative'}>
@@ -202,15 +201,17 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					value === 'mine' ? (
 						<Mine width={mine_width} />
 					) : value !== 0 ? (
-						<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
-							{value}
-						</Text>
+						showValue && (
+							<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
+								{value}
+							</Text>
+						)
 					) : null
 				) : hasFlag ? (
 					<BsFillFlagFill size={value_size} color={'#DF4826'} />
 				) : null}
-				{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
 			</VStack>
+			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
 		</Box>
 	)
 }

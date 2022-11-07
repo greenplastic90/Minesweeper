@@ -7,8 +7,8 @@ import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomS
 
 const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate }) => {
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
-	const animationDuration = 0.6
-	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: animationDuration } })
+	const shakeAnimationDuration = 1.5
+	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 
 	//* create initial fieldsData
 	useEffect(() => {
@@ -76,7 +76,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 
 	const handleShakeAnimation = () => {
 		setRunShakeAnimation(true)
-		setTimeout(() => setRunShakeAnimation(false), 1000 * animationDuration)
+		setTimeout(() => setRunShakeAnimation(false), 1000 * shakeAnimationDuration)
 	}
 
 	return (
