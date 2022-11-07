@@ -2,7 +2,7 @@ import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
 const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate }) => {
 	const [bgColor, setBgColor] = useState()
@@ -20,7 +20,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const exposeAnimationDuration = 1.5
 
-	const exposeValueFieldAnimation = { scale: [1, 0], y: [0, -60, 80], rotate: [0, 50], transition: { duration: exposeAnimationDuration } }
+	const [exposeValueFieldAnimation, setExposeValueFieldAnimation] = useState({ scale: [0.75, 0], transition: { duration: exposeAnimationDuration } })
 
 	const handleExposingAnimation = () => {
 		setExposeAnimation(true)
@@ -166,8 +166,17 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		if (exposedIndexesToAnimate.includes(index)) {
 			setExposeAnimation(true)
 			setTimeout(() => setExposeAnimation(false), 1000 * exposeAnimationDuration)
+
+			//* expose animation
+			const yUp = getRandomInt(-30, -60)
+			const yDown = getRandomInt(50, 80)
+			const x = getRandomInt(-80, 80)
+			const rotate = getRandomInt(30, 190)
+			setExposeValueFieldAnimation((current) => {
+				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
+			})
 		}
-	}, [exposedIndexesToAnimate, index, isExposed])
+	}, [exposedIndexesToAnimate, index, isExposed, setExposeValueFieldAnimation])
 
 	return (
 		<Box pos={'relative'}>
@@ -200,7 +209,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				) : hasFlag ? (
 					<BsFillFlagFill size={value_size} color={'#DF4826'} />
 				) : null}
-				{exposeAnimation && <Box as={motion.div} zIndex={1} w={'full'} h={'full'} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
+				{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
 			</VStack>
 		</Box>
 	)
