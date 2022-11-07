@@ -16,24 +16,25 @@ const Game = () => {
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [numberOfFlags, setNumberOfFlags] = useState(difficulty.mines)
-	const [playerLost, setPlayerLost] = useState(false)
+	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState([])
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
+	}
+	//* resets exposedArray with proper numberOfFields when difficulty changes or reset button is clicked
+	useEffect(() => {
 		setFirstClick(null)
 		setMineClicked(false)
 		setFields([])
 		setFieldsData([])
-	}
-	//* resets exposedArray with proper numberOfFields when difficulty changes or reset button is clicked
-	useEffect(() => {
 		setExposedArray(Array.apply(null, Array(numberOfFields)))
 		setFlagsArray(Array.apply(null, Array(numberOfFields)))
 		setvaluesArray(Array.apply(null, Array(numberOfFields)))
 		setNumberOfFlags(difficulty.mines)
+		setExposedIndexesToAnimate([])
 	}, [difficulty, numberOfFields, resetToggle])
 
 	//* updated number of flags based on how many flags in flagsArray
@@ -59,7 +60,7 @@ const Game = () => {
 	return (
 		<VStack spacing={0}>
 			<GameHeader difficulty={difficulty} setDifficulty={setDifficulty} resetGame={resetGame} firstClick={firstClick} numberOfFlags={numberOfFlags} />
-			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} />
+			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} />
 		</VStack>
 	)
 }

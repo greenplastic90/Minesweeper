@@ -4,19 +4,33 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate }) => {
 	const [bgColor, setBgColor] = useState()
+	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
 	const [bgHoverColor, setBgHoverColor] = useState()
 	const [border, setBorder] = useState({ top: false, bottom: false, left: false, right: false })
 	const [surroundingIndexs, setSurroundingIndexs] = useState([])
-	const [exposeAnimation, setExposeAnimation] = useState({})
+	const [exposeAnimation, setExposeAnimation] = useState(false)
 
 	const { mine_width, box_width, value_size } = difficulty
+	const borderStyle = {
+		width: '2px solid',
+		color: 'field.border',
+	}
+	const exposeAnimationDuration = 1.5
 
-	//* set bgColor and bgHoverColor
+	const exposeValueFieldAnimation = { scale: [1, 0], y: [0, -60, 80], rotate: [0, 50], transition: { duration: exposeAnimationDuration } }
+
+	const handleExposingAnimation = () => {
+		setExposeAnimation(true)
+		setTimeout(() => setExposeAnimation(false), 1000 * 2)
+	}
+
+	//* set bgColor, bgHoverColor, bgColorAnimatedField
 	useEffect(() => {
 		if (bgIsLight) {
+			setBgColorAnimatedField('field.green_light')
 			if (isExposed) {
 				setBgColor('field.brown_light')
 				//* don't want to add a hover effect if the field is Zero
@@ -30,6 +44,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				setBgHoverColor('field.green_hover_light')
 			}
 		} else {
+			setBgColorAnimatedField('field.green_dark')
 			if (isExposed) {
 				setBgColor('field.brown_dark')
 				//* don't want to add a hover effect if the field is Zero
@@ -59,6 +74,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
+		handleExposingAnimation()
 		if (!hasFlag) {
 			//* only happens on first click to set the values of the fields
 			//* need this to work when firstClick has the index 0
@@ -74,6 +90,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 						currentArray[index] = true
 						return [...currentArray]
 					})
+					setExposedIndexesToAnimate([index])
 					//? Mine
 
 					if (value === 'mine') {
@@ -85,6 +102,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				if (value === 0) {
 					handleShakeAnimation()
 					const allSurroundingIndexs = getAllSurroundingIndexsToExpose(index, valuesArray, boardWidth)
+					setExposedIndexesToAnimate(allSurroundingIndexs)
 					setExposedArray((currentArray) => {
 						return currentArray.map((field, i) => (allSurroundingIndexs.includes(i) ? (currentArray[i] = true) : field))
 					})
@@ -144,36 +162,47 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		}
 	})
 
+	useEffect(() => {
+		if (exposedIndexesToAnimate.includes(index)) {
+			setExposeAnimation(true)
+			setTimeout(() => setExposeAnimation(false), 1000 * exposeAnimationDuration)
+		}
+	}, [exposedIndexesToAnimate, index, isExposed])
+
 	return (
-		<VStack
-			onContextMenu={onFieldRightClick}
-			onClick={(e) => {
-				OnFieldLeftClick(e)
-			}}
-			w={box_width}
-			h={box_width}
-			bgColor={bgColor}
-			_hover={{ bg: bgHoverColor }}
-			justifyContent={'center'}
-			borderRight={border.right && '2px solid'}
-			borderRightColor={border.right && 'field.border'}
-			borderLeft={border.left && '2px solid'}
-			borderLeftColor={border.left && 'field.border'}
-			borderTop={border.top && '2px solid'}
-			borderTopColor={border.top && 'field.border'}
-			borderBottom={border.bottom && '2px solid'}
-			borderBottomColor={border.bottom && 'field.border'}>
-			{value === 'mine' ? (
-				<Mine width={mine_width} />
-			) : value !== 0 ? (
-				<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
-					{value}
-				</Text>
-			) : hasFlag ? (
-				<BsFillFlagFill size={value_size} color={'#DF4826'} />
-			) : null}
-			{/* <Box as={motion.div} zIndex={-1} pos={'absolute'} w={fieldWidth} h={fieldWidth} bgColor={bgColor} animate={{ x: [0, 100, 0], transition: { duration: 1 } }} /> */}
-		</VStack>
+		<Box pos={'relative'}>
+			<VStack
+				onContextMenu={onFieldRightClick}
+				onClick={(e) => {
+					OnFieldLeftClick(e)
+				}}
+				w={box_width}
+				h={box_width}
+				bgColor={bgColor}
+				_hover={{ bg: bgHoverColor }}
+				justifyContent={'center'}
+				borderRight={border.right && borderStyle.width}
+				borderRightColor={border.right && borderStyle.color}
+				borderLeft={border.left && borderStyle.width}
+				borderLeftColor={border.left && borderStyle.color}
+				borderTop={border.top && borderStyle.width}
+				borderTopColor={border.top && borderStyle.color}
+				borderBottom={border.bottom && borderStyle.width}
+				borderBottomColor={border.bottom && borderStyle.color}>
+				{isExposed ? (
+					value === 'mine' ? (
+						<Mine width={mine_width} />
+					) : value !== 0 ? (
+						<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
+							{value}
+						</Text>
+					) : null
+				) : hasFlag ? (
+					<BsFillFlagFill size={value_size} color={'#DF4826'} />
+				) : null}
+				{exposeAnimation && <Box as={motion.div} zIndex={1} w={'full'} h={'full'} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
+			</VStack>
+		</Box>
 	)
 }
 
