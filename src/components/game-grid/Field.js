@@ -12,6 +12,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	const [border, setBorder] = useState({ top: false, bottom: false, left: false, right: false })
 	const [surroundingIndexs, setSurroundingIndexs] = useState([])
 	const [exposeAnimation, setExposeAnimation] = useState(false)
+	const [explodeMineAnimation, setExplodeMineAnimation] = useState(false)
 	//* created to delay showing value till animation starts
 	const [showValue, setShowValue] = useState(false)
 	const { mine_width, box_width, value_size, border_width } = difficulty
@@ -20,8 +21,8 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		color: 'field.border',
 	}
 	const exposeAnimationDuration = 1.5
-	const [exposeValueFieldAnimation, setExposeValueFieldAnimation] = useState({ scale: [1, 0], transition: { duration: exposeAnimationDuration } })
-
+	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
+	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.25], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
 
@@ -44,6 +45,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					//? Mine
 
 					if (value === 'mine') {
+						console.log('Boom')
 						setMineClicked(true)
 						handleShakeAnimation()
 					}
@@ -159,23 +161,22 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	//* if index is in exposedIndexesToAnimate create, exposeAnimation
 	useEffect(() => {
 		if (exposedIndexesToAnimate.includes(index)) {
-			console.log(index, exposedIndexesToAnimate)
 			setExposeAnimation(true)
 			setTimeout(() => setExposeAnimation(false), 1000 * exposeAnimationDuration)
 
 			//* created to delay showing value till animation starts
-			setTimeout(() => setShowValue(true), 1000 * 0.01)
+			setShowValue(true)
 
 			//* expose animation values
-			const yUp = getRandomInt(0, -100)
-			const yDown = getRandomInt(50, 80)
+			const yUp = getRandomInt(0, -80)
+			const yDown = getRandomInt(0, 150)
 			const x = getRandomInt(-80, 80)
 			const rotate = x > 0 ? getRandomInt(30, 190) : getRandomInt(-190, -30)
-			setExposeValueFieldAnimation((current) => {
+			setExposeValueFieldAnimationVisual((current) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
 		}
-	}, [exposedIndexesToAnimate, index, setExposeValueFieldAnimation])
+	}, [exposedIndexesToAnimate, index, setExposeValueFieldAnimationVisual])
 
 	return (
 		<Box pos={'relative'}>
@@ -211,7 +212,9 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					<BsFillFlagFill size={value_size} color={'#DF4826'} />
 				) : null}
 			</VStack>
-			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimation : 'null'} />}
+
+			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
+			{<Box as={motion.div} zIndex={2} top={'50%'} bottom={'25%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'red'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
 		</Box>
 	)
 }
