@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import Field from './Field'
 import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomShakeArray } from './grid-functions'
 
-const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate }) => {
+const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate, mineIndexes, setMineIndexes, minesToExpose, setMinesToExpose }) => {
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const shakeAnimationDuration = 1.5
 	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: shakeAnimationDuration } })
@@ -65,7 +65,33 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray])
 
 	//* EndGame when mineClicked
-	useEffect(() => {}, [mineClicked])
+	useEffect(() => {
+		if (mineClicked || mineClicked === 0) {
+			const thesee = []
+			valuesArray.forEach((field, i) => {
+				if (field === 'mine') thesee.push(i)
+			})
+			setMineIndexes(thesee)
+		}
+	}, [mineClicked, setMineIndexes, valuesArray])
+
+	//* expose mines one at a time one gamne ends
+	useEffect(() => {
+		if (mineIndexes.length > 0) {
+			let i = 0
+
+			const mineExplodingInterval = setInterval(() => {
+				if (mineIndexes.length > i) {
+					setMinesToExpose((current) => [...current, mineIndexes[i]])
+					i++
+				}
+			}, 1000)
+
+			return () => {
+				clearInterval(mineExplodingInterval)
+			}
+		}
+	}, [mineClicked, mineIndexes, setMinesToExpose])
 
 	//* randomize shake animation
 	useEffect(() => {
