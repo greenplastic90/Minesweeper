@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose }) => {
 	const [bgColor, setBgColor] = useState()
 	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -181,6 +181,11 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		}
 	}, [exposedIndexesToAnimate, index, setExposeValueFieldAnimationVisual])
 
+	//* expose Mine with animation
+	useEffect(() => {
+		if (minesToExpose.includes(index)) setExplodeMineAnimation(true)
+	}, [index, minesToExpose])
+
 	return (
 		<Box pos={'relative'}>
 			<VStack
@@ -217,7 +222,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 			</VStack>
 
 			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
-			{<Box as={motion.div} zIndex={2} top={'50%'} bottom={'25%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'red'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
+			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'25%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'red'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
 		</Box>
 	)
 }
