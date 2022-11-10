@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField }) => {
 	const [bgColor, setBgColor] = useState()
 	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -27,7 +27,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
 
-		if (!hasFlag) {
+		if (!hasFlag && !disbaleField) {
 			//* only happens on first click to set the values of the fields
 			//* need this to work when firstClick has the index 0
 			if (!firstClick && firstClick !== 0) {
@@ -65,10 +65,12 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const onFieldRightClick = (e) => {
 		e.preventDefault()
-		setFlagsArray((current) => {
-			current[index] = current[index] ? false : true
-			return [...current]
-		})
+		if (!disbaleField) {
+			setFlagsArray((current) => {
+				current[index] = current[index] ? false : true
+				return [...current]
+			})
+		}
 	}
 
 	//* set bgColor, bgHoverColor, bgColorAnimatedField
