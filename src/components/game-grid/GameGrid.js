@@ -76,7 +76,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 		}
 	}, [mineClicked, setMineIndexes, valuesArray])
 
-	//* expose mines one at a time one gamne ends
+	//* expose mines in squence once gamne ends
 	useEffect(() => {
 		if (mineIndexes.length > 0) {
 			let i = 0

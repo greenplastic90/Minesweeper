@@ -22,7 +22,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const exposeAnimationDuration = 1.5
 	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
-	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [1, 0], x: [], y: [0, -80, 50], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
+	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], x: [0, -30, 20, -20, 20], y: [0, -60, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
@@ -128,19 +128,18 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 
 	//* update border based on if the surrounding borders have been exposed
 	useEffect(() => {
-		if (isExposed) {
+		if (isExposed && value !== 'mine') {
 			setBorder((current) => {
 				let newBorder = { ...current }
 				surroundingIndexs.forEach((fieldIndex) => {
-					//* if the field adjacent is not exposed
-					if (!exposedArray[fieldIndex]) {
+					//* if the field adjacent is not exposed OR it is exposed and the value is mine
+					if (!exposedArray[fieldIndex] || (exposedArray[fieldIndex] && valuesArray[fieldIndex] === 'mine')) {
 						if (fieldIndex + boardWidth === index) newBorder = { ...newBorder, top: true }
 						if (fieldIndex - boardWidth === index) newBorder = { ...newBorder, bottom: true }
 						if (fieldIndex + 1 === index) newBorder = { ...newBorder, left: true }
 						if (fieldIndex - 1 === index) newBorder = { ...newBorder, right: true }
-					}
-					//* if the field adjacent is exposed
-					if (exposedArray[fieldIndex]) {
+						//* if the field adjacent is exposed
+					} else if (exposedArray[fieldIndex]) {
 						if (fieldIndex + boardWidth === index) newBorder = { ...newBorder, top: false }
 						if (fieldIndex - boardWidth === index) newBorder = { ...newBorder, bottom: false }
 						if (fieldIndex + 1 === index) newBorder = { ...newBorder, left: false }
@@ -151,7 +150,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				return newBorder
 			})
 		}
-	}, [boardWidth, exposedArray, index, isExposed, surroundingIndexs])
+	}, [boardWidth, exposedArray, index, isExposed, surroundingIndexs, value, valuesArray])
 
 	//* remove flag if exposed
 	useEffect(() => {
