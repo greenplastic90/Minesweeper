@@ -84,6 +84,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 			const mineExplodingInterval = setInterval(() => {
 				if (mineIndexes.length > i) {
 					setMinesToExpose((current) => {
+						if (current.includes(mineIndexes[i])) i++
 						setExposedArray((c) => {
 							c[mineIndexes[i]] = true
 							return [...c]
