@@ -1,7 +1,7 @@
 import { HStack, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { ImClock2 } from 'react-icons/im'
-const Timer = ({ firstClick }) => {
+const Timer = ({ firstClick, mineClicked }) => {
 	const [ones, setOnes] = useState(0)
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
@@ -19,28 +19,31 @@ const Timer = ({ firstClick }) => {
 	//* starts timer when after first click
 	useEffect(() => {
 		let startOnes, startTens, startHundreds
-
-		if (firstClick || firstClick === 0) {
-			startOnes = setInterval(() => updateTimer(setOnes), 1000)
-			startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
-			startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
+		if (!mineClicked && mineClicked !== 0) {
+			if (firstClick || firstClick === 0) {
+				startOnes = setInterval(() => updateTimer(setOnes), 1000)
+				startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
+				startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
+			}
+			//* freezes timer at 999 seconds
+			setTimeout(() => {
+				clearInterval(startOnes)
+				clearInterval(startTens)
+				clearInterval(startHundreds)
+			}, 1000 * 999)
 		}
-		//* freezes timer at 999 seconds
-		setTimeout(() => {
-			clearInterval(startOnes)
-			clearInterval(startTens)
-			clearInterval(startHundreds)
-		}, 1000 * 999)
 
 		return () => {
 			clearInterval(startOnes)
 			clearInterval(startTens)
 			clearInterval(startHundreds)
-			setOnes(0)
-			setTens(0)
-			setHundreds(0)
+			if (mineClicked || mineClicked === 0) {
+				setOnes(0)
+				setTens(0)
+				setHundreds(0)
+			}
 		}
-	}, [firstClick])
+	}, [firstClick, mineClicked])
 
 	return (
 		<HStack spacing={'4px'}>

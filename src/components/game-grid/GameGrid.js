@@ -84,11 +84,13 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 			const mineExplodingInterval = setInterval(() => {
 				if (mineIndexes.length > i) {
 					setMinesToExpose((current) => {
+						//* below if statmnet makes sure we aren't adding an inedx already in mineIndexes (first clicked mine is already there)
 						if (current.includes(mineIndexes[i])) i++
 						setExposedArray((c) => {
 							c[mineIndexes[i]] = true
 							return [...c]
 						})
+						setExposedIndexesToAnimate([mineIndexes[i]])
 						return [...current, mineIndexes[i]]
 					})
 
@@ -100,7 +102,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 				clearInterval(mineExplodingInterval)
 			}
 		}
-	}, [mineClicked, mineIndexes, setExposedArray, setMinesToExpose])
+	}, [mineClicked, mineIndexes, setExposedArray, setExposedIndexesToAnimate, setMinesToExpose])
 
 	//* randomize shake animation
 	useEffect(() => {

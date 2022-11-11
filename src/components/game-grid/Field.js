@@ -22,7 +22,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const exposeAnimationDuration = 1.5
 	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
-	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ x: [], y: [], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
+	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [1, 0], x: [], y: [0, -80, 50], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
