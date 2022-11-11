@@ -61,9 +61,9 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	useEffect(() => {
 		const disableField = mineClicked || mineClicked === 0 ? true : false
 		const fieldCompsArr = []
-		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} minesToExpose={minesToExpose} />))
+		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} minesToExpose={minesToExpose} setMinesToExpose={setMinesToExpose} />))
 		setFields(fieldCompsArr)
-	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, minesToExpose])
+	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, minesToExpose, setMinesToExpose])
 
 	//* EndGame when mineClicked
 	useEffect(() => {
@@ -83,7 +83,14 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 
 			const mineExplodingInterval = setInterval(() => {
 				if (mineIndexes.length > i) {
-					setMinesToExpose((current) => [...current, mineIndexes[i]])
+					setMinesToExpose((current) => {
+						setExposedArray((c) => {
+							c[mineIndexes[i]] = true
+							return [...c]
+						})
+						return [...current, mineIndexes[i]]
+					})
+
 					i++
 				}
 			}, 1000)
@@ -92,7 +99,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 				clearInterval(mineExplodingInterval)
 			}
 		}
-	}, [mineClicked, mineIndexes, setMinesToExpose])
+	}, [mineClicked, mineIndexes, setExposedArray, setMinesToExpose])
 
 	//* randomize shake animation
 	useEffect(() => {

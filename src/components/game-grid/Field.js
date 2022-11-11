@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose, setMinesToExpose }) => {
 	const [bgColor, setBgColor] = useState()
 	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -48,6 +48,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					if (value === 'mine') {
 						console.log('Boom')
 						setMineClicked(index)
+						setMinesToExpose([index])
 						handleShakeAnimation()
 					}
 				}
