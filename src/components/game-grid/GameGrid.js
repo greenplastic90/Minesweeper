@@ -68,13 +68,13 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	//* EndGame when mineClicked
 	useEffect(() => {
 		if (mineClicked || mineClicked === 0) {
-			const thesee = []
+			const minesNotCoverdWithFlag = []
 			valuesArray.forEach((field, i) => {
-				if (field === 'mine') thesee.push(i)
+				if (field === 'mine' && !flagsArray[i]) minesNotCoverdWithFlag.push(i)
 			})
-			setMineIndexes(thesee)
+			setMineIndexes(minesNotCoverdWithFlag)
 		}
-	}, [mineClicked, setMineIndexes, valuesArray])
+	}, [flagsArray, mineClicked, setMineIndexes, valuesArray])
 
 	//* expose mines in squence once gamne ends
 	useEffect(() => {

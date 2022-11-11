@@ -22,7 +22,8 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const exposeAnimationDuration = 1.5
 	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
-	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], x: [0, -30, 20, -20, 20], y: [0, -60, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
+	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -60, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
+	const [mineBgColorToAnimate, setMineBgColorToAnimate] = useState({ backgroundColor: ['hsl(346.6,57%,80.8%)', 'hsl(346.6,57%,50.8%)'] })
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
@@ -189,6 +190,8 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	return (
 		<Box pos={'relative'}>
 			<VStack
+				as={motion.div}
+				animate={value === 'mine' && isExposed ? mineBgColorToAnimate : 'null'}
 				onContextMenu={onFieldRightClick}
 				onClick={(e) => {
 					OnFieldLeftClick(e)
