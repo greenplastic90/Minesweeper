@@ -22,8 +22,8 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	}
 	const exposeAnimationDuration = 1.5
 	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
-	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -60, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
-	const [mineBgColorToAnimate, setMineBgColorToAnimate] = useState({ backgroundColor: ['hsl(346.6,57%,80.8%)', 'hsl(346.6,57%,50.8%)'] })
+	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
+	const [mineBgColorToAnimate, setMineBgColorToAnimate] = useState({ backgroundColor: ['#86B2F1', '#5894EC'] })
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
@@ -211,7 +211,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				borderBottomColor={border.bottom && borderStyle.color}>
 				{isExposed ? (
 					value === 'mine' ? (
-						<Mine width={mine_width} />
+						<Mine width={mine_width} color={'#175FC7'} />
 					) : value !== 0 ? (
 						showValue && (
 							<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
@@ -220,18 +220,18 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 						)
 					) : null
 				) : hasFlag ? (
-					<BsFillFlagFill size={value_size} color={'#DF4826'} />
+					<BsFillFlagFill size={value_size} color={'#88252B'} />
 				) : null}
 			</VStack>
 
 			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
-			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'25%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'red'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
+			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'#175FC7'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
 		</Box>
 	)
 }
 
 export default Field
 
-const Mine = ({ width }) => {
-	return <Box w={width} h={width} bgColor='black' borderRadius={'full'} />
+const Mine = ({ width, color }) => {
+	return <Box w={width} h={width} bgColor={color} borderRadius={'full'} />
 }

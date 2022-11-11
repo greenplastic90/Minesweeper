@@ -24,6 +24,11 @@ const basicColors = {
 }
 
 const colors = {
+	blue_mine: {
+		mine: '#175FC7',
+		bg_start: '#86B2F1',
+		bg_end: '#5894EC',
+	},
 	brand: {
 		header: basicColors.green_darkest,
 		header_dropdown: basicColors.white,

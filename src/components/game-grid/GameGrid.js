@@ -96,7 +96,7 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 
 					i++
 				}
-			}, 1000)
+			}, 1000 * 0.5)
 
 			return () => {
 				clearInterval(mineExplodingInterval)
