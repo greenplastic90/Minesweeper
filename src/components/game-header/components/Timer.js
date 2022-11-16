@@ -17,32 +17,36 @@ const Timer = ({ firstClick, mineClicked }) => {
 	}
 
 	//* starts timer when after first click
+
 	useEffect(() => {
 		let startOnes, startTens, startHundreds
+		if ((firstClick || firstClick === 0) && !mineClicked && mineClicked !== 0) {
+			startOnes = setInterval(() => updateTimer(setOnes), 1000)
+			startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
+			startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
+		}
 		if (!mineClicked && mineClicked !== 0) {
-			if (firstClick || firstClick === 0) {
-				startOnes = setInterval(() => updateTimer(setOnes), 1000)
-				startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
-				startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
-			}
-			//* freezes timer at 999 seconds
-			setTimeout(() => {
-				clearInterval(startOnes)
-				clearInterval(startTens)
-				clearInterval(startHundreds)
-			}, 1000 * 999)
+			setOnes(0)
+			setTens(0)
+			setHundreds(0)
 		}
 
-		return () => {
+		//* freezes timer at 999 seconds
+		setTimeout(() => {
 			clearInterval(startOnes)
 			clearInterval(startTens)
 			clearInterval(startHundreds)
-			if (mineClicked || mineClicked === 0) {
-				setOnes(0)
-				setTens(0)
-				setHundreds(0)
+		}, 1000 * 999)
+
+		return () => {
+			if (firstClick || firstClick === 0) {
+				console.log('firstClick')
 			}
+			clearInterval(startOnes)
+			clearInterval(startTens)
+			clearInterval(startHundreds)
 		}
+		//! FIX TIMER
 	}, [firstClick, mineClicked])
 
 	return (

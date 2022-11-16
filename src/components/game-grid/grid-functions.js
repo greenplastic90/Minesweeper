@@ -171,3 +171,13 @@ export const randomShakeArray = () => {
 export const getRandomInt = (min, max) => {
 	return Math.floor(Math.random() * (max - min)) + min
 }
+
+export const mineAnimationGenerator = ()=>{
+    //! number of confetti
+
+    //! starting location of each confetti
+
+    //! swining animation of each confetti
+
+    //! colors for confetti, mine and background (before and after)
+}
