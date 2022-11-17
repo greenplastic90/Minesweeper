@@ -61,48 +61,60 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	useEffect(() => {
 		const disableField = mineClicked || mineClicked === 0 ? true : false
 		const fieldCompsArr = []
-		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} minesToExpose={minesToExpose} setMinesToExpose={setMinesToExpose} />))
+		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} minesToExpose={minesToExpose} setMinesToExpose={setMinesToExpose} mineIndexes={mineIndexes} />))
 		setFields(fieldCompsArr)
-	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, minesToExpose, setMinesToExpose])
+	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, minesToExpose, setMinesToExpose, mineIndexes])
 
 	//* EndGame when mineClicked
 	useEffect(() => {
+		const animateTimeOut = (setState, timer) => {
+			setTimeout(() => setState(true), 1000 * timer)
+		}
 		if (mineClicked || mineClicked === 0) {
-			const minesNotCoverdWithFlag = []
+			let timer = 0
+			const mineArr = []
+
+			mineArr.push({ index: mineClicked, animation: mineAnimationGenerator(), animateTimeOut: animateTimeOut, timer: timer })
+
 			valuesArray.forEach((field, i) => {
-				if (field === 'mine' && !flagsArray[i]) minesNotCoverdWithFlag.push(i)
+				//* must be "mine", not covered with flag and not already in the array.
+				if (field === 'mine' && !flagsArray[i] && !mineArr.some((mine) => mine.index === i)) {
+					timer = timer + 0.2
+					mineArr.push({ index: i, animation: mineAnimationGenerator(), animateTimeOut: animateTimeOut, timer: timer })
+				}
 			})
-			setMineIndexes(minesNotCoverdWithFlag)
+			console.log(mineArr)
+			setMineIndexes(mineArr)
 		}
 	}, [flagsArray, mineClicked, setMineIndexes, valuesArray])
 
 	//* expose mines in squence once gamne ends
-	useEffect(() => {
-		if (mineIndexes.length > 0) {
-			let i = 0
+	// useEffect(() => {
+	// 	if (mineIndexes.length > 0) {
+	// 		let i = 0
 
-			const mineExplodingInterval = setInterval(() => {
-				if (mineIndexes.length > i) {
-					setMinesToExpose((current) => {
-						//* below if statmnet makes sure we aren't adding an inedx already in mineIndexes (first clicked mine is already there)
-						if (current.map((c) => c.index).includes(mineIndexes[i])) i++
-						setExposedArray((c) => {
-							c[mineIndexes[i]] = true
-							return [...c]
-						})
-						setExposedIndexesToAnimate([mineIndexes[i]])
-						return [...current, { index: mineIndexes[i], animation: mineAnimationGenerator() }]
-					})
+	// 		const mineExplodingInterval = setInterval(() => {
+	// 			if (mineIndexes.length > i) {
+	// 				setMinesToExpose((current) => {
+	// 					//* below if statmnet makes sure we aren't adding an inedx already in mineIndexes (first clicked mine is already there)
+	// 					if (current.map((c) => c.index).includes(mineIndexes[i])) i++
+	// 					setExposedArray((c) => {
+	// 						c[mineIndexes[i]] = true
+	// 						return [...c]
+	// 					})
+	// 					setExposedIndexesToAnimate([mineIndexes[i]])
+	// 					return [...current, { index: mineIndexes[i], animation: mineAnimationGenerator() }]
+	// 				})
 
-					i++
-				}
-			}, 1000 * 0.5)
+	// 				i++
+	// 			}
+	// 		}, 1000 * 0.3)
 
-			return () => {
-				clearInterval(mineExplodingInterval)
-			}
-		}
-	}, [mineClicked, mineIndexes, setExposedArray, setExposedIndexesToAnimate, setMinesToExpose])
+	// 		return () => {
+	// 			clearInterval(mineExplodingInterval)
+	// 		}
+	// 	}
+	// }, [mineClicked, mineIndexes, setExposedArray, setExposedIndexesToAnimate, setMinesToExpose])
 
 	//* randomize shake animation
 	useEffect(() => {

@@ -173,22 +173,22 @@ export const getRandomInt = (min, max) => {
 }
 
 export const mineAnimationGenerator = () => {
-	const blueMine = {
-		mineColor: '#175FC7',
-		bgColorStart: '#86B2F1',
-		bgColorEnd: '#5894EC',
+	class MineColor {
+		constructor(mineColor, bgColorStart, bgColorEnd) {
+			this.mineColor = mineColor
+			this.bgColorStart = bgColorStart
+			this.bgColorEnd = bgColorEnd
+		}
 	}
-	const lightBlueMine = {
-		mineColor: '#018686',
-		bgColorStart: '#EDFFFF',
-		bgColorEnd: '#88FEFE',
-	}
-	const pinkMine = {
-		mineColor: '#A2396D',
-		bgColorStart: '#F6E4ED',
-		bgColorEnd: '#DB99BA',
-	} //! red, yellow, purple, pink, green (Create Class?)
-	const mineColors = [blueMine, lightBlueMine, pinkMine]
+
+	const blueMine = new MineColor('#175FC7', '#86B2F1', '#5894EC')
+	const lightBlueMine = new MineColor('#018686', '#EDFFFF', '#88FEFE')
+	const pinkMine = new MineColor('#A2396D', '#F6E4ED', '#DB99BA')
+	const greenMine = new MineColor('#056717', '#0AC82D', '#079822') //! red
+	const purpleMine = new MineColor('#321F96', '#A496EA', '#5A42D8')
+	const yellowMine = new MineColor('#999900', '#FFFF66', '#FFFF00')
+	const redMine = new MineColor('#6C0E14', '#EA5C64', '#C61A24')
+	const mineColors = [blueMine, lightBlueMine, pinkMine, greenMine, purpleMine, yellowMine, redMine]
 	//! number of confetti
 	//! starting location of each confetti
 	//! swining animation of each confetti

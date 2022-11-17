@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt, mineAnimationGenerator } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose, setMinesToExpose }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose, setMinesToExpose, mineIndexes }) => {
 	const [bgColor, setBgColor] = useState()
 	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -185,18 +185,23 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 
 	//* expose Mine with animation
 	useEffect(() => {
-		if (minesToExpose.map((mine) => mine.index).includes(index)) {
+		const explodeMine = mineIndexes.find((mine) => mine.index === index)
+		if (explodeMine) {
 			const {
+				animateTimeOut,
+				timer,
 				animation: {
 					color: { mineColor, bgColorStart, bgColorEnd },
 				},
-			} = minesToExpose.find((mine) => mine.index === index)
+			} = explodeMine
 
-			setExplodeMineAnimation(true)
+			console.log(typeof animateTimeOut, explodeMine.index, timer)
+			animateTimeOut(setExplodeMineAnimation, timer)
+
 			setMineBgColorToAnimate({ backgroundColor: [bgColorStart, bgColorEnd] })
 			setMineAnimationColors({ mine: mineColor, confetti: mineColor })
 		}
-	}, [index, minesToExpose])
+	}, [index, mineIndexes])
 
 	return (
 		<Box pos={'relative'}>
