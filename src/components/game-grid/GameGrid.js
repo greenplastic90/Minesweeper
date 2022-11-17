@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Field from './Field'
-import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, randomShakeArray } from './grid-functions'
+import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, mineAnimationGenerator, randomShakeArray } from './grid-functions'
 
 const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate, mineIndexes, setMineIndexes, minesToExpose, setMinesToExpose }) => {
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
@@ -85,13 +85,13 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 				if (mineIndexes.length > i) {
 					setMinesToExpose((current) => {
 						//* below if statmnet makes sure we aren't adding an inedx already in mineIndexes (first clicked mine is already there)
-						if (current.includes(mineIndexes[i])) i++
+						if (current.map((c) => c.index).includes(mineIndexes[i])) i++
 						setExposedArray((c) => {
 							c[mineIndexes[i]] = true
 							return [...c]
 						})
 						setExposedIndexesToAnimate([mineIndexes[i]])
-						return [...current, mineIndexes[i]]
+						return [...current, { index: mineIndexes[i], animation: mineAnimationGenerator() }]
 					})
 
 					i++

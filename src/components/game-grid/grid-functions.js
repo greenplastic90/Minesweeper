@@ -172,12 +172,27 @@ export const getRandomInt = (min, max) => {
 	return Math.floor(Math.random() * (max - min)) + min
 }
 
-export const mineAnimationGenerator = ()=>{
-    //! number of confetti
-
-    //! starting location of each confetti
-
-    //! swining animation of each confetti
-
-    //! colors for confetti, mine and background (before and after)
+export const mineAnimationGenerator = () => {
+	const blueMine = {
+		mineColor: '#175FC7',
+		bgColorStart: '#86B2F1',
+		bgColorEnd: '#5894EC',
+	}
+	const lightBlueMine = {
+		mineColor: '#018686',
+		bgColorStart: '#EDFFFF',
+		bgColorEnd: '#88FEFE',
+	}
+	const pinkMine = {
+		mineColor: '#A2396D',
+		bgColorStart: '#F6E4ED',
+		bgColorEnd: '#DB99BA',
+	} //! red, yellow, purple, pink, green (Create Class?)
+	const mineColors = [blueMine, lightBlueMine, pinkMine]
+	//! number of confetti
+	//! starting location of each confetti
+	//! swining animation of each confetti
+	//! colors for confetti, mine and background (before and after)
+	const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
+	return { color: randomColor }
 }

@@ -25,6 +25,8 @@ const Timer = ({ firstClick, mineClicked }) => {
 			startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
 			startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
 		}
+
+		//* stops timer from resetting if mine in clicked, but resets if no mine was hit (reset or difficulty change)
 		if (!mineClicked && mineClicked !== 0) {
 			setOnes(0)
 			setTens(0)
@@ -39,14 +41,10 @@ const Timer = ({ firstClick, mineClicked }) => {
 		}, 1000 * 999)
 
 		return () => {
-			if (firstClick || firstClick === 0) {
-				console.log('firstClick')
-			}
 			clearInterval(startOnes)
 			clearInterval(startTens)
 			clearInterval(startHundreds)
 		}
-		//! FIX TIMER
 	}, [firstClick, mineClicked])
 
 	return (

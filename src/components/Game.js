@@ -18,7 +18,7 @@ const Game = () => {
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [numberOfFlags, setNumberOfFlags] = useState(difficulty.mines)
-	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState([])
+	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState()
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
@@ -36,7 +36,7 @@ const Game = () => {
 		setFlagsArray(Array.apply(null, Array(numberOfFields)))
 		setvaluesArray(Array.apply(null, Array(numberOfFields)))
 		setNumberOfFlags(difficulty.mines)
-		setExposedIndexesToAnimate([])
+		setExposedIndexesToAnimate()
 		setMineIndexes([])
 		setMinesToExpose([])
 	}, [difficulty, numberOfFields, resetToggle])

@@ -2,7 +2,7 @@ import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt, mineAnimationGenerator } from './grid-functions'
 
 const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose, setMinesToExpose }) => {
 	const [bgColor, setBgColor] = useState()
@@ -23,7 +23,8 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 	const exposeAnimationDuration = 1.5
 	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
 	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
-	const [mineBgColorToAnimate, setMineBgColorToAnimate] = useState({ backgroundColor: ['#86B2F1', '#5894EC'] })
+	const [mineBgColorToAnimate, setMineBgColorToAnimate] = useState({})
+	const [mineAnimationColors, setMineAnimationColors] = useState({})
 
 	const OnFieldLeftClick = (e) => {
 		e.preventDefault()
@@ -49,7 +50,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					if (value === 'mine') {
 						console.log('Boom')
 						setMineClicked(index)
-						setMinesToExpose([index])
+						setMinesToExpose([{ index: index, animation: mineAnimationGenerator() }])
 						handleShakeAnimation()
 					}
 				}
@@ -184,7 +185,17 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 
 	//* expose Mine with animation
 	useEffect(() => {
-		if (minesToExpose.includes(index)) setExplodeMineAnimation(true)
+		if (minesToExpose.map((mine) => mine.index).includes(index)) {
+			const {
+				animation: {
+					color: { mineColor, bgColorStart, bgColorEnd },
+				},
+			} = minesToExpose.find((mine) => mine.index === index)
+
+			setExplodeMineAnimation(true)
+			setMineBgColorToAnimate({ backgroundColor: [bgColorStart, bgColorEnd] })
+			setMineAnimationColors({ mine: mineColor, confetti: mineColor })
+		}
 	}, [index, minesToExpose])
 
 	return (
@@ -211,7 +222,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 				borderBottomColor={border.bottom && borderStyle.color}>
 				{isExposed ? (
 					value === 'mine' ? (
-						<Mine width={mine_width} color={'#175FC7'} />
+						<Mine width={mine_width} color={mineAnimationColors.mine} />
 					) : value !== 0 ? (
 						showValue && (
 							<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={valueColor}>
@@ -225,7 +236,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 			</VStack>
 
 			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
-			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={'#175FC7'} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
+			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={mineAnimationColors.confetti} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
 		</Box>
 	)
 }
