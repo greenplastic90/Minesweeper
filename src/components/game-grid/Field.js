@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt, mineAnimationGenerator } from './grid-functions'
 
-const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, minesToExpose, setMinesToExpose, mineIndexes }) => {
+const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, mineIndexes }) => {
 	const [bgColor, setBgColor] = useState()
 	const [bgColorAnimatedField, setBgColorAnimatedField] = useState()
 	const [valueColor, setValueColor] = useState()
@@ -48,9 +48,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 					//? Mine
 
 					if (value === 'mine') {
-						console.log('Boom')
 						setMineClicked(index)
-						setMinesToExpose([{ index: index, animation: mineAnimationGenerator() }])
 						handleShakeAnimation()
 					}
 				}
@@ -188,15 +186,14 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 		const explodeMine = mineIndexes.find((mine) => mine.index === index)
 		if (explodeMine) {
 			const {
-				animateTimeOut,
+				animateTimeout,
 				timer,
 				animation: {
 					color: { mineColor, bgColorStart, bgColorEnd },
 				},
 			} = explodeMine
 
-			console.log(typeof animateTimeOut, explodeMine.index, timer)
-			animateTimeOut(setExplodeMineAnimation, timer)
+			animateTimeout(setExplodeMineAnimation, timer)
 
 			setMineBgColorToAnimate({ backgroundColor: [bgColorStart, bgColorEnd] })
 			setMineAnimationColors({ mine: mineColor, confetti: mineColor })
@@ -241,7 +238,7 @@ const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick,
 			</VStack>
 
 			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
-			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'40%'} pos={'absolute'} bgColor={mineAnimationColors.confetti} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
+			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={mineAnimationColors.confetti} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />}
 		</Box>
 	)
 }

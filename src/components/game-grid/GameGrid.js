@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import Field from './Field'
 import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, mineAnimationGenerator, randomShakeArray } from './grid-functions'
 
-const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate, mineIndexes, setMineIndexes, minesToExpose, setMinesToExpose }) => {
+const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, valuesArray, setvaluesArray, firstClick, setFirstClick, mineClicked, setMineClicked, resetToggle, exposedArray, setExposedArray, numberOfFields, flagsArray, setFlagsArray, exposedIndexesToAnimate, setExposedIndexesToAnimate, mineIndexes, setMineIndexes }) => {
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const shakeAnimationDuration = 1.5
 	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: shakeAnimationDuration } })
@@ -61,28 +61,30 @@ const GameGrid = ({ difficulty, fields, setFields, fieldsData, setFieldsData, va
 	useEffect(() => {
 		const disableField = mineClicked || mineClicked === 0 ? true : false
 		const fieldCompsArr = []
-		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} minesToExpose={minesToExpose} setMinesToExpose={setMinesToExpose} mineIndexes={mineIndexes} />))
+		fieldsData.forEach((f, i) => fieldCompsArr.push(<Field index={f.index} difficulty={f.difficulty} bgIsLight={f.bgIsLight} value={f.value} firstClick={firstClick} setFirstClick={setFirstClick} exposedArray={exposedArray} setExposedArray={setExposedArray} isExposed={exposedArray[i]} numberOfFields={numberOfFields} boardWidth={difficulty.horizontal_boxes} valuesArray={valuesArray} setMineClicked={setMineClicked} setFlagsArray={setFlagsArray} hasFlag={flagsArray[i]} handleShakeAnimation={handleShakeAnimation} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} disbaleField={disableField} mineIndexes={mineIndexes} />))
 		setFields(fieldCompsArr)
-	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, minesToExpose, setMinesToExpose, mineIndexes])
+	}, [difficulty, exposedArray, exposedIndexesToAnimate, fieldsData, firstClick, flagsArray, numberOfFields, setExposedArray, setExposedIndexesToAnimate, setFields, setFirstClick, setFlagsArray, setMineClicked, valuesArray, mineClicked, mineIndexes])
 
 	//* EndGame when mineClicked
 	useEffect(() => {
-		const animateTimeOut = (setState, timer) => {
+		const animateTimeout = (setState, timer) => {
 			setTimeout(() => setState(true), 1000 * timer)
 		}
 		if (mineClicked || mineClicked === 0) {
 			let timer = 0
 			const mineArr = []
 
-			mineArr.push({ index: mineClicked, animation: mineAnimationGenerator(), animateTimeOut: animateTimeOut, timer: timer })
+			mineArr.push({ index: mineClicked, animation: mineAnimationGenerator(), animateTimeout: animateTimeout, timer: timer })
 
 			valuesArray.forEach((field, i) => {
 				//* must be "mine", not covered with flag and not already in the array.
 				if (field === 'mine' && !flagsArray[i] && !mineArr.some((mine) => mine.index === i)) {
 					timer = timer + 0.2
-					mineArr.push({ index: i, animation: mineAnimationGenerator(), animateTimeOut: animateTimeOut, timer: timer })
+					mineArr.push({ index: i, animation: mineAnimationGenerator(), animateTimeout: animateTimeout, timer: timer })
 				}
 			})
+			//! if flag doesn't cover a mine, expose it with an X at the end of exposing mines.
+			//! stop timer when player wins
 			console.log(mineArr)
 			setMineIndexes(mineArr)
 		}

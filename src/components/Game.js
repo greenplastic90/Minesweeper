@@ -12,7 +12,6 @@ const Game = () => {
 	const [fieldsData, setFieldsData] = useState([])
 	const [mineClicked, setMineClicked] = useState(null)
 	const [mineIndexes, setMineIndexes] = useState([])
-	const [minesToExpose, setMinesToExpose] = useState([])
 	const [firstClick, setFirstClick] = useState(null)
 	const [valuesArray, setvaluesArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [exposedArray, setExposedArray] = useState(Array.apply(null, Array(numberOfFields)))
@@ -38,7 +37,6 @@ const Game = () => {
 		setNumberOfFlags(difficulty.mines)
 		setExposedIndexesToAnimate()
 		setMineIndexes([])
-		setMinesToExpose([])
 	}, [difficulty, numberOfFields, resetToggle])
 
 	//* updated number of flags based on how many flags in flagsArray
@@ -64,7 +62,7 @@ const Game = () => {
 	return (
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} firstClick={firstClick} numberOfFlags={numberOfFlags} mineClicked={mineClicked} />
-			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} mineIndexes={mineIndexes} setMineIndexes={setMineIndexes} minesToExpose={minesToExpose} setMinesToExpose={setMinesToExpose} />
+			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} mineIndexes={mineIndexes} setMineIndexes={setMineIndexes} />
 		</VStack>
 	)
 }
