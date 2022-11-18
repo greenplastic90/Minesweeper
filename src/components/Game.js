@@ -6,7 +6,7 @@ import GameGrid from './game-grid/GameGrid'
 import { Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 
 const Game = () => {
-	const [gameVariables, setGameVariables] = useState([])
+	const [gameVariables, setGameVariables] = useState()
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [fields, setFields] = useState([])
@@ -83,7 +83,8 @@ const Game = () => {
 	return (
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} firstClick={firstClick} numberOfFlags={numberOfFlags} mineClicked={mineClicked} />
-			<GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} mineIndexes={mineIndexes} setMineIndexes={setMineIndexes} />
+			{gameVariables && <GameGrid game={gameVariables} />}
+			{/* <GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} mineIndexes={mineIndexes} setMineIndexes={setMineIndexes} /> */}
 		</VStack>
 	)
 }
