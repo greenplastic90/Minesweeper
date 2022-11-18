@@ -5,7 +5,8 @@ export class GameSetup {
 		this.difficulty = difficulty
 		this.fields = fields
 		this.numberOfFields = this.fields.length
-		this.firstClick = null
+		this.firstClick = false
+		this.fieldClicked = null
 		this.mineClicked = null
 		this.numberOfFlags = this.difficulty.mines
 		this.numberOfMines = this.difficulty.mines
@@ -37,7 +38,7 @@ export class GameSetup {
 			}
 		}
 
-		return generateArrayWithValues(arr, this.difficulty.horizontal_boxes)
+		return this.generateArrayWithValues(arr, this.difficulty.horizontal_boxes)
 	}
 
 	generateArrayWithValues(mineArray, width) {
@@ -69,20 +70,12 @@ export class GameSetup {
 			}
 		})
 
-		return arr
-	}
-}
+		//* insert value to each field
+		this.fields.forEach((field, i) => {
+			field.value = arr[i]
+		})
 
-export class Field {
-	constructor(index, bgIsLight) {
-		this.index = index
-		this.value = null
-		this.isExposed = false
-		this.hasFlag = false
-		this.bgIsLight = bgIsLight
-	}
-	isMine() {
-		return this.value === 'mine' ? true : false
+		return this.fields
 	}
 	mineAnimationGenerator() {
 		class MineColor {
@@ -106,6 +99,77 @@ export class Field {
 		//! colors for confetti, mine and background (before and after)
 		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
 		return { color: randomColor }
+	}
+	disableAllFields() {
+		return this.fields.map((field) => {
+			return { ...field, isDisabled: true }
+		})
+	}
+
+	exposeFields(fieldIndexsToExpose) {
+		fieldIndexsToExpose.forEach((index) => {
+			this.fields[index] = { ...this.fields[index], isExposed: true }
+		})
+		console.log(this.fields)
+	}
+}
+
+export class Field {
+	constructor(index, bgIsLight, value) {
+		this.index = index
+		this.value = value
+		this.isExposed = false
+		this.hasFlag = false
+		this.bgIsLight = bgIsLight
+		this.isDisabled = false
+	}
+	isMine() {
+		return this.value === 'mine' ? true : false
+	}
+
+	generateFieldColors() {
+		let bgColor, bgHoverColor, bgColorAnimatedField, valueColor
+		//* bgColor, bgHoverColor, bgColorAnimatedField
+		if (this.bgIsLight) {
+			bgColorAnimatedField = 'field.green_light'
+			if (this.isExposed) {
+				bgColor = 'field.brown_light'
+				//* don't want to add a hover effect if the field is Zero
+				if (this.value) {
+					bgHoverColor = 'field.brown_hover_light'
+				} else {
+					bgHoverColor = ''
+				}
+			} else {
+				bgColor = 'field.green_light'
+				bgHoverColor = 'field.green_hover_light'
+			}
+		} else {
+			bgColorAnimatedField = 'field.green_dark'
+			if (this.isExposed) {
+				bgColor = 'field.brown_dark'
+				//* don't want to add a hover effect if the field is Zero
+				if (this.value) {
+					bgHoverColor = 'field.brown_hover_dark'
+				} else {
+					bgHoverColor = ''
+				}
+			} else {
+				bgColor = 'field.green_dark'
+				bgHoverColor = 'field.green_hover_dark'
+			}
+		}
+		//* valueColor
+		if (this.value === 1) valueColor = 'numbers.one'
+		if (this.value === 2) valueColor = 'numbers.two'
+		if (this.value === 3) valueColor = 'numbers.three'
+		if (this.value === 4) valueColor = 'numbers.four'
+		if (this.value === 5) valueColor = 'numbers.five'
+		if (this.value === 6) valueColor = 'numbers.six'
+		if (this.value === 7) valueColor = 'numbers.seven'
+		if (this.value === 8) valueColor = 'numbers.eight'
+
+		return { bgColor: bgColor, bgHoverColor: bgHoverColor, bgColorAnimatedField: bgColorAnimatedField, valueColor: valueColor }
 	}
 }
 

@@ -6,7 +6,7 @@ import GameGrid from './game-grid/GameGrid'
 import { Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 
 const Game = () => {
-	const [gameVariables, setGameVariables] = useState()
+	const [game, setGame] = useState()
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [fields, setFields] = useState([])
@@ -29,15 +29,13 @@ const Game = () => {
 
 		for (let i = 0; i < numOfFieldsToCreate; i++) {
 			bgIsLight = setBgColorShade(i, difficulty.horizontal_boxes, bgIsLight)
-			const field = new Field(i, bgIsLight)
+			const field = new Field(i, bgIsLight, null)
 			initialFieldsCreated.push(field)
 		}
-		// console.log('initialFieldsCreated ->', initialFieldsCreated)
 
-		const game = new GameSetup(difficulty, initialFieldsCreated)
-		console.log('game ->', game)
-
-		setGameVariables(game)
+		const currentGame = new GameSetup(difficulty, initialFieldsCreated)
+		console.log(currentGame)
+		setGame(currentGame)
 	}, [difficulty])
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
@@ -82,8 +80,12 @@ const Game = () => {
 
 	return (
 		<VStack spacing={0} boxShadow={'dark-lg'}>
-			<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} firstClick={firstClick} numberOfFlags={numberOfFlags} mineClicked={mineClicked} />
-			{gameVariables && <GameGrid game={gameVariables} />}
+			{game && (
+				<>
+					<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} firstClick={game.firstClick} numberOfFlags={game.numberOfFlags} mineClicked={mineClicked} />
+					<GameGrid game={game} setGame={setGame} />
+				</>
+			)}
 			{/* <GameGrid difficulty={difficulty} fields={fields} setFields={setFields} fieldsData={fieldsData} setFieldsData={setFieldsData} valuesArray={valuesArray} setvaluesArray={setvaluesArray} firstClick={firstClick} setFirstClick={setFirstClick} mineClicked={mineClicked} setMineClicked={setMineClicked} resetToggle={resetToggle} exposedArray={exposedArray} setExposedArray={setExposedArray} numberOfFields={numberOfFields} flagsArray={flagsArray} setFlagsArray={setFlagsArray} exposedIndexesToAnimate={exposedIndexesToAnimate} setExposedIndexesToAnimate={setExposedIndexesToAnimate} mineIndexes={mineIndexes} setMineIndexes={setMineIndexes} /> */}
 		</VStack>
 	)

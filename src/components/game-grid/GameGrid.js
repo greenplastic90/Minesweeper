@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import Field from './Field'
 import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, mineAnimationGenerator, randomShakeArray } from './grid-functions'
 
-const GameGrid = ({ game }) => {
+const GameGrid = ({ game, setGame }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: shakeAnimationDuration } })
@@ -15,7 +15,7 @@ const GameGrid = ({ game }) => {
 		<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field) => (
 				<GridItem key={field.index}>
-					<Field fieldData={field} gameData={game} />
+					<Field field={field} game={game} setGame={setGame} />
 				</GridItem>
 			))}
 		</SimpleGrid>

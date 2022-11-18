@@ -242,60 +242,41 @@ import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, get
 // 		</Box>
 // 	)
 // }
-const Field = ({ fieldData, gameData }) => {
-	const { value, isExposed, hasFlag, bgIsLight } = fieldData
+const Field = ({ field, game, setGame }) => {
+	const { index, value, isExposed, hasFlag, isDisabled } = field
+
 	const {
 		difficulty: { mine_width, value_size, box_width },
-	} = gameData
-	const [showValue, setShowValue] = useState(true)
-	const [bgColor, setBgColor] = useState('')
-	const [bgHoverColor, setBgHoverColor] = useState('')
+	} = game
+
+	const [colors, setColors] = useState({})
+
+	const onFieldLeftClick = () => {
+		setGame((current) => {
+			if (!current.fieldClicked && current.fieldClicked !== 0) current.fields = game.generateRandomFieldValueArray()
+			current.fieldClicked = index
+
+			return { ...current }
+		})
+	}
 
 	//* set bgColor, bgHoverColor, bgColorAnimatedField
 	useEffect(() => {
-		if (bgIsLight) {
-			// setBgColorAnimatedField('field.green_light')
-			if (isExposed) {
-				setBgColor('field.brown_light')
-				//* don't want to add a hover effect if the field is Zero
-				if (value) {
-					setBgHoverColor('field.brown_hover_light')
-				} else {
-					setBgHoverColor()
-				}
-			} else {
-				setBgColor('field.green_light')
-				setBgHoverColor('field.green_hover_light')
-			}
-		} else {
-			// setBgColorAnimatedField('field.green_dark')
-			if (isExposed) {
-				setBgColor('field.brown_dark')
-				//* don't want to add a hover effect if the field is Zero
-				if (value) {
-					setBgHoverColor('field.brown_hover_dark')
-				} else {
-					setBgHoverColor()
-				}
-			} else {
-				setBgColor('field.green_dark')
-				setBgHoverColor('field.green_hover_dark')
-			}
-		}
-	}, [bgIsLight, isExposed, value])
+		setColors((current) => {
+			return { ...current, ...field.generateFieldColors() }
+		})
+	}, [field])
 	return (
 		<Box pos={'relative'}>
 			<VStack
 				as={motion.div}
 				// animate={value === 'mine' && isExposed ? mineBgColorToAnimate : 'null'}
 				// onContextMenu={onFieldRightClick}
-				// onClick={(e) => {
-				// 	OnFieldLeftClick(e)
-				// }}
+				onClick={onFieldLeftClick}
 				w={box_width}
 				h={box_width}
-				bgColor={bgColor}
-				_hover={{ bg: bgHoverColor }}
+				bgColor={colors.bgColor}
+				_hover={{ bg: colors.bgHoverColor }}
 				justifyContent={'center'}
 				// borderRight={border.right && borderStyle.width}
 				// borderRightColor={border.right && borderStyle.color}
@@ -313,16 +294,9 @@ const Field = ({ fieldData, gameData }) => {
 							// color={mineAnimationColors.mine}
 						/>
 					) : value !== 0 ? (
-						showValue && (
-							<Text
-								cursor={'default'}
-								fontSize={value_size}
-								fontWeight={'bold'}
-								// color={valueColor}
-							>
-								{value}
-							</Text>
-						)
+						<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={colors.valueColor}>
+							{value}
+						</Text>
 					) : null
 				) : hasFlag ? (
 					<BsFillFlagFill size={value_size} color={'#88252B'} />
