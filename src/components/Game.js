@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 
 import GameGrid from './game-grid/GameGrid'
-import { localStorageDifficulty } from './game-grid/grid-functions'
+import { Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 
 const Game = () => {
 	const [gameVariables, setGameVariables] = useState([])
@@ -21,13 +21,23 @@ const Game = () => {
 	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState()
 
 	useEffect(() => {
-		class GameSetup {
-			constructor(difficulty, fields) {
-				this.difficulty = difficulty
-				this.fields = fields
-				this.numberOfFields = this.fields.length
-			}
+		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
+
+		const initialFieldsCreated = []
+
+		let bgIsLight = true
+
+		for (let i = 0; i < numOfFieldsToCreate; i++) {
+			bgIsLight = setBgColorShade(i, difficulty.horizontal_boxes, bgIsLight)
+			const field = new Field(i, bgIsLight)
+			initialFieldsCreated.push(field)
 		}
+		// console.log('initialFieldsCreated ->', initialFieldsCreated)
+
+		const game = new GameSetup(difficulty, initialFieldsCreated)
+		console.log('game ->', game)
+
+		setGameVariables(game)
 	}, [difficulty])
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid

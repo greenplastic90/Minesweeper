@@ -1,9 +1,9 @@
 import { easy, medium, hard } from '../difficulty-options'
 
 export class GameSetup {
-	constructor(difficulty) {
+	constructor(difficulty, fields) {
 		this.difficulty = difficulty
-		this.fields = []
+		this.fields = fields
 		this.numberOfFields = this.fields.length
 		this.firstClick = null
 		this.mineClicked = null
@@ -73,12 +73,13 @@ export class GameSetup {
 	}
 }
 
-export class FieldSetup {
-	constructor(index) {
+export class Field {
+	constructor(index, bgIsLight) {
 		this.index = index
 		this.value = null
 		this.isExposed = false
 		this.hasFlag = false
+		this.bgIsLight = bgIsLight
 	}
 	isMine() {
 		return this.value === 'mine' ? true : false
@@ -276,6 +277,13 @@ export const randomShakeArray = () => {
 		}
 	}
 	return arr
+}
+export const setBgColorShade = (index, width, isBgLight) => {
+	//* if statment to create a checkered parttern
+	if (index % width) {
+		isBgLight = !isBgLight
+	}
+	return isBgLight
 }
 
 export const getRandomInt = (min, max) => {
