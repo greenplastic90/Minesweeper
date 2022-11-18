@@ -2,7 +2,7 @@ import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt, mineAnimationGenerator } from './grid-functions'
+import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
 const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, mineIndexes }) => {
 	const [bgColor, setBgColor] = useState()

@@ -6,6 +6,7 @@ import GameGrid from './game-grid/GameGrid'
 import { localStorageDifficulty } from './game-grid/grid-functions'
 
 const Game = () => {
+	const [gameVariables, setGameVariables] = useState([])
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	const numberOfFields = difficulty.horizontal_boxes * difficulty.vertical_boxes
 	const [fields, setFields] = useState([])
@@ -18,6 +19,16 @@ const Game = () => {
 	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [numberOfFlags, setNumberOfFlags] = useState(difficulty.mines)
 	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState()
+
+	useEffect(() => {
+		class GameSetup {
+			constructor(difficulty, fields) {
+				this.difficulty = difficulty
+				this.fields = fields
+				this.numberOfFields = this.fields.length
+			}
+		}
+	}, [difficulty])
 
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
