@@ -246,10 +246,16 @@ const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled } = field
 
 	const {
-		difficulty: { mine_width, value_size, box_width, horizontal_boxes },
+		difficulty: { mine_width, value_size, box_width, border_width, horizontal_boxes },
+		numberOfFields,
+		fields,
 	} = game
-
+	const borderStyle = {
+		width: border_width,
+		color: 'field.border',
+	}
 	const [colors, setColors] = useState({})
+	const [borders, setBorders] = useState({ top: false, bottom: false, left: false, right: false })
 
 	const onFieldLeftClick = () => {
 		setGame((current) => {
@@ -260,7 +266,7 @@ const Field = ({ field, game, setGame }) => {
 
 			//* fields to expose
 			let fieldsToExpose
-			console.log(current.fields[index].value)
+
 			if (current.fields[index].value === 0) {
 				fieldsToExpose = current.getAllSurroundingIndexsToExpose(index, horizontal_boxes)
 			} else if (value === 'mine') {
@@ -282,6 +288,12 @@ const Field = ({ field, game, setGame }) => {
 			return { ...current, ...field.generateFieldColors() }
 		})
 	}, [field, field.isExposed])
+	//* create border
+	useEffect(() => {
+		setBorders((current) => {
+			return { ...current, ...field.createBorders(current, numberOfFields, horizontal_boxes, fields) }
+		})
+	}, [field, fields, horizontal_boxes, numberOfFields, game])
 	return (
 		<Box pos={'relative'}>
 			<VStack
@@ -294,15 +306,14 @@ const Field = ({ field, game, setGame }) => {
 				bgColor={colors.bgColor}
 				_hover={{ bg: colors.bgHoverColor }}
 				justifyContent={'center'}
-				// borderRight={border.right && borderStyle.width}
-				// borderRightColor={border.right && borderStyle.color}
-				// borderLeft={border.left && borderStyle.width}
-				// borderLeftColor={border.left && borderStyle.color}
-				// borderTop={border.top && borderStyle.width}
-				// borderTopColor={border.top && borderStyle.color}
-				// borderBottom={border.bottom && borderStyle.width}
-				// borderBottomColor={border.bottom && borderStyle.color}
-			>
+				borderRight={borders.right && borderStyle.width}
+				borderRightColor={borders.right && borderStyle.color}
+				borderLeft={borders.left && borderStyle.width}
+				borderLeftColor={borders.left && borderStyle.color}
+				borderTop={borders.top && borderStyle.width}
+				borderTopColor={borders.top && borderStyle.color}
+				borderBottom={borders.bottom && borderStyle.width}
+				borderBottomColor={borders.bottom && borderStyle.color}>
 				{isExposed ? (
 					value === 'mine' ? (
 						<Mine

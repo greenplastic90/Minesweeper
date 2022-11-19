@@ -114,7 +114,6 @@ export class GameSetup {
 		let allSurroundingIndexsToExpose = []
 
 		const valuesArray = this.fields.map((field) => field.value)
-		console.log(valuesArray)
 
 		const getImmediateSurroundingIndexs = (zeroValueIndex) => {
 			const surroundingIndexs = getFieldsSurroundingIndexWithNoMines(zeroValueIndex, valuesArray, boardWidth)
@@ -150,6 +149,58 @@ export class Field {
 		this.hasFlag = false
 		this.bgIsLight = bgIsLight
 		this.isDisabled = false
+	}
+	getFieldsSurroundingExludingIndex(numberOfFields, width) {
+		let topLeftIndex = this.index - width - 1
+		let bottomLeftIndex = this.index + width - 1
+		let numOfLoops = 3
+		//* if indext on the far left side of grid
+		if (!(this.index % width)) {
+			topLeftIndex = this.index - width
+			bottomLeftIndex = this.index + width
+			numOfLoops = 2
+		}
+		//* if index on the far right side of grid
+		if (this.index % width === width - 1) {
+			numOfLoops = 2
+		}
+		const arrayOfIndexes = []
+
+		for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
+			for (let k = j; k < j + numOfLoops; k++) {
+				if (k >= 0 && k < numberOfFields) {
+					arrayOfIndexes.push(k)
+				}
+			}
+		}
+		return arrayOfIndexes
+	}
+	createBorders(borders, numberOfFields, width, fields) {
+		if (this.isExposed && this.indexvalue !== 'mine') {
+			const surroundingIndexs = this.getFieldsSurroundingExludingIndex(numberOfFields, width)
+			const exposedArray = fields.map((field) => field.isExposed)
+			const valuesArray = fields.map((field) => field.value)
+			let newBorders = { ...borders }
+
+			surroundingIndexs.forEach((fieldIndex) => {
+				//* if the field adjacent is not exposed OR it is exposed and the value is mine
+				if (!exposedArray[fieldIndex] || (exposedArray[fieldIndex] && valuesArray[fieldIndex] === 'mine')) {
+					if (fieldIndex + width === this.index) newBorders = { ...newBorders, top: true }
+
+					if (fieldIndex - width === this.index) newBorders = { ...newBorders, bottom: true }
+					if (fieldIndex + 1 === this.index) newBorders = { ...newBorders, left: true }
+					if (fieldIndex - 1 === this.index) newBorders = { ...newBorders, right: true }
+					//* if the field adjacent is exposed
+				} else if (exposedArray[fieldIndex]) {
+					if (fieldIndex + width === this.index) newBorders = { ...newBorders, top: false }
+					if (fieldIndex - width === this.index) newBorders = { ...newBorders, bottom: false }
+					if (fieldIndex + 1 === this.index) newBorders = { ...newBorders, left: false }
+					if (fieldIndex - 1 === this.index) newBorders = { ...newBorders, right: false }
+				}
+			})
+
+			return newBorders
+		}
 	}
 	isMine() {
 		return this.value === 'mine' ? true : false
@@ -324,7 +375,7 @@ export const getFieldsSurroundingExludingIndex = (i, numberOfFields, width) => {
 	}
 	return arrayOfIndexes
 }
-
+//! in Class
 export const getAllSurroundingIndexsToExpose = (indexWithValueZero, valuesArray, boardWidth) => {
 	const surroundingIndexsThatAreZero = []
 	const surroundingIndexsThatAreZeroThatAreChecked = []
