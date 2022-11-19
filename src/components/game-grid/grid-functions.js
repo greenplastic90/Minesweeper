@@ -1,17 +1,18 @@
 import { easy, medium, hard } from '../difficulty-options'
 
 export class GameSetup {
-	constructor(difficulty, fields, fieldClicked, mineClicked) {
+	constructor(difficulty, fields, fieldClickedIndex, fieldClickedValue, mineClickedIndex) {
 		this.difficulty = difficulty
 		this.fields = fields
 		this.numberOfFields = this.fields.length
-		this.fieldClicked = fieldClicked
-		this.mineClicked = mineClicked
+		this.fieldClickedIndex = fieldClickedIndex
+		this.fieldClickedValue = fieldClickedValue
+		this.mineClickedIndex = mineClickedIndex
 		this.numberOfFlags = this.difficulty.mines
 		this.numberOfMines = this.difficulty.mines
 	}
 	isFirstClick() {
-		return this.fieldClicked === null
+		return this.fieldClickedIndex === null
 	}
 	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))

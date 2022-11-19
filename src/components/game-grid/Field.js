@@ -255,8 +255,8 @@ const Field = ({ field, game, setGame }) => {
 		setGame((current) => {
 			//* only generates the value arrays if this is the first click
 			if (current.isFirstClick()) current.fields = game.generateRandomFieldValueArray(index)
-
-			current.fieldClicked = index
+			current.fieldClickedIndex = index
+			current.fieldClickedValue = current.fields[index].value
 
 			//* fields to expose
 			let fieldsToExpose
@@ -272,7 +272,7 @@ const Field = ({ field, game, setGame }) => {
 
 			current.fields = game.exposeFields(fieldsToExpose)
 
-			return new GameSetup(current.difficulty, current.fields, current.fieldClicked, null)
+			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, null)
 		})
 	}
 
