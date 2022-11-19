@@ -33,7 +33,7 @@ const Game = () => {
 			initialFieldsCreated.push(field)
 		}
 
-		const currentGame = new GameSetup(difficulty, initialFieldsCreated)
+		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null)
 		console.log(currentGame)
 		setGame(currentGame)
 	}, [difficulty])

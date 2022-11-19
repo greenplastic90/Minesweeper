@@ -2,7 +2,7 @@ import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import { getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
+import { GameSetup, getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
 // const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, mineIndexes }) => {
 // 	const [bgColor, setBgColor] = useState()
@@ -246,17 +246,33 @@ const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled } = field
 
 	const {
-		difficulty: { mine_width, value_size, box_width },
+		difficulty: { mine_width, value_size, box_width, horizontal_boxes },
 	} = game
 
 	const [colors, setColors] = useState({})
 
 	const onFieldLeftClick = () => {
 		setGame((current) => {
-			if (!current.fieldClicked && current.fieldClicked !== 0) current.fields = game.generateRandomFieldValueArray()
+			//* only generates the value arrays if this is the first click
+			if (current.isFirstClick()) current.fields = game.generateRandomFieldValueArray(index)
+
 			current.fieldClicked = index
 
-			return { ...current }
+			//* fields to expose
+			let fieldsToExpose
+			console.log(current.fields[index].value)
+			if (current.fields[index].value === 0) {
+				fieldsToExpose = current.getAllSurroundingIndexsToExpose(index, horizontal_boxes)
+			} else if (value === 'mine') {
+				fieldsToExpose = [index]
+			} else {
+				//* value is an int
+				fieldsToExpose = [index]
+			}
+
+			current.fields = game.exposeFields(fieldsToExpose)
+
+			return new GameSetup(current.difficulty, current.fields, current.fieldClicked, null)
 		})
 	}
 
@@ -265,7 +281,7 @@ const Field = ({ field, game, setGame }) => {
 		setColors((current) => {
 			return { ...current, ...field.generateFieldColors() }
 		})
-	}, [field])
+	}, [field, field.isExposed])
 	return (
 		<Box pos={'relative'}>
 			<VStack

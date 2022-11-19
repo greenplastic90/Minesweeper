@@ -1,24 +1,26 @@
 import { easy, medium, hard } from '../difficulty-options'
 
 export class GameSetup {
-	constructor(difficulty, fields) {
+	constructor(difficulty, fields, fieldClicked, mineClicked) {
 		this.difficulty = difficulty
 		this.fields = fields
 		this.numberOfFields = this.fields.length
-		this.firstClick = false
-		this.fieldClicked = null
-		this.mineClicked = null
+		this.fieldClicked = fieldClicked
+		this.mineClicked = mineClicked
 		this.numberOfFlags = this.difficulty.mines
 		this.numberOfMines = this.difficulty.mines
 	}
-	generateRandomFieldValueArray() {
+	isFirstClick() {
+		return this.fieldClicked === null
+	}
+	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))
 		//* starting index and srounding fields can't have mines
 		//* creating an array of indexs that can't have mines (ones surrounding startingIndex)
 		const mineFreeIndexs = []
 
-		const topLeftIndex = this.firstClick - this.difficulty.horizontal_boxes - 1
-		const bottomLeftIndex = this.firstClick + this.difficulty.horizontal_boxes - 1
+		const topLeftIndex = firstClickIndex - this.difficulty.horizontal_boxes - 1
+		const bottomLeftIndex = firstClickIndex + this.difficulty.horizontal_boxes - 1
 
 		for (let i = topLeftIndex; i <= bottomLeftIndex; i = i + this.difficulty.horizontal_boxes) {
 			for (let j = i; j < i + 3; j++) {
@@ -105,12 +107,37 @@ export class GameSetup {
 			return { ...field, isDisabled: true }
 		})
 	}
+	getAllSurroundingIndexsToExpose(indexWithValueZero, boardWidth) {
+		const surroundingIndexsThatAreZero = []
+		const surroundingIndexsThatAreZeroThatAreChecked = []
+		let allSurroundingIndexsToExpose = []
 
+		const valuesArray = this.fields.map((field) => field.value)
+		console.log(valuesArray)
+
+		const getImmediateSurroundingIndexs = (zeroValueIndex) => {
+			const surroundingIndexs = getFieldsSurroundingIndexWithNoMines(zeroValueIndex, valuesArray, boardWidth)
+			allSurroundingIndexsToExpose = [...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs])]
+			surroundingIndexs.forEach((index) => {
+				if (valuesArray[index] === 0 && !surroundingIndexsThatAreZero.includes(index)) {
+					surroundingIndexsThatAreZero.push(index)
+				}
+				surroundingIndexsThatAreZeroThatAreChecked.push(zeroValueIndex)
+			})
+			surroundingIndexsThatAreZero.forEach((index) => {
+				if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index)) getImmediateSurroundingIndexs(index)
+			})
+		}
+		getImmediateSurroundingIndexs(indexWithValueZero)
+
+		return allSurroundingIndexsToExpose
+	}
 	exposeFields(fieldIndexsToExpose) {
 		fieldIndexsToExpose.forEach((index) => {
-			this.fields[index] = { ...this.fields[index], isExposed: true }
+			this.fields[index].isExposed = true
 		})
-		console.log(this.fields)
+
+		return this.fields
 	}
 }
 
