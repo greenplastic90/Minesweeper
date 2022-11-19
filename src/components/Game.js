@@ -19,6 +19,8 @@ const Game = () => {
 	const [flagsArray, setFlagsArray] = useState(Array.apply(null, Array(numberOfFields)))
 	const [numberOfFlags, setNumberOfFlags] = useState(difficulty.mines)
 	const [exposedIndexesToAnimate, setExposedIndexesToAnimate] = useState()
+	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
+	const [resetToggle, setResetToggle] = useState(true)
 
 	useEffect(() => {
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
@@ -36,10 +38,7 @@ const Game = () => {
 		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null, null)
 		console.log(currentGame)
 		setGame(currentGame)
-	}, [difficulty])
-
-	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
-	const [resetToggle, setResetToggle] = useState(true)
+	}, [difficulty, resetToggle])
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)

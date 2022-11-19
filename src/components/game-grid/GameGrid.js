@@ -15,6 +15,10 @@ const GameGrid = ({ game, setGame }) => {
 		if (fieldClickedValue === 0 || fieldClickedValue === 'mine') {
 			setRunShakeAnimation(true)
 			setTimeout(() => setRunShakeAnimation(false), 1000 * shakeAnimationDuration)
+			setShakeAnimation((current) => {
+				//* randomly creates a shake animation
+				return { ...current, y: randomShakeArray(), x: randomShakeArray() }
+			})
 		}
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
 	}, [fieldClickedValue, fieldClickedIndex])
