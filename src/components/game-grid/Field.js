@@ -293,6 +293,10 @@ const Field = ({ field, game, setGame }) => {
 		setBorders((current) => {
 			return { ...current, ...field.createBorders(current, numberOfFields, horizontal_boxes, fields) }
 		})
+		return () => {
+			//* removes borders when game resets
+			setBorders({ top: false, bottom: false, left: false, right: false })
+		}
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 	return (
 		<Box pos={'relative'}>
