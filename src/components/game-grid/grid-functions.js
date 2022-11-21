@@ -14,6 +14,10 @@ export class GameSetup {
 	isFirstClick() {
 		return this.fieldClickedIndex === null
 	}
+	fieldClicked(index) {
+		this.fieldClickedIndex = index
+		this.fieldClickedValue = this.fields[index].value
+	}
 	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))
 		//* starting index and srounding fields can't have mines

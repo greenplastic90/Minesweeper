@@ -260,24 +260,15 @@ const Field = ({ field, game, setGame }) => {
 	const onFieldLeftClick = () => {
 		setGame((current) => {
 			//* only generates the value arrays if this is the first click
-			if (current.isFirstClick()) game.generateRandomFieldValueArray(index)
-			current.fieldClickedIndex = index
-			current.fieldClickedValue = current.fields[index].value
+			if (current.isFirstClick()) current.generateRandomFieldValueArray(index)
+
+			//* updates index and value
+			current.fieldClicked(index)
 
 			//* fields to expose
-			let fieldsToExpose
-			//? value 0
-			if (current.fields[index].value === 0) {
-				fieldsToExpose = current.getAllSurroundingIndexsToExpose(index, horizontal_boxes)
-				//? value 'mine'
-			} else if (value === 'mine') {
-				fieldsToExpose = [index]
-			} else {
-				//? value is an int
-				fieldsToExpose = [index]
-			}
+			let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 
-			game.exposeFields(fieldsToExpose)
+			current.exposeFields(fieldsToExpose)
 
 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 		})
