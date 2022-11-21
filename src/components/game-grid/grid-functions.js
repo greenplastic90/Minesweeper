@@ -176,7 +176,7 @@ export class Field {
 		return arrayOfIndexes
 	}
 	createBorders(borders, numberOfFields, width, fields) {
-		if (this.isExposed && this.indexvalue !== 'mine') {
+		if (this.isExposed && this.value !== 'mine') {
 			const surroundingIndexs = this.getFieldsSurroundingExludingIndex(numberOfFields, width)
 			const exposedArray = fields.map((field) => field.isExposed)
 			const valuesArray = fields.map((field) => field.value)
