@@ -1,7 +1,7 @@
 import { HStack, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { ImClock2 } from 'react-icons/im'
-const Timer = ({ firstClick, mineClicked }) => {
+const Timer = ({ fieldClickedIndex, mineClickedIndex }) => {
 	const [ones, setOnes] = useState(0)
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
@@ -20,14 +20,14 @@ const Timer = ({ firstClick, mineClicked }) => {
 
 	useEffect(() => {
 		let startOnes, startTens, startHundreds
-		if ((firstClick || firstClick === 0) && !mineClicked && mineClicked !== 0) {
+		if ((fieldClickedIndex || fieldClickedIndex === 0) && !mineClickedIndex && mineClickedIndex !== 0) {
 			startOnes = setInterval(() => updateTimer(setOnes), 1000)
 			startTens = setInterval(() => updateTimer(setTens), 1000 * 10)
 			startHundreds = setInterval(() => updateTimer(setHundreds), 1000 * 100)
 		}
 
 		//* stops timer from resetting if mine in clicked, but resets if no mine was hit (reset or difficulty change)
-		if (!mineClicked && mineClicked !== 0) {
+		if (!mineClickedIndex && mineClickedIndex !== 0) {
 			setOnes(0)
 			setTens(0)
 			setHundreds(0)
@@ -45,7 +45,7 @@ const Timer = ({ firstClick, mineClicked }) => {
 			clearInterval(startTens)
 			clearInterval(startHundreds)
 		}
-	}, [firstClick, mineClicked])
+	}, [fieldClickedIndex, mineClickedIndex])
 
 	return (
 		<HStack spacing={'4px'}>

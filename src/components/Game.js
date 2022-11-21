@@ -81,7 +81,7 @@ const Game = () => {
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (
 				<>
-					<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} firstClick={game.firstClick} numberOfFlags={game.numberOfFlags} mineClicked={mineClicked} />
+					<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} fieldClickedIndex={game.fieldClickedIndex} numberOfFlags={game.numberOfFlags} mineClickedIndex={game.mineClickedIndex} />
 					<GameGrid game={game} setGame={setGame} />
 				</>
 			)}

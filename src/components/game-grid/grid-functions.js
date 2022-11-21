@@ -20,6 +20,10 @@ export class GameSetup {
 		this.fieldClickedIndex = index
 		this.fieldClickedValue = this.fields[index].value
 	}
+	mineClicked(index) {
+		this.mineClickedIndex = index
+		this.disableAllFields()
+	}
 	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))
 		//* starting index and srounding fields can't have mines
@@ -108,8 +112,8 @@ export class GameSetup {
 		return { color: randomColor }
 	}
 	disableAllFields() {
-		return this.fields.map((field) => {
-			return { ...field, isDisabled: true }
+		return this.fields.forEach((field) => {
+			field.isDisabled = true
 		})
 	}
 	getAllSurroundingIndexsToExpose(indexWithValueZero, boardWidth) {
@@ -152,6 +156,7 @@ export class Field {
 		this.isExposed = false
 		this.hasFlag = false
 		this.bgIsLight = bgIsLight
+		//* isDisabled changes when toggleFlag() or exposeFields() are called
 		this.isDisabled = false
 	}
 	toggleFlag() {
