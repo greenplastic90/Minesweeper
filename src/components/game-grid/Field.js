@@ -256,36 +256,57 @@ const Field = ({ field, game, setGame }) => {
 	}
 	const [colors, setColors] = useState({})
 	const [borders, setBorders] = useState({ top: false, bottom: false, left: false, right: false })
+	const [exposeAnimation, setExposeAnimation] = useState(false)
+	const exposeAnimationDuration = 1.5
+	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
+	//* showValue is created so that when animation is exposed, there is a slight delay before value is shown, otherwise the value shows over the animation for a brief time
+	const [showValue, setShowValue] = useState(false)
 
 	const onFieldLeftClick = () => {
-		setGame((current) => {
-			//* only generates the value arrays if this is the first click
-			if (current.isFirstClick()) current.generateRandomFieldValueArray(index)
+		if (!isDisabled) {
+			setGame((current) => {
+				//* only generates the value arrays if this is the first click
+				if (current.isFirstClick()) current.generateRandomFieldValueArray(index)
 
-			//* updates index and value clicked
-			current.fieldClicked(index)
+				//* updates index and value clicked
+				current.fieldClicked(index)
 
-			//* fields to expose
-			let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
-			current.exposeFields(fieldsToExpose)
+				//* fields to expose
+				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
+				current.exposeFields(fieldsToExpose)
 
-			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
-		})
+				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
+			})
+		}
 	}
 	const onFieldRightClick = (e) => {
 		e.preventDefault()
 		setGame((current) => {
-			current.fields[index].hasFlag = !current.fields[index].hasFlag
+			field.toggleFlag()
 
 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 		})
 	}
 
-	//* set bgColor, bgHoverColor, bgColorAnimatedField
 	useEffect(() => {
+		//* set bgColor, bgHoverColor, bgColorAnimatedField
 		setColors((current) => {
 			return { ...current, ...field.generateFieldColors() }
 		})
+		//* runs exposed animation
+		if (field.isExposed) {
+			setExposeAnimation(true)
+			setTimeout(() => setShowValue(true), 1000 * 0.1)
+
+			//* expose animation values
+			const yUp = getRandomInt(0, -80)
+			const yDown = getRandomInt(0, 150)
+			const x = getRandomInt(-80, 80)
+			const rotate = x > 0 ? getRandomInt(30, 190) : getRandomInt(-190, -30)
+			setExposeValueFieldAnimationVisual((current) => {
+				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
+			})
+		}
 	}, [field, field.isExposed])
 	//* create border
 	useEffect(() => {
@@ -298,6 +319,7 @@ const Field = ({ field, game, setGame }) => {
 			setBorders({ top: false, bottom: false, left: false, right: false })
 		}
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
+
 	return (
 		<Box pos={'relative'}>
 			<VStack
@@ -325,17 +347,19 @@ const Field = ({ field, game, setGame }) => {
 							// color={mineAnimationColors.mine}
 						/>
 					) : value !== 0 ? (
-						<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={colors.valueColor}>
-							{value}
-						</Text>
+						showValue && (
+							<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={colors.valueColor}>
+								{value}
+							</Text>
+						)
 					) : null
 				) : hasFlag ? (
 					<BsFillFlagFill size={value_size} color={'#88252B'} />
 				) : null}
 			</VStack>
 
-			{/* {exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
-			{explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={mineAnimationColors.confetti} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />} */}
+			{exposeAnimation && <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={colors.bgColorAnimatedField} animate={exposeAnimation ? exposeValueFieldAnimationVisual : 'null'} />}
+			{/* {explodeMineAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={mineAnimationColors.confetti} animate={explodeMineAnimation ? explodeMineAnimationVisual : 'null'} />} */}
 		</Box>
 	)
 }

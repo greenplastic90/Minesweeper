@@ -140,6 +140,7 @@ export class GameSetup {
 		fieldIndexsToExpose.forEach((index) => {
 			this.fields[index].isExposed = true
 			this.fields[index].hasFlag = false
+			this.fields[index].isDisabled = true
 		})
 	}
 }
@@ -153,6 +154,11 @@ export class Field {
 		this.bgIsLight = bgIsLight
 		this.isDisabled = false
 	}
+	toggleFlag() {
+		this.hasFlag = !this.hasFlag
+		this.isDisabled = this.hasFlag || this.isExposed
+	}
+
 	getFieldsSurroundingExludingIndex(numberOfFields, width) {
 		let topLeftIndex = this.index - width - 1
 		let bottomLeftIndex = this.index + width - 1
