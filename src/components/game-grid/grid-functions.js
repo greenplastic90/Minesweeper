@@ -8,8 +8,10 @@ export class GameSetup {
 		this.fieldClickedIndex = fieldClickedIndex
 		this.fieldClickedValue = fieldClickedValue
 		this.mineClickedIndex = mineClickedIndex
-		this.numberOfFlags = this.difficulty.mines
 		this.numberOfMines = this.difficulty.mines
+		this.numberOfFlags = this.fields.reduce((acc, field) => {
+			return field.hasFlag ? acc - 1 : acc
+		}, this.numberOfMines)
 	}
 	isFirstClick() {
 		return this.fieldClickedIndex === null
