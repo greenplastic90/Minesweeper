@@ -77,8 +77,6 @@ export class GameSetup {
 		this.fields.forEach((field, i) => {
 			field.value = arr[i]
 		})
-
-		return this.fields
 	}
 	mineAnimationGenerator() {
 		class MineColor {
@@ -135,9 +133,8 @@ export class GameSetup {
 	exposeFields(fieldIndexsToExpose) {
 		fieldIndexsToExpose.forEach((index) => {
 			this.fields[index].isExposed = true
+			this.fields[index].hasFlag = false
 		})
-
-		return this.fields
 	}
 }
 

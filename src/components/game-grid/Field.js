@@ -1,6 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { GameSetup, getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
 
@@ -260,25 +260,34 @@ const Field = ({ field, game, setGame }) => {
 	const onFieldLeftClick = () => {
 		setGame((current) => {
 			//* only generates the value arrays if this is the first click
-			if (current.isFirstClick()) current.fields = game.generateRandomFieldValueArray(index)
+			if (current.isFirstClick()) game.generateRandomFieldValueArray(index)
 			current.fieldClickedIndex = index
 			current.fieldClickedValue = current.fields[index].value
 
 			//* fields to expose
 			let fieldsToExpose
-
+			//? value 0
 			if (current.fields[index].value === 0) {
 				fieldsToExpose = current.getAllSurroundingIndexsToExpose(index, horizontal_boxes)
+				//? value 'mine'
 			} else if (value === 'mine') {
 				fieldsToExpose = [index]
 			} else {
-				//* value is an int
+				//? value is an int
 				fieldsToExpose = [index]
 			}
 
-			current.fields = game.exposeFields(fieldsToExpose)
+			game.exposeFields(fieldsToExpose)
 
-			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, null)
+			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
+		})
+	}
+	const onFieldRightClick = (e) => {
+		e.preventDefault()
+		setGame((current) => {
+			current.fields[index].hasFlag = !current.fields[index].hasFlag
+
+			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 		})
 	}
 
@@ -293,6 +302,7 @@ const Field = ({ field, game, setGame }) => {
 		setBorders((current) => {
 			return { ...current, ...field.createBorders(current, numberOfFields, horizontal_boxes, fields) }
 		})
+
 		return () => {
 			//* removes borders when game resets
 			setBorders({ top: false, bottom: false, left: false, right: false })
@@ -303,7 +313,7 @@ const Field = ({ field, game, setGame }) => {
 			<VStack
 				as={motion.div}
 				// animate={value === 'mine' && isExposed ? mineBgColorToAnimate : 'null'}
-				// onContextMenu={onFieldRightClick}
+				onContextMenu={onFieldRightClick}
 				onClick={onFieldLeftClick}
 				w={box_width}
 				h={box_width}
