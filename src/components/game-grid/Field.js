@@ -293,18 +293,19 @@ const Field = ({ field, game, setGame }) => {
 
 	//* runs when mines are exposed
 	useEffect(() => {
-		if (runMineAnimation)
-			setTimeout(() => {
+		let timeout
+		if (field.runMineAnimation) {
+			timeout = setTimeout(() => {
 				setMineExplodeAnimation(true)
 				field.isExposed = true
+				field.runMineAnimation = false
 				setMineAnimationColors(mineExplodeAimationValues.color)
 			}, 1000 * exposeMineTimer)
-
-		return () => {
-			setMineAnimationColors({ bgColorStart: 'red', bgColorEnd: 'blue', mineColor: 'yellow' })
-			setMineExplodeAnimation(false)
 		}
-	}, [exposeMineTimer, field, mineExplodeAimationValues, runMineAnimation, setGame])
+		return () => {
+			clearTimeout(timeout)
+		}
+	}, [exposeMineTimer, field, index, mineExplodeAimationValues, runMineAnimation, setGame])
 
 	useEffect(() => {
 		//* set bgColor, bgHoverColor, bgColorAnimatedField
@@ -312,7 +313,7 @@ const Field = ({ field, game, setGame }) => {
 			return { ...current, ...field.generateFieldColors() }
 		})
 		//* runs exposed animation
-		if (field.isExposed) {
+		if (isExposed) {
 			setExposeAnimation(true)
 			setTimeout(() => setShowValue(true), 1000 * 0.1)
 
@@ -325,7 +326,9 @@ const Field = ({ field, game, setGame }) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
 		}
+
 		return () => {
+			//* resets animations
 			setExposeAnimation(false)
 		}
 	}, [field, field.isExposed])
@@ -345,7 +348,7 @@ const Field = ({ field, game, setGame }) => {
 		<Box pos={'relative'}>
 			<VStack
 				as={motion.div}
-				// animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
+				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
 				onContextMenu={onFieldRightClick}
 				onClick={onFieldLeftClick}
 				w={box_width}
