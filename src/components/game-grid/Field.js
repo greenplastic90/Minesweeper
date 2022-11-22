@@ -281,9 +281,8 @@ const Field = ({ field, game, setGame }) => {
 	}
 	const onFieldRightClick = (e) => {
 		e.preventDefault()
+		field.toggleFlag()
 		setGame((current) => {
-			field.toggleFlag()
-
 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 		})
 	}

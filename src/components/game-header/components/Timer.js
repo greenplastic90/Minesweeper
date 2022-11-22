@@ -17,7 +17,6 @@ const Timer = ({ fieldClickedIndex, mineClickedIndex }) => {
 	}
 
 	//* starts timer when after first click
-
 	useEffect(() => {
 		let startOnes, startTens, startHundreds
 		if ((fieldClickedIndex || fieldClickedIndex === 0) && !mineClickedIndex && mineClickedIndex !== 0) {
@@ -27,7 +26,9 @@ const Timer = ({ fieldClickedIndex, mineClickedIndex }) => {
 		}
 
 		//* stops timer from resetting if mine in clicked, but resets if no mine was hit (reset or difficulty change)
-		if (!mineClickedIndex && mineClickedIndex !== 0) {
+		//* runs when no field is clicked or mine is clicked (when game is reset)
+		if (!mineClickedIndex && mineClickedIndex !== 0 && !fieldClickedIndex && fieldClickedIndex !== 0) {
+			console.log('hi')
 			setOnes(0)
 			setTens(0)
 			setHundreds(0)
