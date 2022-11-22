@@ -5,7 +5,7 @@ const Timer = ({ fieldClickedIndex, mineClickedIndex }) => {
 	const [ones, setOnes] = useState(0)
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
-
+	//! Time resets on every click!
 	const updateTimer = (set) => {
 		set((current) => {
 			//* resets to 0 after 9 is reached

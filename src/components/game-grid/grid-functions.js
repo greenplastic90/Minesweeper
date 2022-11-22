@@ -12,6 +12,7 @@ export class GameSetup {
 		this.numberOfFlags = this.fields.reduce((acc, field) => {
 			return field.hasFlag ? acc - 1 : acc
 		}, this.numberOfMines)
+		this.minesToExpose = []
 	}
 	isFirstClick() {
 		return this.fieldClickedIndex === null
@@ -19,10 +20,24 @@ export class GameSetup {
 	fieldClicked(index) {
 		this.fieldClickedIndex = index
 		this.fieldClickedValue = this.fields[index].value
+
+		if (this.fields[index].value === 'mine') {
+			this.mineClicked(index)
+		}
 	}
 	mineClicked(index) {
 		this.mineClickedIndex = index
+		this.generateMinesArrayToExpose(index)
 		this.disableAllFields()
+	}
+	generateMinesArrayToExpose(index) {
+		this.minesToExpose.push(index)
+		this.fields.forEach((field) => {
+			if (field.value === 'mine' && field.index !== index) {
+				this.minesToExpose.push(field.index)
+			}
+		})
+		console.log('minesToExpose', this.minesToExpose)
 	}
 	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))

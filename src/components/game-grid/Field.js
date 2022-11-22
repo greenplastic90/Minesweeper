@@ -275,8 +275,6 @@ const Field = ({ field, game, setGame }) => {
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
 
-				if (value === 'mine') current.mineClicked(index)
-
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 			})
 		}
