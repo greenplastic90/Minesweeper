@@ -346,7 +346,8 @@ const Field = ({ field, game, setGame }) => {
 				w={box_width}
 				h={box_width}
 				bgColor={mineExplodeAnimation ? mineAnimationColors.bgColorEnd : colors.bgColor}
-				_hover={{ bg: colors.bgHoverColor }}
+				//* if expose animation is true, remove hover effect
+				_hover={!exposeAnimation && { bg: colors.bgHoverColor }}
 				justifyContent={'center'}
 				borderRight={borders.right && borderStyle.width}
 				borderRightColor={borders.right && borderStyle.color}
