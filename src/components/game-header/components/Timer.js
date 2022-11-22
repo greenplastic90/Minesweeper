@@ -28,7 +28,6 @@ const Timer = ({ fieldClickedIndex, mineClickedIndex }) => {
 		//* stops timer from resetting if mine in clicked, but resets if no mine was hit (reset or difficulty change)
 		//* runs when no field is clicked or mine is clicked (when game is reset)
 		if (!mineClickedIndex && mineClickedIndex !== 0 && !fieldClickedIndex && fieldClickedIndex !== 0) {
-			console.log('hi')
 			setOnes(0)
 			setTens(0)
 			setHundreds(0)

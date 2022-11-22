@@ -12,11 +12,12 @@ export class GameSetup {
 		this.numberOfFlags = this.fields.reduce((acc, field) => {
 			return field.hasFlag ? acc - 1 : acc
 		}, this.numberOfMines)
-		this.minesToExpose = []
 	}
+
 	isFirstClick() {
 		return this.fieldClickedIndex === null
 	}
+
 	fieldClicked(index) {
 		this.fieldClickedIndex = index
 		this.fieldClickedValue = this.fields[index].value
@@ -25,20 +26,30 @@ export class GameSetup {
 			this.mineClicked(index)
 		}
 	}
+
 	mineClicked(index) {
 		this.mineClickedIndex = index
 		this.generateMinesArrayToExpose(index)
 		this.disableAllFields()
 	}
+
 	generateMinesArrayToExpose(index) {
-		this.minesToExpose.push(index)
+		//* create an array of mines to expose with mine clicked being at index 0
+		const minesToExpose = []
+		minesToExpose.push(this.fields[index])
 		this.fields.forEach((field) => {
 			if (field.value === 'mine' && field.index !== index) {
-				this.minesToExpose.push(field.index)
+				minesToExpose.push(field)
 			}
 		})
-		console.log('minesToExpose', this.minesToExpose)
+
+		let numOfSeconds = 0
+		minesToExpose.forEach((mine) => {
+			mine.explodeMine(numOfSeconds)
+			numOfSeconds = numOfSeconds + 0.2
+		})
 	}
+
 	generateRandomFieldValueArray(firstClickIndex) {
 		const arr = Array.apply(null, Array(this.numberOfFields))
 		//* starting index and srounding fields can't have mines
@@ -103,6 +114,7 @@ export class GameSetup {
 			field.value = arr[i]
 		})
 	}
+
 	mineAnimationGenerator() {
 		class MineColor {
 			constructor(mineColor, bgColorStart, bgColorEnd) {
@@ -126,11 +138,13 @@ export class GameSetup {
 		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
 		return { color: randomColor }
 	}
+
 	disableAllFields() {
 		return this.fields.forEach((field) => {
 			field.isDisabled = true
 		})
 	}
+
 	getAllSurroundingIndexsToExpose(indexWithValueZero, boardWidth) {
 		const surroundingIndexsThatAreZero = []
 		const surroundingIndexsThatAreZeroThatAreChecked = []
@@ -155,6 +169,7 @@ export class GameSetup {
 
 		return allSurroundingIndexsToExpose
 	}
+
 	exposeFields(fieldIndexsToExpose) {
 		fieldIndexsToExpose.forEach((index) => {
 			this.fields[index].isExposed = true
@@ -173,10 +188,43 @@ export class Field {
 		this.bgIsLight = bgIsLight
 		//* isDisabled changes when toggleFlag() or exposeFields() are called
 		this.isDisabled = false
+		this.exposeMineTimer = null
+		this.runMineAnimation = false
+		this.mineExplodeAimationValues = null
 	}
+
 	toggleFlag() {
 		this.hasFlag = !this.hasFlag
 		this.isDisabled = this.hasFlag || this.isExposed
+	}
+	explodeMine(timer) {
+		this.exposeMineTimer = timer
+		this.runMineAnimation = true
+
+		this.mineAnimationGenerator()
+	}
+	mineAnimationGenerator() {
+		class MineColor {
+			constructor(mineColor, bgColorStart, bgColorEnd) {
+				this.mineColor = mineColor
+				this.bgColorStart = bgColorStart
+				this.bgColorEnd = bgColorEnd
+			}
+		}
+		const blueMine = new MineColor('#175FC7', '#86B2F1', '#5894EC')
+		const lightBlueMine = new MineColor('#018686', '#EDFFFF', '#88FEFE')
+		const pinkMine = new MineColor('#A2396D', '#F6E4ED', '#DB99BA')
+		const greenMine = new MineColor('#056717', '#0AC82D', '#079822')
+		const purpleMine = new MineColor('#321F96', '#A496EA', '#5A42D8')
+		const yellowMine = new MineColor('#999900', '#FFFF66', '#FFFF00')
+		const redMine = new MineColor('#6C0E14', '#EA5C64', '#C61A24')
+		const mineColors = [blueMine, lightBlueMine, pinkMine, greenMine, purpleMine, yellowMine, redMine]
+		//! number of confetti
+		//! starting location of each confetti
+		//! swining animation of each confetti
+		//! colors for confetti, mine and background (before and after)
+		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
+		this.mineExplodeAimationValues = { color: randomColor }
 	}
 
 	getFieldsSurroundingExludingIndex(numberOfFields, width) {
