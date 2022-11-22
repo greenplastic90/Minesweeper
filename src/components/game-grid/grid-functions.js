@@ -222,6 +222,7 @@ export class Field {
 		//! number of confetti
 		//! starting location of each confetti
 		//! swining animation of each confetti
+		//! duration before dissapearing
 		//! colors for confetti, mine and background (before and after)
 		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
 		this.mineExplodeAimationValues = { color: randomColor }

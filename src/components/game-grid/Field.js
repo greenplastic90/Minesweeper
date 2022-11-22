@@ -1,8 +1,8 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
-import { GameSetup, getAllSurroundingIndexsToExpose, getFieldsSurroundingExludingIndex, getRandomInt } from './grid-functions'
+import { GameSetup, getRandomInt } from './grid-functions'
 
 // const Field = ({ index, difficulty, bgIsLight, value, firstClick, setFirstClick, exposedArray, setExposedArray, isExposed, boardWidth, valuesArray, setMineClicked, setFlagsArray, hasFlag, handleShakeAnimation, exposedIndexesToAnimate, setExposedIndexesToAnimate, disbaleField, mineIndexes }) => {
 // 	const [bgColor, setBgColor] = useState()
@@ -263,7 +263,8 @@ const Field = ({ field, game, setGame }) => {
 	//* showValue is created so that when animation is exposed, there is a slight delay before value is shown, otherwise the value shows over the animation for a brief time
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
-	const [explodeMineAnimationVisual, setExplodeMineAnimationVisual] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
+
+	const [confettiArray, setConfettiArray] = useState([])
 
 	const onFieldLeftClick = () => {
 		if (!isDisabled) {
@@ -290,6 +291,7 @@ const Field = ({ field, game, setGame }) => {
 		})
 	}
 
+	//* runs when mines are exposed
 	useEffect(() => {
 		if (runMineAnimation)
 			setTimeout(() => {
@@ -322,6 +324,9 @@ const Field = ({ field, game, setGame }) => {
 			setExposeValueFieldAnimationVisual((current) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
+		}
+		return () => {
+			setExposeAnimation(false)
 		}
 	}, [field, field.isExposed])
 	//* create border
@@ -372,12 +377,17 @@ const Field = ({ field, game, setGame }) => {
 				) : null}
 			</VStack>
 			{exposeAnimation && <FieldTopLayer expose={exposeAnimation} exposeAnimationValues={exposeValueFieldAnimationVisual} color={colors.bgColorAnimatedField} />}
-			{mineExplodeAnimation && <Confetti color={mineAnimationColors.mineColor} animation={explodeMineAnimationVisual} />}
+			{mineExplodeAnimation && confettiArray.map((cofetti, i) => <Confetti key={i} color={mineAnimationColors.mineColor} />)}
 		</Box>
 	)
 }
 
 export default Field
+
+const Confetti = ({ color }) => {
+	const [animation, setAnimation] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
+	return <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={color} animate={animation} />
+}
 
 const Mine = ({ width, color }) => {
 	return <Box w={width} h={width} bgColor={color} borderRadius={'full'} />
@@ -385,8 +395,4 @@ const Mine = ({ width, color }) => {
 
 const FieldTopLayer = ({ expose, exposeAnimationValues, color }) => {
 	return <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={color} animate={expose ? exposeAnimationValues : 'null'} />
-}
-
-const Confetti = ({ color, animation }) => {
-	return <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={color} animate={animation} />
 }
