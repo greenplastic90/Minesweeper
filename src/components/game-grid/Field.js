@@ -372,8 +372,7 @@ const Field = ({ field, game, setGame }) => {
 				) : null}
 			</VStack>
 			{exposeAnimation && <FieldTopLayer expose={exposeAnimation} exposeAnimationValues={exposeValueFieldAnimationVisual} color={colors.bgColorAnimatedField} />}
-
-			{mineExplodeAnimation && <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={mineAnimationColors.mineColor} animate={explodeMineAnimationVisual} />}
+			{mineExplodeAnimation && <Confetti color={mineAnimationColors.mineColor} animation={explodeMineAnimationVisual} />}
 		</Box>
 	)
 }
@@ -386,4 +385,8 @@ const Mine = ({ width, color }) => {
 
 const FieldTopLayer = ({ expose, exposeAnimationValues, color }) => {
 	return <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={color} animate={expose ? exposeAnimationValues : 'null'} />
+}
+
+const Confetti = ({ color, animation }) => {
+	return <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={color} animate={animation} />
 }
