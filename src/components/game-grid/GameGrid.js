@@ -3,12 +3,11 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Field from './Field'
-import { generateRandomFieldValueArray, getAllSurroundingIndexsToExpose, mineAnimationGenerator, randomShakeArray } from './grid-functions'
 
 const GameGrid = ({ game, setGame }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
-	const [shakeAnimation, setShakeAnimation] = useState({ y: randomShakeArray(), x: randomShakeArray(), transition: { duration: shakeAnimationDuration } })
+	const [shakeAnimation, setShakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
 
 	useEffect(() => {
@@ -17,7 +16,7 @@ const GameGrid = ({ game, setGame }) => {
 			setTimeout(() => setRunShakeAnimation(false), 1000 * shakeAnimationDuration)
 			setShakeAnimation((current) => {
 				//* randomly creates a shake animation
-				return { ...current, y: randomShakeArray(), x: randomShakeArray() }
+				return { ...current, y: game.randomShakeArray(), x: game.randomShakeArray() }
 			})
 		}
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
@@ -26,7 +25,7 @@ const GameGrid = ({ game, setGame }) => {
 	return (
 		<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field) => (
-				<GridItem key={field.index}>
+				<GridItem key={field.id}>
 					<Field field={field} game={game} setGame={setGame} />
 				</GridItem>
 			))}

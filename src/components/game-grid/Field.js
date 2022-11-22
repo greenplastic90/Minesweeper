@@ -293,20 +293,15 @@ const Field = ({ field, game, setGame }) => {
 
 	//* runs when mines are exposed
 	useEffect(() => {
-		let timeout
-		if (field.runMineAnimation) {
-			timeout = setTimeout(() => {
+		if (runMineAnimation) {
+			setTimeout(() => {
 				setMineExplodeAnimation(true)
 				field.isExposed = true
 				field.runMineAnimation = false
 				setMineAnimationColors(mineExplodeAimationValues.color)
 			}, 1000 * exposeMineTimer)
 		}
-		return () => {
-			//* stops mines from exploding is game is reset
-			clearTimeout(timeout)
-		}
-	}, [exposeMineTimer, field, index, mineExplodeAimationValues, runMineAnimation, setGame])
+	}, [exposeMineTimer, field, mineExplodeAimationValues, runMineAnimation])
 
 	useEffect(() => {
 		//* set bgColor, bgHoverColor, bgColorAnimatedField

@@ -1,6 +1,7 @@
 import { VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
+import { v4 as uuidv4 } from 'uuid'
 
 import GameGrid from './game-grid/GameGrid'
 import { Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
@@ -30,8 +31,9 @@ const Game = () => {
 		let bgIsLight = true
 
 		for (let i = 0; i < numOfFieldsToCreate; i++) {
+			const feildId = uuidv4()
 			bgIsLight = setBgColorShade(i, difficulty.horizontal_boxes, bgIsLight)
-			const field = new Field(i, bgIsLight, null)
+			const field = new Field(feildId, i, bgIsLight, null)
 			initialFieldsCreated.push(field)
 		}
 
