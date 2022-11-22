@@ -303,6 +303,7 @@ const Field = ({ field, game, setGame }) => {
 			}, 1000 * exposeMineTimer)
 		}
 		return () => {
+			//* stops mines from exploding is game is reset
 			clearTimeout(timeout)
 		}
 	}, [exposeMineTimer, field, index, mineExplodeAimationValues, runMineAnimation, setGame])
