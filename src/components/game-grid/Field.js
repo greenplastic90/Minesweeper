@@ -26,7 +26,7 @@ const Field = ({ field, game, setGame }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 
-	const [confettiArray, setConfettiArray] = useState([])
+	const [confettiArray, setConfettiArray] = useState(['1'])
 
 	const onFieldLeftClick = () => {
 		if (!isDisabled) {
@@ -84,11 +84,6 @@ const Field = ({ field, game, setGame }) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
 		}
-
-		return () => {
-			//* resets animations
-			setExposeAnimation(false)
-		}
 	}, [field, isExposed])
 	//* create border
 	useEffect(() => {
@@ -97,6 +92,9 @@ const Field = ({ field, game, setGame }) => {
 		})
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 
+	//! mines covered withnflags shouldn't explode
+	//! mines covers with flags not covering mines will show an x after mines finish exploding
+	//!
 	return (
 		<Box pos={'relative'}>
 			<VStack
@@ -106,7 +104,7 @@ const Field = ({ field, game, setGame }) => {
 				onClick={onFieldLeftClick}
 				w={box_width}
 				h={box_width}
-				bgColor={mineExplodeAnimation ? mineAnimationColors.bgColorEnd : colors.bgColor}
+				bgColor={colors.bgColor}
 				//* if expose animation is true, remove hover effect
 				_hover={!exposeAnimation && { bg: colors.bgHoverColor }}
 				justifyContent={'center'}

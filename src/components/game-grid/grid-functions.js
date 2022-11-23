@@ -38,7 +38,7 @@ export class GameSetup {
 		const minesToExpose = []
 		minesToExpose.push(this.fields[index])
 		this.fields.forEach((field) => {
-			if (field.value === 'mine' && field.index !== index) {
+			if (field.value === 'mine' && !field.hasFlag && field.index !== index) {
 				minesToExpose.push(field)
 			}
 		})
@@ -319,7 +319,7 @@ export class Field {
 		}
 	}
 	isMine() {
-		return this.value === 'mine' ? true : false
+		return this.value === 'mine'
 	}
 
 	generateFieldColors() {
@@ -330,7 +330,8 @@ export class Field {
 			if (this.isExposed) {
 				bgColor = 'field.brown_light'
 				//* don't want to add a hover effect if the field is Zero
-				if (this.value) {
+				console.log(this.value)
+				if (this.value !== 0) {
 					bgHoverColor = 'field.brown_hover_light'
 				} else {
 					bgHoverColor = ''

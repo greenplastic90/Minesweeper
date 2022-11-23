@@ -14,13 +14,9 @@ const GameGrid = ({ game, setGame }) => {
 		if (fieldClickedValue === 0 || fieldClickedValue === 'mine') {
 			setRunShakeAnimation(true)
 			setTimeout(() => setRunShakeAnimation(false), 1000 * shakeAnimationDuration)
-			setShakeAnimation((current) => {
-				//* randomly creates a shake animation
-				return { ...current, y: game.randomShakeArray(), x: game.randomShakeArray() }
-			})
 		}
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
-	}, [fieldClickedValue, fieldClickedIndex, game])
+	}, [fieldClickedValue, fieldClickedIndex])
 
 	return (
 		<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
