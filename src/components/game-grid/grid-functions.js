@@ -34,14 +34,19 @@ export class GameSetup {
 	}
 
 	generateMinesArrayToExpose(index) {
-		//* create an array of mines to expose with mine clicked being at index 0
 		const minesToExpose = []
+		const flagsNotCoveringMines = []
+
 		minesToExpose.push(this.fields[index])
 		this.fields.forEach((field) => {
-			if (field.value === 'mine' && !field.hasFlag && field.index !== index) {
-				minesToExpose.push(field)
-			}
+			//* create an array of mines to expose with mine clicked being at index 0
+			if (field.value === 'mine' && !field.hasFlag && field.index !== index) minesToExpose.push(field)
+
+			//* create an array of Flags that are not covering mines
+			if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
 		})
+
+		console.log('flagsNotCoveringMines', flagsNotCoveringMines)
 
 		let numOfSeconds = 0
 		minesToExpose.forEach((mine) => {
@@ -330,7 +335,7 @@ export class Field {
 			if (this.isExposed) {
 				bgColor = 'field.brown_light'
 				//* don't want to add a hover effect if the field is Zero
-				console.log(this.value)
+
 				if (this.value !== 0) {
 					bgHoverColor = 'field.brown_hover_light'
 				} else {
