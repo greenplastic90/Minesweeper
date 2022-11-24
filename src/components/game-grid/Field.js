@@ -2,6 +2,7 @@ import { Box, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
+import { TbX } from 'react-icons/tb'
 import { GameSetup, getRandomInt } from './grid-functions'
 
 const Field = ({ field, game, setGame }) => {
@@ -137,9 +138,9 @@ const Field = ({ field, game, setGame }) => {
 					) : null
 				) : hasFlag ? (
 					exposeFalseFlag ? (
-						<Text>X</Text>
+						<TbX size='100%' color={'#DF4826'} />
 					) : (
-						<BsFillFlagFill size={value_size} color={'#88252B'} />
+						<BsFillFlagFill size={value_size} color={'#DF4826'} />
 					)
 				) : null}
 			</VStack>
