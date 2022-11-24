@@ -46,13 +46,14 @@ export class GameSetup {
 			if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
 		})
 
-		console.log('flagsNotCoveringMines', flagsNotCoveringMines)
-
 		let numOfSeconds = 0
 		minesToExpose.forEach((mine) => {
 			mine.explodeMine(numOfSeconds)
 			numOfSeconds = numOfSeconds + 0.2
 		})
+
+		//! use numOfSeconds to expose flags
+		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
 	}
 
 	generateRandomFieldValueArray(firstClickIndex) {
@@ -228,17 +229,23 @@ export class Field {
 		this.value = value
 		this.isExposed = false
 		this.hasFlag = false
+		this.falseFlag = false
 		this.bgIsLight = bgIsLight
 		//* isDisabled changes when toggleFlag() or exposeFields() are called
 		this.isDisabled = false
 		this.exposeMineTimer = null
 		this.runMineAnimation = false
 		this.mineExplodeAimationValues = null
+		this.falseFlag = false
 	}
 
 	toggleFlag() {
 		this.hasFlag = !this.hasFlag
 		this.isDisabled = this.hasFlag || this.isExposed
+	}
+	exposeFalseFlag(timer) {
+		this.exposeMineTimer = timer
+		this.falseFlag = true
 	}
 	explodeMine(timer) {
 		this.exposeMineTimer = timer

@@ -5,7 +5,7 @@ import { BsFillFlagFill } from 'react-icons/bs'
 import { GameSetup, getRandomInt } from './grid-functions'
 
 const Field = ({ field, game, setGame }) => {
-	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues } = field
+	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field
 
 	const {
 		difficulty: { mine_width, value_size, box_width, border_width, horizontal_boxes },
@@ -25,6 +25,7 @@ const Field = ({ field, game, setGame }) => {
 	//* showValue is created so that when animation is exposed, there is a slight delay before value is shown, otherwise the value shows over the animation for a brief time
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
+	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 
 	const [confettiArray, setConfettiArray] = useState(['1'])
 
@@ -52,6 +53,15 @@ const Field = ({ field, game, setGame }) => {
 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
 		})
 	}
+
+	//* expose false flag
+	useEffect(() => {
+		if (falseFlag) {
+			setTimeout(() => {
+				setExposeFalseFlag(true)
+			}, 1000 * exposeMineTimer)
+		}
+	}, [exposeMineTimer, falseFlag])
 
 	//* runs when mines are exposed
 	useEffect(() => {
@@ -92,7 +102,6 @@ const Field = ({ field, game, setGame }) => {
 		})
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 
-	//! mines covered withnflags shouldn't explode
 	//! mines covers with flags not covering mines will show an x after mines finish exploding
 	//!
 	return (
@@ -127,7 +136,11 @@ const Field = ({ field, game, setGame }) => {
 						)
 					) : null
 				) : hasFlag ? (
-					<BsFillFlagFill size={value_size} color={'#88252B'} />
+					exposeFalseFlag ? (
+						<Text>X</Text>
+					) : (
+						<BsFillFlagFill size={value_size} color={'#88252B'} />
+					)
 				) : null}
 			</VStack>
 			{exposeAnimation && <FieldTopLayer expose={exposeAnimation} exposeAnimationValues={exposeValueFieldAnimationVisual} color={colors.bgColorAnimatedField} />}
