@@ -152,9 +152,10 @@ export default Field
 
 const DisplayConfetti = ({ runAnimation, color }) => {
 	const [confettiArrayData, setConfettiArrayData] = useState([])
-	const NUMBER_OF_CONFETTI = 1
+
 	useEffect(() => {
 		if (runAnimation) {
+			const NUMBER_OF_CONFETTI = getRandomInt(5, 7)
 			const arrayOfConfetti = []
 
 			for (let i = 0; i < NUMBER_OF_CONFETTI; i++) {

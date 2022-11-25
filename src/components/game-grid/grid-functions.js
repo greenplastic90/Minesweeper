@@ -383,8 +383,9 @@ export class Field {
 export class ConfettiSetup {
 	constructor(color) {
 		this.color = color
+		this.numberOfSwings = 0
 		this.position = {}
-		this.animation = { scale: [0.75, 1, 1, 1, 0], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 5 } }
+		this.animation = { scale: [0.75, 1, 1, 1, 0], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000 } }
 	}
 	generateRandomConfetti() {
 		this.position.top = getRandomInt(0, 100)
@@ -394,16 +395,31 @@ export class ConfettiSetup {
 		this.generateAnimation()
 	}
 	generateAnimation() {
+		this.numberOfSwings = getRandomInt(4, 6)
 		this.animation.transition.duration = getRandomInt(4, 6)
 		this.horizontalMovement()
 	}
 	horizontalMovement() {
 		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
 		let swingLeft = this.position.left < 50
-		this.animation.rotate = swingLeft ? [-10, 10, -20, 10] : [10, -10, 20, -10]
+
+		this.animation.rotate = swingLeft ? [-10] : [10]
+		//* below generates an array that looks like this [-10, -10, 10, -10, 10]
+
+		for (let i = 0; i < this.numberOfSwings; i++) {
+			const firstIndex = this.animation.rotate[0]
+			if (i === 0) {
+				this.animation.rotate.push(firstIndex)
+			} else if (!(i % 2)) {
+				this.animation.rotate.push(firstIndex)
+			} else {
+				this.animation.rotate.push(firstIndex * -1)
+			}
+		}
+		console.log(this.animation.rotate)
+
 		this.animation.x = [0]
-		const NUMBER_OF_SWINGS = 4
-		for (let i = 0; i <= NUMBER_OF_SWINGS; i++) {
+		for (let i = 0; i <= this.numberOfSwings; i++) {
 			swingLeft ? this.animation.x.push(getRandomInt(-10, -80)) : this.animation.x.push(getRandomInt(10, 50))
 			swingLeft = !swingLeft
 		}
