@@ -384,8 +384,6 @@ export class ConfettiSetup {
 	constructor(color) {
 		this.color = color
 		this.position = {}
-		this.x = []
-		this.y = []
 		this.animation = { scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } }
 	}
 	generateRandomConfetti() {
@@ -395,7 +393,14 @@ export class ConfettiSetup {
 		this.position.right = 70 - this.position.left
 		this.generateAnimation()
 	}
-	generateAnimation() {}
+	generateAnimation() {
+		this.horizontalMovement()
+	}
+	horizontalMovement() {
+		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
+		const initialLaunchDirection = this.position.left < 50 ? -30 : 30
+		this.animation.x = initialLaunchDirection < 0 ? [0, -30, 20, -20, 20] : [0, 30, -20, 20, -20]
+	}
 }
 
 export const localStorageDifficulty = () => {
