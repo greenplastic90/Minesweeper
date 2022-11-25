@@ -152,14 +152,12 @@ export default Field
 
 const DisplayConfetti = ({ runAnimation, color }) => {
 	const [confettiArrayData, setConfettiArrayData] = useState([])
-	const [animation, setAnimation] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
-
+	const NUMBER_OF_CONFETTI = 1
 	useEffect(() => {
 		if (runAnimation) {
-			const numberOfConfetti = 8
 			const arrayOfConfetti = []
 
-			for (let i = 0; i < numberOfConfetti; i++) {
+			for (let i = 0; i < NUMBER_OF_CONFETTI; i++) {
 				const newConfetti = new ConfettiSetup(color)
 				newConfetti.generateRandomConfetti()
 
@@ -175,7 +173,6 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 				<>
 					{confettiArrayData.map((c, i) => (
 						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={color} animate={c.animation} />
-						// <Box key={i} as={motion.div} zIndex={2} top={'80%'} bottom={'0%'} left={'70%'} right={'0%'} pos={'absolute'} bgColor={color} animate={animation} />
 					))}
 				</>
 			)}
