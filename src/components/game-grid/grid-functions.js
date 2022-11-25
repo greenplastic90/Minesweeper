@@ -48,12 +48,22 @@ export class GameSetup {
 		})
 
 		let numOfSeconds = 0
-		minesToExpose.forEach((mine) => {
+		minesToExpose.forEach((mine, i) => {
 			mine.explodeMine(numOfSeconds)
-			numOfSeconds = numOfSeconds + 0.2
+			console.log(this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(minesToExpose.length, i))
+			numOfSeconds = numOfSeconds + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(minesToExpose.length, i)
 		})
 
 		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
+	}
+	generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(arrLength, index) {
+		if (index < arrLength * 0.2) {
+			return getRandomNum(0.5, 0.8)
+		} else if (index < arrLength * 0.4) {
+			return getRandomNum(0.3, 0.5)
+		} else {
+			return getRandomNum(0.2, 0.1)
+		}
 	}
 
 	generateRandomFieldValueArray(firstClickIndex) {
@@ -215,7 +225,7 @@ export class GameSetup {
 			if (i === 0 || i === arrLength - 1) {
 				arr.push(0)
 			} else {
-				arr.push(getRandomInt(-1, 1))
+				arr.push(getRandomNum(-1, 1))
 			}
 		}
 		return arr
@@ -387,15 +397,15 @@ export class ConfettiSetup {
 		this.color = color
 		this.numberOfSwings = 0
 		this.position = {}
-		this.animation = { scale: [0.75, 1, 1, 0.5, 0], transition: { type: 'spring', stiffness: 1000 } }
+		this.animation = { scale: [0.75, 1, 1, 0.5, 0], transition: {} }
 	}
 
 	generateRandomConfetti() {
-		this.position.top = getRandomInt(0, 100)
+		this.position.top = getRandomNum(0, 100)
 		this.position.bottom = 85 - this.position.top
-		this.position.left = getRandomInt(0, 100)
+		this.position.left = getRandomNum(0, 100)
 		this.position.right = 75 - this.position.left
-		this.color = this.lightenDarkenColor(this.color, getRandomInt(-30, 30))
+		this.color = this.lightenDarkenColor(this.color, getRandomNum(-30, 30))
 		this.generateAnimation()
 	}
 	lightenDarkenColor(col, amt) {
@@ -406,8 +416,8 @@ export class ConfettiSetup {
 		return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
 	}
 	generateAnimation() {
-		this.numberOfSwings = getRandomInt(3, 6)
-		this.animation.transition.duration = getRandomInt(4, 6)
+		this.numberOfSwings = getRandomNum(3, 6)
+		this.animation.transition.duration = getRandomNum(4, 6)
 		this.movement()
 	}
 
@@ -415,7 +425,7 @@ export class ConfettiSetup {
 		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
 		let swingLeft = this.position.left < 50
 
-		this.animation.rotate = swingLeft ? [getRandomInt(-5, -20)] : [getRandomInt(5, 20)]
+		this.animation.rotate = swingLeft ? [getRandomNum(-5, -20)] : [getRandomNum(5, 20)]
 		//* below generates an array that looks like this [-10, -10, 10, -10, 10]
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
@@ -428,12 +438,11 @@ export class ConfettiSetup {
 				this.animation.rotate.push(firstIndex * -1)
 			}
 		}
-		console.log(this.animation.rotate)
 
 		//* left right swing
 		this.animation.x = [0]
 		for (let i = 0; i <= this.numberOfSwings; i++) {
-			swingLeft ? this.animation.x.push(getRandomInt(-10, -50)) : this.animation.x.push(getRandomInt(10, 50))
+			swingLeft ? this.animation.x.push(getRandomNum(-10, -50)) : this.animation.x.push(getRandomNum(10, 50))
 			swingLeft = !swingLeft
 		}
 
@@ -444,11 +453,11 @@ export class ConfettiSetup {
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
 			if (i === 0) {
-				const initialHeight = topHalf ? getRandomInt(-70, -90) : getRandomInt(-30, -70)
+				const initialHeight = topHalf ? getRandomNum(-70, -90) : getRandomNum(-30, -70)
 				this.animation.y.push(initialHeight)
 			} else {
 				//* start the decent
-				const decentHeight = this.animation.y[i] + getRandomInt(10, 30)
+				const decentHeight = this.animation.y[i] + getRandomNum(10, 30)
 				this.animation.y.push(decentHeight)
 			}
 		}
@@ -482,6 +491,6 @@ export const setBgColorShade = (index, width, isBgLight) => {
 	return isBgLight
 }
 
-export const getRandomInt = (min, max) => {
-	return Math.floor(Math.random() * (max - min)) + min
+export const getRandomNum = (min, max) => {
+	return Math.random() * (max - min) + min
 }

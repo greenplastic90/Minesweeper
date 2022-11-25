@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
-import { GameSetup, getRandomInt, ConfettiSetup } from './grid-functions'
+import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
 const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field
@@ -85,10 +85,10 @@ const Field = ({ field, game, setGame }) => {
 			setTimeout(() => setShowValue(true), 1000 * 0.1)
 
 			//* expose animation values
-			const yUp = getRandomInt(0, -80)
-			const yDown = getRandomInt(0, 150)
-			const x = getRandomInt(-80, 80)
-			const rotate = x > 0 ? getRandomInt(30, 190) : getRandomInt(-190, -30)
+			const yUp = getRandomNum(0, -80)
+			const yDown = getRandomNum(0, 150)
+			const x = getRandomNum(-80, 80)
+			const rotate = x > 0 ? getRandomNum(30, 190) : getRandomNum(-190, -30)
 			setExposeValueFieldAnimationVisual((current) => {
 				return { ...current, x: [0, x], y: [0, yUp, yDown], rotate: [0, rotate] }
 			})
