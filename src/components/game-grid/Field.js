@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
-import { GameSetup, getRandomInt } from './grid-functions'
+import { GameSetup, getRandomInt, ConfettiSetup } from './grid-functions'
 
 const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field
@@ -156,28 +156,25 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 
 	useEffect(() => {
 		if (runAnimation) {
-			const numberOfConfetti = 6
+			const numberOfConfetti = 8
 			const arrayOfConfetti = []
 
 			for (let i = 0; i < numberOfConfetti; i++) {
-				const position = {}
-				position.top = getRandomInt(0, 100)
-				position.bottom = 80 - position.top
-				position.left = getRandomInt(0, 100)
-				position.right = 70 - position.left
+				const newConfetti = new ConfettiSetup(color)
+				newConfetti.generateRandomConfetti()
 
-				arrayOfConfetti.push({ position: position })
+				arrayOfConfetti.push(newConfetti)
 			}
 			setConfettiArrayData(arrayOfConfetti)
 		}
-	}, [runAnimation])
+	}, [color, runAnimation])
 
 	return (
 		<>
 			{runAnimation && (
 				<>
 					{confettiArrayData.map((c, i) => (
-						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={color} animate={animation} />
+						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={color} animate={c.animation} />
 						// <Box key={i} as={motion.div} zIndex={2} top={'80%'} bottom={'0%'} left={'70%'} right={'0%'} pos={'absolute'} bgColor={color} animate={animation} />
 					))}
 				</>

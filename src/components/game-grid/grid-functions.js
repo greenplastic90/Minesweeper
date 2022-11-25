@@ -380,11 +380,22 @@ export class Field {
 	}
 }
 
-export class Confetti {
-	constructor(position, color) {
-		this.position = position
+export class ConfettiSetup {
+	constructor(color) {
 		this.color = color
+		this.position = {}
+		this.x = []
+		this.y = []
+		this.animation = { scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } }
 	}
+	generateRandomConfetti() {
+		this.position.top = getRandomInt(0, 100)
+		this.position.bottom = 80 - this.position.top
+		this.position.left = getRandomInt(0, 100)
+		this.position.right = 70 - this.position.left
+		this.generateAnimation()
+	}
+	generateAnimation() {}
 }
 
 export const localStorageDifficulty = () => {
