@@ -389,9 +389,9 @@ export class ConfettiSetup {
 	}
 	generateRandomConfetti() {
 		this.position.top = getRandomInt(0, 100)
-		this.position.bottom = 80 - this.position.top
+		this.position.bottom = 85 - this.position.top
 		this.position.left = getRandomInt(0, 100)
-		this.position.right = 70 - this.position.left
+		this.position.right = 75 - this.position.left
 		this.generateAnimation()
 	}
 	generateAnimation() {
