@@ -385,20 +385,29 @@ export class ConfettiSetup {
 		this.color = color
 		this.numberOfSwings = 0
 		this.position = {}
-		this.animation = { scale: [0.75, 1, 1, 1, 0], transition: { type: 'spring', stiffness: 1000 } }
+		this.animation = { scale: [0.75, 1, 1, 0.5, 0], transition: { type: 'spring', stiffness: 1000 } }
 	}
+
 	generateRandomConfetti() {
 		this.position.top = getRandomInt(0, 100)
 		this.position.bottom = 85 - this.position.top
 		this.position.left = getRandomInt(0, 100)
 		this.position.right = 75 - this.position.left
 		this.generateAnimation()
+		console.log(this.color, this.lightenDarkenColor(this.color.slice(1), 60))
+		this.color = this.lightenDarkenColor(this.color, getRandomInt(60, 100))
+	}
+	lightenDarkenColor(col, amt) {
+		col = col.slice(1)
+		col = parseInt(col, 16)
+		return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
 	}
 	generateAnimation() {
 		this.numberOfSwings = getRandomInt(3, 6)
 		this.animation.transition.duration = getRandomInt(4, 6)
 		this.movement()
 	}
+
 	movement() {
 		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
 		let swingLeft = this.position.left < 50

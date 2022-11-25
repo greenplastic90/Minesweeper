@@ -173,7 +173,7 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 			{runAnimation && (
 				<>
 					{confettiArrayData.map((c, i) => (
-						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={color} animate={c.animation} />
+						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={c.color} animate={c.animation} />
 					))}
 				</>
 			)}
