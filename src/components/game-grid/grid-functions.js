@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { easy, medium, hard } from '../difficulty-options'
 
 export class GameSetup {
@@ -382,6 +383,7 @@ export class Field {
 
 export class ConfettiSetup {
 	constructor(color) {
+		this.id = uuidv4()
 		this.color = color
 		this.numberOfSwings = 0
 		this.position = {}
@@ -393,11 +395,12 @@ export class ConfettiSetup {
 		this.position.bottom = 85 - this.position.top
 		this.position.left = getRandomInt(0, 100)
 		this.position.right = 75 - this.position.left
+		this.color = this.lightenDarkenColor(this.color, getRandomInt(-30, 30))
 		this.generateAnimation()
-		console.log(this.color, this.lightenDarkenColor(this.color.slice(1), 60))
-		this.color = this.lightenDarkenColor(this.color, getRandomInt(60, 100))
 	}
 	lightenDarkenColor(col, amt) {
+		//* function lightens or darkens a coloer bases on the int passed in the 2nd param
+		//? removing # from string and adding it in the return
 		col = col.slice(1)
 		col = parseInt(col, 16)
 		return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
@@ -429,7 +432,7 @@ export class ConfettiSetup {
 		//* left right swing
 		this.animation.x = [0]
 		for (let i = 0; i <= this.numberOfSwings; i++) {
-			swingLeft ? this.animation.x.push(getRandomInt(-10, -80)) : this.animation.x.push(getRandomInt(10, 50))
+			swingLeft ? this.animation.x.push(getRandomInt(-10, -50)) : this.animation.x.push(getRandomInt(10, 50))
 			swingLeft = !swingLeft
 		}
 
@@ -440,7 +443,7 @@ export class ConfettiSetup {
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
 			if (i === 0) {
-				const initialHeight = topHalf ? getRandomInt(-70, -90) : getRandomInt(-30, -60)
+				const initialHeight = topHalf ? getRandomInt(-70, -90) : getRandomInt(-30, -70)
 				this.animation.y.push(initialHeight)
 			} else {
 				//* start the decent

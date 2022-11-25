@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
 import { GameSetup, getRandomInt, ConfettiSetup } from './grid-functions'
+import { v4 as uuidv4 } from 'uuid'
 
 const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field
@@ -172,8 +173,8 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 		<>
 			{runAnimation && (
 				<>
-					{confettiArrayData.map((c, i) => (
-						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={c.color} animate={c.animation} />
+					{confettiArrayData.map((c) => (
+						<Box key={c.id} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={c.color} animate={c.animation} />
 					))}
 				</>
 			)}
