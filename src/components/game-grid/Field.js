@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
 import { GameSetup, getRandomInt, ConfettiSetup } from './grid-functions'
-import { v4 as uuidv4 } from 'uuid'
 
 const Field = ({ field, game, setGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field

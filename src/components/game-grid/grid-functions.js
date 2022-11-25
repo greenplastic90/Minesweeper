@@ -415,7 +415,7 @@ export class ConfettiSetup {
 		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
 		let swingLeft = this.position.left < 50
 
-		this.animation.rotate = swingLeft ? [-10] : [10]
+		this.animation.rotate = swingLeft ? [getRandomInt(-5, -20)] : [getRandomInt(5, 20)]
 		//* below generates an array that looks like this [-10, -10, 10, -10, 10]
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
@@ -428,6 +428,7 @@ export class ConfettiSetup {
 				this.animation.rotate.push(firstIndex * -1)
 			}
 		}
+		console.log(this.animation.rotate)
 
 		//* left right swing
 		this.animation.x = [0]
