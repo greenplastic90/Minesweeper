@@ -155,7 +155,7 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 
 	useEffect(() => {
 		if (runAnimation) {
-			const NUMBER_OF_CONFETTI = getRandomInt(5, 7)
+			const NUMBER_OF_CONFETTI = 8
 			const arrayOfConfetti = []
 
 			for (let i = 0; i < NUMBER_OF_CONFETTI; i++) {
@@ -179,10 +179,6 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 			)}
 		</>
 	)
-}
-const Confetti = ({ position, animation, color }) => {
-	const { top, bottom, left, right } = position
-	return <Box as={motion.div} zIndex={2} top={`${top}%`} bottom={`${bottom}%`} left={`${left}%`} right={`${right}%`} pos={'absolute'} bgColor={color} animate={animation} />
 }
 
 const Mine = ({ width, color }) => {

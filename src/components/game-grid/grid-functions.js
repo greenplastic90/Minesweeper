@@ -385,7 +385,7 @@ export class ConfettiSetup {
 		this.color = color
 		this.numberOfSwings = 0
 		this.position = {}
-		this.animation = { scale: [0.75, 1, 1, 1, 0], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000 } }
+		this.animation = { scale: [0.75, 1, 1, 1, 0], transition: { type: 'spring', stiffness: 1000 } }
 	}
 	generateRandomConfetti() {
 		this.position.top = getRandomInt(0, 100)
@@ -395,11 +395,11 @@ export class ConfettiSetup {
 		this.generateAnimation()
 	}
 	generateAnimation() {
-		this.numberOfSwings = getRandomInt(4, 6)
+		this.numberOfSwings = getRandomInt(3, 6)
 		this.animation.transition.duration = getRandomInt(4, 6)
-		this.horizontalMovement()
+		this.movement()
 	}
-	horizontalMovement() {
+	movement() {
 		//* if the cofetti is on the left side of the field lauch towards the left and vice versa
 		let swingLeft = this.position.left < 50
 
@@ -416,12 +416,28 @@ export class ConfettiSetup {
 				this.animation.rotate.push(firstIndex * -1)
 			}
 		}
-		console.log(this.animation.rotate)
 
+		//* left right swing
 		this.animation.x = [0]
 		for (let i = 0; i <= this.numberOfSwings; i++) {
 			swingLeft ? this.animation.x.push(getRandomInt(-10, -80)) : this.animation.x.push(getRandomInt(10, 50))
 			swingLeft = !swingLeft
+		}
+
+		//* up down movement
+		//* if confetti is on the top half of the field, it should shoot out a bit higher than ones at the bottom half
+		const topHalf = this.position.top < 50
+		this.animation.y = [0]
+
+		for (let i = 0; i < this.numberOfSwings; i++) {
+			if (i === 0) {
+				const initialHeight = topHalf ? getRandomInt(-70, -90) : getRandomInt(-30, -60)
+				this.animation.y.push(initialHeight)
+			} else {
+				//* start the decent
+				const decentHeight = this.animation.y[i] + getRandomInt(10, 30)
+				this.animation.y.push(decentHeight)
+			}
 		}
 	}
 }
