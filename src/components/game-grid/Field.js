@@ -28,8 +28,6 @@ const Field = ({ field, game, setGame }) => {
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 
-	const [confettiArray, setConfettiArray] = useState(['1'])
-
 	const onFieldLeftClick = () => {
 		if (!isDisabled) {
 			setGame((current) => {
@@ -145,16 +143,51 @@ const Field = ({ field, game, setGame }) => {
 				) : null}
 			</VStack>
 			{exposeAnimation && <FieldTopLayer expose={exposeAnimation} exposeAnimationValues={exposeValueFieldAnimationVisual} color={colors.bgColorAnimatedField} />}
-			{mineExplodeAnimation && confettiArray.map((cofetti, i) => <Confetti key={i} color={mineAnimationColors.mineColor} />)}
+			<DisplayConfetti runAnimation={mineExplodeAnimation} color={mineAnimationColors.mineColor} />
 		</Box>
 	)
 }
 
 export default Field
 
-const Confetti = ({ color }) => {
+const DisplayConfetti = ({ runAnimation, color }) => {
+	const [confettiArrayData, setConfettiArrayData] = useState([])
 	const [animation, setAnimation] = useState({ scale: [0.75, 1, 1, 1, 0], rotate: [-10, -10, 10, -10, 10], x: [0, -30, 20, -20, 20], y: [0, -50, -40, 0, 40], transition: { type: 'spring', stiffness: 1000, duration: 3 } })
-	return <Box as={motion.div} zIndex={2} top={'50%'} bottom={'30%'} left={'20%'} right={'50%'} pos={'absolute'} bgColor={color} animate={animation} />
+
+	useEffect(() => {
+		if (runAnimation) {
+			const numberOfConfetti = 6
+			const arrayOfConfetti = []
+
+			for (let i = 0; i < numberOfConfetti; i++) {
+				const position = {}
+				position.top = getRandomInt(0, 100)
+				position.bottom = 80 - position.top
+				position.left = getRandomInt(0, 100)
+				position.right = 70 - position.left
+
+				arrayOfConfetti.push({ position: position })
+			}
+			setConfettiArrayData(arrayOfConfetti)
+		}
+	}, [runAnimation])
+
+	return (
+		<>
+			{runAnimation && (
+				<>
+					{confettiArrayData.map((c, i) => (
+						<Box key={i} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={color} animate={animation} />
+						// <Box key={i} as={motion.div} zIndex={2} top={'80%'} bottom={'0%'} left={'70%'} right={'0%'} pos={'absolute'} bgColor={color} animate={animation} />
+					))}
+				</>
+			)}
+		</>
+	)
+}
+const Confetti = ({ position, animation, color }) => {
+	const { top, bottom, left, right } = position
+	return <Box as={motion.div} zIndex={2} top={`${top}%`} bottom={`${bottom}%`} left={`${left}%`} right={`${right}%`} pos={'absolute'} bgColor={color} animate={animation} />
 }
 
 const Mine = ({ width, color }) => {

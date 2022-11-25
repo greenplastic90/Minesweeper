@@ -52,7 +52,6 @@ export class GameSetup {
 			numOfSeconds = numOfSeconds + 0.2
 		})
 
-		//! use numOfSeconds to expose flags
 		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
 	}
 
@@ -378,6 +377,13 @@ export class Field {
 		if (this.value === 8) valueColor = 'numbers.eight'
 
 		return { bgColor: bgColor, bgHoverColor: bgHoverColor, bgColorAnimatedField: bgColorAnimatedField, valueColor: valueColor }
+	}
+}
+
+export class Confetti {
+	constructor(position, color) {
+		this.position = position
+		this.color = color
 	}
 }
 
