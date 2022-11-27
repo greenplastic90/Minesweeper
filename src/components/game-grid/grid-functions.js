@@ -30,39 +30,100 @@ export class GameSetup {
 
 	mineClicked(index) {
 		this.mineClickedIndex = index
-		this.generateMinesArrayToExpose(index)
+		this.exposeMines(index)
 		this.disableAllFields()
 	}
+	generateMinesArray(index) {
+		const minesArray = []
+		minesArray.push(this.fields[index])
 
-	generateMinesArrayToExpose(index) {
-		const minesToExpose = []
+		let indexesOfMinesToExpose = this.fields.filter((field) => field.value === 'mine' && !field.hasFlag).map((field) => field.index)
+		//* -1 cause we aready pushed the first index into minesArray
+		let numOfMinesToExpose = indexesOfMinesToExpose.length - 1
+		let indexToFindMinesAround = index
+		while (numOfMinesToExpose > 0) {
+			const mineIndex = this.findIndexOfClosestMine(indexToFindMinesAround, minesArray)
+			minesArray.push(this.fields[mineIndex])
+			indexToFindMinesAround = mineIndex
+			numOfMinesToExpose = numOfMinesToExpose - 1
+		}
+
+		return minesArray
+	}
+	findIndexOfClosestMine(index, minesArray) {
+		let foundMine = false
+		let distance = 1 //* increment by 1
+		let width = this.difficulty.horizontal_boxes * distance
+		let loops = 3 //* increment by 2
+		while (!foundMine) {
+			let topStart = index - width - distance
+			let bottomStart = index + width - distance
+
+			for (let j = topStart; j <= bottomStart; j = j + width) {
+				for (let k = j; k < j + loops; k++) {
+					const checkField = this.fields[k]
+					//? if found push into array and end for loops
+					if (checkField && checkField.value === 'mine' && !checkField.hasFlag && !minesArray.map((mine) => mine.index).includes(checkField.index)) {
+						foundMine = true
+
+						return checkField.index
+					}
+				}
+				if (foundMine) break
+			}
+			if (foundMine) break
+
+			distance = distance + 1
+			loops = loops + 2
+		}
+	}
+
+	exposeMines(index) {
+		const minesToExpose = this.generateMinesArray(index)
 		const flagsNotCoveringMines = []
 
-		minesToExpose.push(this.fields[index])
-		this.fields.forEach((field) => {
-			//* create an array of mines to expose with mine clicked being at index 0
-			if (field.value === 'mine' && !field.hasFlag && field.index !== index) minesToExpose.push(field)
+		// minesToExpose.push(this.fields[index])
 
-			//* create an array of Flags that are not covering mines
-			if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
-		})
+		// this.fields.forEach((field) => {
+		// 	//* create an array of mines to expose with mine clicked being at index 0
+		// 	if (field.value === 'mine' && !field.hasFlag && field.index !== index) minesToExpose.push(field)
+		// 	console.log('minesToExpose ->', minesToExpose)
+		// 	//* create an array of Flags that are not covering mines
+		// 	if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
+		// })
 
 		let numOfSeconds = 0
 		minesToExpose.forEach((mine, i) => {
 			mine.explodeMine(numOfSeconds)
-			console.log(this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(minesToExpose.length, i))
+
 			numOfSeconds = numOfSeconds + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(minesToExpose.length, i)
 		})
 
 		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
 	}
 	generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(arrLength, index) {
-		if (index < arrLength * 0.2) {
-			return getRandomNum(0.5, 0.8)
-		} else if (index < arrLength * 0.4) {
-			return getRandomNum(0.3, 0.5)
+		let speeds
+
+		if (arrLength <= 10) {
+			speeds = { first: { percentage: 0.2, speed: getRandomNum(0.5, 0.8) }, second: { percentage: 0.4, speed: getRandomNum(0.3, 0.5) }, third: { percentage: 0.6, speed: getRandomNum(0.1, 0.2) }, burst: getRandomNum(0.1, 0.2) }
+		} else if (arrLength <= 40) {
+			speeds = { first: { percentage: 0.1, speed: getRandomNum(0.5, 0.8) }, second: { percentage: 0.2, speed: getRandomNum(0.3, 0.5) }, third: { percentage: 0.4, speed: getRandomNum(0.1, 0.2) }, burst: getRandomNum(0.1, 0.2) }
 		} else {
-			return getRandomNum(0.2, 0.1)
+			speeds = { first: { percentage: 0.1, speed: getRandomNum(0.4, 0.6) }, second: { percentage: 0.2, speed: getRandomNum(0.2, 0.3) }, third: { percentage: 0.4, speed: getRandomNum(0.1, 0.1) }, burst: getRandomNum(0.1, 0.2) }
+		}
+
+		const chanceToBurst = getRandomNum(0, 3)
+
+		if (chanceToBurst < 1) {
+			return speeds.burst
+		}
+
+		if (index < arrLength * speeds.first.percentage) {
+			return speeds.first.speed
+		} else if (index < arrLength * speeds.second.percentage) {
+			return speeds.second.speed
+		} else {
+			return speeds.third.speed
 		}
 	}
 
