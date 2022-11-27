@@ -47,10 +47,12 @@ const Field = ({ field, game, setGame }) => {
 	}
 	const onFieldRightClick = (e) => {
 		e.preventDefault()
-		field.toggleFlag()
-		setGame((current) => {
-			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
-		})
+		if (!isDisabled) {
+			field.toggleFlag()
+			setGame((current) => {
+				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
+			})
+		}
 	}
 
 	//* expose false flag

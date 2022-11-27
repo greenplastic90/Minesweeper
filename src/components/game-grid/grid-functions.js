@@ -82,15 +82,10 @@ export class GameSetup {
 		const minesToExpose = this.generateMinesArray(index)
 		const flagsNotCoveringMines = []
 
-		// minesToExpose.push(this.fields[index])
-
-		// this.fields.forEach((field) => {
-		// 	//* create an array of mines to expose with mine clicked being at index 0
-		// 	if (field.value === 'mine' && !field.hasFlag && field.index !== index) minesToExpose.push(field)
-		// 	console.log('minesToExpose ->', minesToExpose)
-		// 	//* create an array of Flags that are not covering mines
-		// 	if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
-		// })
+		this.fields.forEach((field) => {
+			//* create an array of Flags that are not covering mines
+			if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
+		})
 
 		let numOfSeconds = 0
 		minesToExpose.forEach((mine, i) => {
