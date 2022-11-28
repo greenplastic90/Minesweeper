@@ -15,6 +15,12 @@ export class GameSetup {
 		}, this.numberOfMines)
 	}
 
+	isGameWon() {
+		if (this.firstClickIndex !== null) {
+			return this.fields.filter((field) => field.value !== 'mine').every((field) => field.isExposed)
+		}
+	}
+
 	isFirstClick() {
 		return this.fieldClickedIndex === null
 	}
@@ -509,7 +515,7 @@ export class ConfettiSetup {
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
 			if (i === 0) {
-				const initialHeight = topHalf ? getRandomNum(-70, -90) : getRandomNum(-30, -70)
+				const initialHeight = topHalf ? getRandomNum(-100, -130) : getRandomNum(-30, -90)
 				this.animation.y.push(initialHeight)
 			} else {
 				//* start the decent

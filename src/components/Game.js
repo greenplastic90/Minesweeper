@@ -12,6 +12,10 @@ const Game = () => {
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 
+	const resetGame = () => {
+		setResetToggle((current) => !current)
+	}
+
 	useEffect(() => {
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
 
@@ -30,11 +34,12 @@ const Game = () => {
 		console.log(currentGame)
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
-
-	const resetGame = () => {
-		setResetToggle((current) => !current)
-	}
-
+	//* checks if game is won
+	useEffect(() => {
+		if (game && game.isGameWon()) {
+			console.log('GAME WON!')
+		}
+	}, [game])
 	return (
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (
