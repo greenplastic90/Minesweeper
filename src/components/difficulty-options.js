@@ -3,8 +3,8 @@ export const easy = {
 	mines: 10,
 	horizontal_boxes: 10,
 	vertical_boxes: 8,
-	box_width: '45px',
-	mine_width: '18px',
+	box_width: ['35px', '35px', '35px', '35px', '45px'],
+	mine_width: ['16px', '16px', '16px', '16px', '18px'],
 	border_width: '4px solid',
 	value_size: '30px',
 }

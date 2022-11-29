@@ -45,7 +45,7 @@ const Field = ({ field, game, setGame }) => {
 			})
 		}
 	}
-	const onFieldRightClick = (e) => {
+	const handleToggleFlag = (e) => {
 		e.preventDefault()
 		if (!isDisabled) {
 			field.toggleFlag()
@@ -103,14 +103,13 @@ const Field = ({ field, game, setGame }) => {
 		})
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 
-	//! mines covers with flags not covering mines will show an x after mines finish exploding
-	//!
 	return (
 		<Box pos={'relative'}>
 			<VStack
 				as={motion.div}
 				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
-				onContextMenu={onFieldRightClick}
+				onDoubleClick={handleToggleFlag}
+				onContextMenu={handleToggleFlag}
 				onClick={onFieldLeftClick}
 				w={box_width}
 				h={box_width}

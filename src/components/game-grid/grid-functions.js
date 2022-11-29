@@ -17,7 +17,9 @@ export class GameSetup {
 
 	isGameWon() {
 		if (this.firstClickIndex !== null) {
-			return this.fields.filter((field) => field.value !== 'mine').every((field) => field.isExposed)
+			const won = this.fields.filter((field) => field.value !== 'mine').every((field) => field.isExposed)
+			if (won) this.disableAllFields()
+			return won
 		}
 	}
 
@@ -313,7 +315,7 @@ export class Field {
 
 	toggleFlag() {
 		this.hasFlag = !this.hasFlag
-		this.isDisabled = this.hasFlag || this.isExposed
+		this.isDisabled = this.isExposed
 	}
 	exposeFalseFlag(timer) {
 		this.exposeMineTimer = timer
