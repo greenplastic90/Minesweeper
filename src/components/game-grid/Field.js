@@ -156,7 +156,7 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 
 	useEffect(() => {
 		if (runAnimation) {
-			const NUMBER_OF_CONFETTI = 8
+			const NUMBER_OF_CONFETTI = getRandomNum(6, 8)
 			const arrayOfConfetti = []
 
 			for (let i = 0; i < NUMBER_OF_CONFETTI; i++) {

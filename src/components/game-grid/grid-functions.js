@@ -461,14 +461,14 @@ export class ConfettiSetup {
 		this.color = color
 		this.numberOfSwings = 0
 		this.position = {}
-		this.animation = { scale: [0.75, 1, 1, 0.5, 0], transition: {} }
+		this.animation = { scale: [0.75, 1, 0.75, 0, 0], transition: {} }
 	}
 
 	generateRandomConfetti() {
 		this.position.top = getRandomNum(0, 100)
-		this.position.bottom = 85 - this.position.top
+		this.position.bottom = 75 - this.position.top
 		this.position.left = getRandomNum(0, 100)
-		this.position.right = 75 - this.position.left
+		this.position.right = 60 - this.position.left
 		this.color = this.lightenDarkenColor(this.color, getRandomNum(-30, 30))
 		this.generateAnimation()
 	}
@@ -481,7 +481,9 @@ export class ConfettiSetup {
 	}
 	generateAnimation() {
 		this.numberOfSwings = getRandomNum(3, 6)
-		this.animation.transition.duration = getRandomNum(4, 6)
+		this.animation.scale[2] = getRandomNum(0.5, 0, 75)
+		this.animation.scale[3] = this.animation.scale[2] < 0.625 ? 0 : 0.5
+		this.animation.transition.duration = 6
 		this.movement()
 	}
 
@@ -517,11 +519,11 @@ export class ConfettiSetup {
 
 		for (let i = 0; i < this.numberOfSwings; i++) {
 			if (i === 0) {
-				const initialHeight = topHalf ? getRandomNum(-100, -130) : getRandomNum(-30, -90)
+				const initialHeight = topHalf ? getRandomNum(-80, -10) : getRandomNum(-20, -80)
 				this.animation.y.push(initialHeight)
 			} else {
 				//* start the decent
-				const decentHeight = this.animation.y[i] + getRandomNum(10, 30)
+				const decentHeight = this.animation.y[i] + getRandomNum(20, 50)
 				this.animation.y.push(decentHeight)
 			}
 		}
