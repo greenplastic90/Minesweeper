@@ -34,12 +34,7 @@ const Game = () => {
 		console.log(currentGame)
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
-	//* checks if game is won
-	useEffect(() => {
-		if (game && game.isGameWon()) {
-			console.log('GAME WON!')
-		}
-	}, [game])
+
 	return (
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (

@@ -105,36 +105,12 @@ export class GameSetup {
 		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
 	}
 	generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(arrLength, index) {
-		// let speeds
-
 		const chanceToBurst = getRandomNum(0, 3)
 
 		if (chanceToBurst < 1) {
 			return getRandomNum(0.1, 0.2)
 		}
 		return getRandomNum(0.3, 0.6)
-
-		// if (arrLength <= 10) {
-		// 	speeds = { first: { percentage: 0.2, speed: getRandomNum(0.5, 0.8) }, second: { percentage: 0.4, speed: getRandomNum(0.3, 0.5) }, third: { percentage: 0.6, speed: getRandomNum(0.1, 0.2) }, burst: getRandomNum(0.1, 0.2) }
-		// } else if (arrLength <= 40) {
-		// 	speeds = { first: { percentage: 0.1, speed: getRandomNum(0.5, 0.8) }, second: { percentage: 0.2, speed: getRandomNum(0.3, 0.5) }, third: { percentage: 0.4, speed: getRandomNum(0.1, 0.2) }, burst: getRandomNum(0.1, 0.2) }
-		// } else {
-		// 	speeds = { first: { percentage: 0.1, speed: getRandomNum(0.4, 0.6) }, second: { percentage: 0.2, speed: getRandomNum(0.2, 0.3) }, third: { percentage: 0.4, speed: getRandomNum(0.1, 0.1) }, burst: getRandomNum(0.1, 0.2) }
-		// }
-
-		// const chanceToBurst = getRandomNum(0, 3)
-
-		// if (chanceToBurst < 1) {
-		// 	return speeds.burst
-		// }
-
-		// if (index < arrLength * speeds.first.percentage) {
-		// 	return speeds.first.speed
-		// } else if (index < arrLength * speeds.second.percentage) {
-		// 	return speeds.second.speed
-		// } else {
-		// 	return speeds.third.speed
-		// }
 	}
 
 	generateRandomFieldValueArray(firstClickIndex) {
