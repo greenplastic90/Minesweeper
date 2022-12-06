@@ -11,12 +11,16 @@ const Game = () => {
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
+	const [showEndGame, setShowEndGame] = useState(false)
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
+		setShowEndGame(false)
 	}
 
 	useEffect(() => {
+		setShowEndGame(false)
+
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
 
 		const initialFieldsCreated = []
@@ -40,7 +44,7 @@ const Game = () => {
 			{game && (
 				<>
 					<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} fieldClickedIndex={game.fieldClickedIndex} numberOfFlags={game.numberOfFlags} mineClickedIndex={game.mineClickedIndex} />
-					<GameGrid game={game} setGame={setGame} />
+					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} />
 				</>
 			)}
 		</VStack>

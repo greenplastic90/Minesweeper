@@ -5,12 +5,11 @@ import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
 
-const GameGrid = ({ game, setGame }) => {
+const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
-	const [shakeAnimation, setShakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
+	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
-	const [showEndGame, setShowEndGame] = useState(true)
 
 	useEffect(() => {
 		if (fieldClickedValue === 0 || fieldClickedValue === 'mine') {
@@ -25,7 +24,7 @@ const GameGrid = ({ game, setGame }) => {
 		if (game && game.isGameWon()) {
 			setShowEndGame(true)
 		}
-	}, [game])
+	}, [game, setShowEndGame])
 
 	return (
 		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
@@ -34,7 +33,7 @@ const GameGrid = ({ game, setGame }) => {
 					<Field field={field} game={game} setGame={setGame} />
 				</GridItem>
 			))}
-			{showEndGame && <EndGame />}
+			{showEndGame && <EndGame resetGame={resetGame} />}
 		</SimpleGrid>
 	)
 }
