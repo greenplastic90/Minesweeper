@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { easy, medium, hard } from '../difficulty-options'
+import Color from 'color'
 
 export class GameSetup {
 	constructor(difficulty, fields, fieldClickedIndex, fieldClickedValue, mineClickedIndex) {
@@ -178,30 +179,6 @@ export class GameSetup {
 		})
 	}
 
-	mineAnimationGenerator() {
-		class MineColor {
-			constructor(mineColor, bgColorStart, bgColorEnd) {
-				this.mineColor = mineColor
-				this.bgColorStart = bgColorStart
-				this.bgColorEnd = bgColorEnd
-			}
-		}
-		const blueMine = new MineColor('#175FC7', '#86B2F1', '#5894EC')
-		const lightBlueMine = new MineColor('#018686', '#EDFFFF', '#88FEFE')
-		const pinkMine = new MineColor('#A2396D', '#F6E4ED', '#DB99BA')
-		const greenMine = new MineColor('#056717', '#0AC82D', '#079822')
-		const purpleMine = new MineColor('#321F96', '#A496EA', '#5A42D8')
-		const yellowMine = new MineColor('#999900', '#FFFF66', '#FFFF00')
-		const redMine = new MineColor('#6C0E14', '#EA5C64', '#C61A24')
-		const mineColors = [blueMine, lightBlueMine, pinkMine, greenMine, purpleMine, yellowMine, redMine]
-		//! number of confetti
-		//! starting location of each confetti
-		//! swining animation of each confetti
-		//! colors for confetti, mine and background (before and after)
-		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
-		return { color: randomColor }
-	}
-
 	disableAllFields() {
 		return this.fields.forEach((field) => {
 			field.isDisabled = true
@@ -292,7 +269,7 @@ export class Field {
 		this.isDisabled = false
 		this.exposeMineTimer = null
 		this.runMineAnimation = false
-		this.mineExplodeAimationValues = null
+		this.mineColor = null
 		this.falseFlag = false
 	}
 
@@ -308,31 +285,28 @@ export class Field {
 		this.exposeMineTimer = timer
 		this.runMineAnimation = true
 
-		this.mineAnimationGenerator()
+		this.mineColorGenerator()
 	}
-	mineAnimationGenerator() {
+	mineColorGenerator() {
 		class MineColor {
-			constructor(mineColor, bgColorStart, bgColorEnd) {
-				this.mineColor = mineColor
-				this.bgColorStart = bgColorStart
-				this.bgColorEnd = bgColorEnd
+			//? takes a Color class with a color passed in it to run these methods on it
+			constructor(colorObj) {
+				this.mineColor = colorObj.darken(0.5).desaturate(0.5).hex()
+				this.bgColorStart = colorObj.lighten(0.9).hex()
+				this.bgColorEnd = colorObj.hex()
 			}
 		}
-		const blueMine = new MineColor('#175FC7', '#86B2F1', '#5894EC')
-		const lightBlueMine = new MineColor('#018686', '#EDFFFF', '#88FEFE')
-		const pinkMine = new MineColor('#A2396D', '#F6E4ED', '#DB99BA')
-		const greenMine = new MineColor('#056717', '#0AC82D', '#079822')
-		const purpleMine = new MineColor('#321F96', '#A496EA', '#5A42D8')
-		const yellowMine = new MineColor('#999900', '#FFFF66', '#FFFF00')
-		const redMine = new MineColor('#6C0E14', '#EA5C64', '#C61A24')
+		const blueMine = new MineColor(Color('hsl(215.5,79.3%,63.5%)'))
+		const lightBlueMine = new MineColor(Color('hsl(195, 53%, 79%)'))
+		const pinkMine = new MineColor(Color('hsl(349.5,100%,80.6%)'))
+		const greenMine = new MineColor(Color('hsl(120,46.5%,43.7%)'))
+		const purpleMine = new MineColor(Color('hsl(282.2,100%,48.4%)'))
+		const yellowMine = new MineColor(Color('hsl(60,100%,60%)'))
+		const redMine = new MineColor(Color('hsl(356.5,76.8%,53.9%)'))
 		const mineColors = [blueMine, lightBlueMine, pinkMine, greenMine, purpleMine, yellowMine, redMine]
-		//! number of confetti
-		//! starting location of each confetti
-		//! swining animation of each confetti
-		//! duration before dissapearing
-		//! colors for confetti, mine and background (before and after)
+
 		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
-		this.mineExplodeAimationValues = { color: randomColor }
+		this.mineColor = randomColor
 	}
 
 	getFieldsSurroundingExludingIndex(numberOfFields, width) {
@@ -452,15 +426,20 @@ export class ConfettiSetup {
 		this.position.bottom = 75 - this.position.top
 		this.position.left = getRandomNum(0, 100)
 		this.position.right = 60 - this.position.left
-		this.color = this.lightenDarkenColor(this.color, getRandomNum(-30, 30))
+		this.color = this.randomlyLightenOrDarkenColor(this.color, getRandomNum(0.4, 0.9))
+
 		this.generateAnimation()
 	}
-	lightenDarkenColor(col, amt) {
-		//* function lightens or darkens a coloer bases on the int passed in the 2nd param
-		//? removing # from string and adding it in the return
-		col = col.slice(1)
-		col = parseInt(col, 16)
-		return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
+	randomlyLightenOrDarkenColor(col, amt) {
+		const color = Color(col)
+
+		return color.lighten(amt).hex()
+
+		// //* function lightens or darkens a coloer bases on the int passed in the 2nd param
+		// //? removing # from string and adding it in the return
+		// col = col.slice(1)
+		// col = parseInt(col, 16)
+		// return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
 	}
 	generateAnimation() {
 		this.numberOfSwings = getRandomNum(3, 6)

@@ -6,7 +6,7 @@ import { TbX } from 'react-icons/tb'
 import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
 const Field = ({ field, game, setGame }) => {
-	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineExplodeAimationValues, falseFlag } = field
+	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineColor, falseFlag } = field
 
 	const {
 		difficulty: { mine_width, value_size, box_width, border_width, horizontal_boxes },
@@ -71,10 +71,10 @@ const Field = ({ field, game, setGame }) => {
 				setMineExplodeAnimation(true)
 				field.isExposed = true
 				field.runMineAnimation = false
-				setMineAnimationColors(mineExplodeAimationValues.color)
+				setMineAnimationColors(mineColor)
 			}, 1000 * exposeMineTimer)
 		}
-	}, [exposeMineTimer, field, mineExplodeAimationValues, runMineAnimation])
+	}, [exposeMineTimer, field, mineColor, runMineAnimation])
 
 	useEffect(() => {
 		//* set bgColor, bgHoverColor, bgColorAnimatedField
