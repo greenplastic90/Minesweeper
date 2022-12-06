@@ -1,4 +1,4 @@
-import { Box, Text, VStack } from '@chakra-ui/react'
+import { Box, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
@@ -27,6 +27,7 @@ const Field = ({ field, game, setGame }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
+	const flagSize = useBreakpointValue(value_size)
 
 	const onFieldLeftClick = () => {
 		if (!isDisabled) {
@@ -141,7 +142,7 @@ const Field = ({ field, game, setGame }) => {
 					exposeFalseFlag ? (
 						<TbX size='100%' color={'#DF4826'} />
 					) : (
-						<BsFillFlagFill size={value_size} color={'#DF4826'} />
+						<BsFillFlagFill size={flagSize} color={'#DF4826'} />
 					)
 				) : null}
 			</VStack>
