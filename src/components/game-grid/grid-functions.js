@@ -297,7 +297,7 @@ export class Field {
 			}
 		}
 		const blueMine = new MineColor(Color('hsl(215.5,79.3%,63.5%)'))
-		const lightBlueMine = new MineColor(Color('hsl(195, 53%, 79%)'))
+		const lightBlueMine = new MineColor(Color('hsl(195, 79%, 69%)'))
 		const pinkMine = new MineColor(Color('hsl(349.5,100%,80.6%)'))
 		const greenMine = new MineColor(Color('hsl(120,46.5%,43.7%)'))
 		const purpleMine = new MineColor(Color('hsl(282.2,100%,48.4%)'))
@@ -426,21 +426,10 @@ export class ConfettiSetup {
 		this.position.bottom = 75 - this.position.top
 		this.position.left = getRandomNum(0, 100)
 		this.position.right = 60 - this.position.left
-		this.color = this.randomlyLightenOrDarkenColor(this.color, getRandomNum(0.4, 0.9))
-
+		this.color = Color(this.color).lighten(getRandomNum(0.4, 0.9)).hex()
 		this.generateAnimation()
 	}
-	randomlyLightenOrDarkenColor(col, amt) {
-		const color = Color(col)
 
-		return color.lighten(amt).hex()
-
-		// //* function lightens or darkens a coloer bases on the int passed in the 2nd param
-		// //? removing # from string and adding it in the return
-		// col = col.slice(1)
-		// col = parseInt(col, 16)
-		// return '#' + (((col & 0x0000ff) + amt) | ((((col >> 8) & 0x00ff) + amt) << 8) | (((col >> 16) + amt) << 16)).toString(16)
-	}
 	generateAnimation() {
 		this.numberOfSwings = getRandomNum(3, 6)
 		this.animation.scale[2] = getRandomNum(0.5, 0, 75)
@@ -469,8 +458,15 @@ export class ConfettiSetup {
 
 		//* left right swing
 		this.animation.x = [0]
+		let initialSwing
 		for (let i = 0; i <= this.numberOfSwings; i++) {
-			swingLeft ? this.animation.x.push(getRandomNum(-10, -50)) : this.animation.x.push(getRandomNum(10, 50))
+			if (i === 0) {
+				initialSwing = swingLeft ? getRandomNum(-10, -50) : getRandomNum(10, 50)
+				this.animation.x.push(initialSwing)
+			} else {
+				const swing = swingLeft ? getRandomNum(initialSwing - 20, initialSwing - 40) : getRandomNum(initialSwing + 20, initialSwing + 40)
+				this.animation.x.push(swing)
+			}
 			swingLeft = !swingLeft
 		}
 

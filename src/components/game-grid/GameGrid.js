@@ -10,7 +10,7 @@ const GameGrid = ({ game, setGame }) => {
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const [shakeAnimation, setShakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
-	const [showEndGame, setShowEndGame] = useState(true)
+	const [showEndGame, setShowEndGame] = useState(false)
 
 	useEffect(() => {
 		if (fieldClickedValue === 0 || fieldClickedValue === 'mine') {
