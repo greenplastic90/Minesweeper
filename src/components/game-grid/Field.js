@@ -45,6 +45,7 @@ const Field = ({ field, game, setGame }) => {
 			})
 		}
 	}
+
 	const handleToggleFlag = (e) => {
 		e.preventDefault()
 		if (!isDisabled) {
@@ -96,6 +97,7 @@ const Field = ({ field, game, setGame }) => {
 			})
 		}
 	}, [field, isExposed])
+
 	//* create border
 	useEffect(() => {
 		setBorders((current) => {

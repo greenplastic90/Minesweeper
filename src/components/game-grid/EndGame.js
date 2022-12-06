@@ -1,12 +1,17 @@
 import { Button, HStack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { ImClock2, ImTrophy } from 'react-icons/im'
+import { BsArrowClockwise } from 'react-icons/bs'
 
 const EndGame = () => {
 	return (
-		<VStack pos={'absolute'} w='300px' borderRadius={10} left='40%' top={'10%'} zIndex={3}>
-			<Times />
-			<Button borderRadius={10}>Play Again?</Button>
+		<VStack pos={'absolute'} w='full' h='full'>
+			<VStack w='200px' zIndex={3} pt={['20px', null, '10%']}>
+				<Times />
+				<Button w='full' borderRadius={5} _hover={{ bg: '#243E14' }} bgColor='brand.header' color='brand.header_text'>
+					<BsArrowClockwise style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
+				</Button>
+			</VStack>
 		</VStack>
 	)
 }
@@ -14,9 +19,9 @@ const EndGame = () => {
 export default EndGame
 const Times = () => {
 	return (
-		<HStack>
-			<Time icon={<ImClock2 />} time={'045'} />
-			<Time icon={<ImTrophy />} time={'030'} />
+		<HStack width='full' pt={'20px'} pb={'100px'} spacing={'40px'} borderRadius={5} justifyContent='center' bgColor={'numbers.six'}>
+			<Time icon={<ImClock2 size={'30px'} color={'#f5c242'} />} time={'045'} />
+			<Time icon={<ImTrophy size={'30px'} color={'#f5c242'} />} time={'030'} />
 		</HStack>
 	)
 }
@@ -24,10 +29,10 @@ const Times = () => {
 const Time = ({ icon, time }) => {
 	return (
 		<VStack>
-			{/* icon */}
 			{icon}
-			{/* time */}
-			<Text> {time}</Text>
+			<Text fontWeight={'bold'} color='white'>
+				{time}
+			</Text>
 		</VStack>
 	)
 }
