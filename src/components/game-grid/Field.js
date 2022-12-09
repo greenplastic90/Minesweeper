@@ -30,7 +30,7 @@ const Field = ({ field, game, setGame }) => {
 	const flagSize = useBreakpointValue(value_size)
 
 	const onFieldLeftClick = () => {
-		if (!isDisabled) {
+		if (!isDisabled && !hasFlag) {
 			setGame((current) => {
 				//* only generates the value arrays if this is the first click
 				if (current.isFirstClick()) current.generateRandomFieldValueArray(index)
@@ -111,7 +111,7 @@ const Field = ({ field, game, setGame }) => {
 			<VStack
 				as={motion.div}
 				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
-				onDoubleClick={handleToggleFlag}
+				// onDoubleClick={handleToggleFlag}
 				onContextMenu={handleToggleFlag}
 				onClick={onFieldLeftClick}
 				w={box_width}

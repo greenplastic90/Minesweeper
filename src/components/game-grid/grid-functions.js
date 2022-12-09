@@ -275,7 +275,6 @@ export class Field {
 
 	toggleFlag() {
 		this.hasFlag = !this.hasFlag
-		this.isDisabled = this.isExposed
 	}
 	exposeFalseFlag(timer) {
 		this.exposeMineTimer = timer
@@ -434,7 +433,7 @@ export class ConfettiSetup {
 		this.numberOfSwings = getRandomNum(3, 6)
 		this.animation.scale[2] = getRandomNum(0.5, 0, 75)
 		this.animation.scale[3] = this.animation.scale[2] < 0.625 ? 0 : 0.5
-		this.animation.transition.duration = 6
+		this.animation.transition.duration = getRandomNum(6, 7)
 		this.movement()
 	}
 
