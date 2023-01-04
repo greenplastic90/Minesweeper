@@ -21,21 +21,22 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => 
 	}, [fieldClickedValue, fieldClickedIndex])
 
 	//* checks if game is won
-	useEffect(() => {
-		if (game.isGameWon()) {
-			// setGame((current) => {
-			// 	current.pauseTimer()
-			// 	return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
-			// })
-			setShowEndGame(true)
-		}
-	}, [game, setGame, setShowEndGame])
+	// useEffect(() => {
+	// 	setGame((current) => {
+	// 		if (current.isGameWon()) {
+	// 			setShowEndGame(true)
+	// 			current.pauseTimer()
+	// 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+	// 		}
+	// 		return current
+	// 	})
+	// }, [setGame, setShowEndGame])
 
 	return (
 		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field) => (
 				<GridItem key={field.id}>
-					<Field field={field} game={game} setGame={setGame} />
+					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} />
 				</GridItem>
 			))}
 			{showEndGame && <EndGame resetGame={resetGame} />}

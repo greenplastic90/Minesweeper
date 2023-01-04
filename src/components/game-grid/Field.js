@@ -5,7 +5,7 @@ import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
 import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
-const Field = ({ field, game, setGame }) => {
+const Field = ({ field, game, setGame, setShowEndGame }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineColor, falseFlag } = field
 
 	const {
@@ -44,6 +44,11 @@ const Field = ({ field, game, setGame }) => {
 				//* fields to expose
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
+
+				if (current.isGameWon()) {
+					current.pauseTimer()
+					setShowEndGame(true)
+				}
 
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
 			})

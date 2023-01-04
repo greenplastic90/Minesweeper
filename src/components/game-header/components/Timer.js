@@ -51,36 +51,7 @@ const Timer = ({ game }) => {
 			clearAllIntervals()
 			console.log('pause')
 		}
-		// //* stops timer from resetting if mine is clicked, but resets if no mine was hit (reset or difficulty change)
-		// //* runs when no field is clicked or mine is clicked (when game is reset)
-		// if (!mineClickedIndex && mineClickedIndex !== 0 && !fieldClickedIndex && fieldClickedIndex !== 0) {
-		// 	setOnes(0)
-		// 	setTens(0)
-		// 	setHundreds(0)
-
-		// 	console.log('Reset')
-		// }
-
-		// //* freezes timer at 999 seconds
-		// setTimeout(() => {
-		// 	setTimeIntervals((current) => {
-		// 		clearInterval(current.ones)
-		// 		clearInterval(current.tens)
-		// 		clearInterval(current.hundreds)
-		// 		return current
-		// 	})
-		// }, 1000 * 999)
-
-		return () => {
-			// console.log('return')
-			// setTimeIntervals((current) => {
-			// 	clearInterval(current.ones)
-			// 	clearInterval(current.tens)
-			// 	clearInterval(current.hundreds)
-			// 	return current
-			// })
-		}
-	}, [fieldClickedIndex, game])
+	}, [game.timer, timeIntervals.ones])
 
 	return (
 		<HStack spacing={'4px'}>
