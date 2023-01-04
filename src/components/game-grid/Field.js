@@ -1,8 +1,9 @@
-import { Box, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
+import { Box, Image, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { BsFillFlagFill } from 'react-icons/bs'
 import { TbX } from 'react-icons/tb'
+import FlagImage from '../../assets/icons/flag-1.svg'
 import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
 const Field = ({ field, game, setGame, setShowEndGame }) => {
@@ -27,7 +28,6 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
-	const flagSize = useBreakpointValue(value_size)
 
 	const onFieldLeftClick = () => {
 		if (!isDisabled && !hasFlag) {
@@ -153,7 +153,7 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 					exposeFalseFlag ? (
 						<TbX size='100%' color={'#DF4826'} />
 					) : (
-						<BsFillFlagFill size={flagSize} color={'#DF4826'} />
+						<Image h={value_size} src={FlagImage} alt='flag' />
 					)
 				) : null}
 			</VStack>

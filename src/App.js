@@ -1,7 +1,7 @@
 import './App.css'
 import { VStack } from '@chakra-ui/react'
 import Game from './components/Game'
-import bgImage from './assets/background/background.jpg'
+import bgImage from './assets/background/background-minesweeper.svg'
 
 function App() {
 	return (
@@ -12,3 +12,5 @@ function App() {
 }
 
 export default App
+// <TbX size='100%' color={'#DF4826'} />
+// <BsFillFlagFill size={flagSize} color={'#DF4826'} />
