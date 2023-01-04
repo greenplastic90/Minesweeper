@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
+import { GameSetup } from './grid-functions'
 
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => {
 	const shakeAnimationDuration = 1.5
@@ -21,10 +22,14 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => 
 
 	//* checks if game is won
 	useEffect(() => {
-		if (game && game.isGameWon()) {
+		if (game.isGameWon()) {
+			// setGame((current) => {
+			// 	current.pauseTimer()
+			// 	return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+			// })
 			setShowEndGame(true)
 		}
-	}, [game, setShowEndGame])
+	}, [game, setGame, setShowEndGame])
 
 	return (
 		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>

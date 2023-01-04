@@ -19,9 +19,15 @@ const Timer = ({ game }) => {
 		})
 	}
 	const clearAllIntervals = () => {
-		clearInterval(timeIntervals.ones)
-		clearInterval(timeIntervals.tens)
-		clearInterval(timeIntervals.hundreds)
+		setTimeIntervals((current) => {
+			clearInterval(current.ones)
+			clearInterval(current.tens)
+			clearInterval(current.hundreds)
+			current.ones = null
+			current.tens = null
+			current.hundreds = null
+			return current
+		})
 	}
 	const resetTimerToZeros = () => {
 		setOnes(0)
@@ -33,7 +39,8 @@ const Timer = ({ game }) => {
 	useEffect(() => {
 		if (game.timer === 'active') {
 			console.log('active')
-			setTimeIntervals({ ones: setInterval(() => updateTimer(setOnes), 1000), tens: setInterval(() => updateTimer(setTens), 1000 * 10), hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100) })
+			//? only set intervals if there isn't an interval already
+			if (!timeIntervals.ones) setTimeIntervals({ ones: setInterval(() => updateTimer(setOnes), 1000), tens: setInterval(() => updateTimer(setTens), 1000 * 10), hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100) })
 		}
 		if (game.timer === 'reset') {
 			clearAllIntervals()

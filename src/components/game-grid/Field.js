@@ -55,7 +55,7 @@ const Field = ({ field, game, setGame }) => {
 		if (!isDisabled) {
 			field.toggleFlag()
 			setGame((current) => {
-				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
+				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
 			})
 		}
 	}
