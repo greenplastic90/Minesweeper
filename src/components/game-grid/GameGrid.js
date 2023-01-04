@@ -20,18 +20,6 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => 
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
 	}, [fieldClickedValue, fieldClickedIndex])
 
-	//* checks if game is won
-	// useEffect(() => {
-	// 	setGame((current) => {
-	// 		if (current.isGameWon()) {
-	// 			setShowEndGame(true)
-	// 			current.pauseTimer()
-	// 			return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
-	// 		}
-	// 		return current
-	// 	})
-	// }, [setGame, setShowEndGame])
-
 	return (
 		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field) => (
@@ -39,7 +27,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => 
 					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} />
 				</GridItem>
 			))}
-			{showEndGame && <EndGame resetGame={resetGame} />}
+			<EndGame resetGame={resetGame} showEndGame={showEndGame} />
 		</SimpleGrid>
 	)
 }

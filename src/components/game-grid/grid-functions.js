@@ -11,6 +11,7 @@ export class GameSetup {
 		this.fieldClickedValue = fieldClickedValue
 		this.mineClickedIndex = mineClickedIndex
 		this.numberOfMines = this.difficulty.mines
+		this.explodeMineTimer = 0
 		this.numberOfFlags = this.fields.reduce((acc, field) => {
 			return field.hasFlag ? acc - 1 : acc
 		}, this.numberOfMines)
@@ -108,16 +109,15 @@ export class GameSetup {
 			if (field.hasFlag && !field.isMine()) flagsNotCoveringMines.push(field)
 		})
 
-		let numOfSeconds = 0
-		minesToExpose.forEach((mine, i) => {
-			mine.explodeMine(numOfSeconds)
+		minesToExpose.forEach((mine) => {
+			mine.explodeMine(this.explodeMineTimer)
 
-			numOfSeconds = numOfSeconds + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(minesToExpose.length, i)
+			this.explodeMineTimer = this.explodeMineTimer + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose()
 		})
 
-		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(numOfSeconds))
+		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(this.explodeMineTimer))
 	}
-	generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose(arrLength, index) {
+	generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose() {
 		const chanceToBurst = getRandomNum(0, 3)
 
 		if (chanceToBurst < 1) {

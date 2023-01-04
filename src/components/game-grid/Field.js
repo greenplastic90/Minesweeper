@@ -47,7 +47,10 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 
 				if (current.isGameWon() || value === 'mine') {
 					current.pauseTimer()
-					setShowEndGame(true)
+
+					const timeUntilEndGameIsDisplayed = value === 'mine' ? current.explodeMineTimer : 0
+
+					setTimeout(() => setShowEndGame(true), 1000 * timeUntilEndGameIsDisplayed)
 				}
 
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
