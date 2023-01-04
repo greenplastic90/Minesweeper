@@ -33,7 +33,10 @@ const Field = ({ field, game, setGame }) => {
 		if (!isDisabled && !hasFlag) {
 			setGame((current) => {
 				//* only generates the value arrays if this is the first click
-				if (current.isFirstClick()) current.generateRandomFieldValueArray(index)
+				if (current.isFirstClick()) {
+					current.activateTimer()
+					current.generateRandomFieldValueArray(index)
+				}
 
 				//* updates index and value clicked
 				current.fieldClicked(index)
@@ -42,7 +45,7 @@ const Field = ({ field, game, setGame }) => {
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
 
-				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex)
+				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
 			})
 		}
 	}

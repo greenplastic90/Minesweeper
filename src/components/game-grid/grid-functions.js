@@ -3,7 +3,7 @@ import { easy, medium, hard } from '../difficulty-options'
 import Color from 'color'
 
 export class GameSetup {
-	constructor(difficulty, fields, fieldClickedIndex, fieldClickedValue, mineClickedIndex) {
+	constructor(difficulty, fields, fieldClickedIndex, fieldClickedValue, mineClickedIndex, timer) {
 		this.difficulty = difficulty
 		this.fields = fields
 		this.numberOfFields = this.fields.length
@@ -14,6 +14,18 @@ export class GameSetup {
 		this.numberOfFlags = this.fields.reduce((acc, field) => {
 			return field.hasFlag ? acc - 1 : acc
 		}, this.numberOfMines)
+
+		this.timer = timer //? can be 'reset' 'active' or 'pause'
+	}
+
+	activateTimer() {
+		this.timer = 'active'
+	}
+	pauseTimer() {
+		this.timer = 'pause'
+	}
+	resetTimer() {
+		this.timer = 'reset'
 	}
 
 	isGameWon() {

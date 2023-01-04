@@ -17,16 +17,16 @@ const Game = () => {
 		setResetToggle((current) => !current)
 		setShowEndGame(false)
 	}
-
+	//* setup initial game
 	useEffect(() => {
 		setShowEndGame(false)
 
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
 
-		const initialFieldsCreated = []
-
+		//? fields backgroup color shade
 		let bgIsLight = true
 
+		const initialFieldsCreated = []
 		for (let i = 0; i < numOfFieldsToCreate; i++) {
 			const feildId = uuidv4()
 			bgIsLight = setBgColorShade(i, difficulty.horizontal_boxes, bgIsLight)
@@ -34,7 +34,7 @@ const Game = () => {
 			initialFieldsCreated.push(field)
 		}
 
-		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null, null)
+		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null, null, 'reset')
 		console.log(currentGame)
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
@@ -43,7 +43,7 @@ const Game = () => {
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (
 				<>
-					<GameHeader setDifficulty={setDifficulty} resetGame={resetGame} fieldClickedIndex={game.fieldClickedIndex} numberOfFlags={game.numberOfFlags} mineClickedIndex={game.mineClickedIndex} />
+					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} />
 					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} />
 				</>
 			)}
