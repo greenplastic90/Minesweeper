@@ -45,7 +45,7 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
 
-				if (current.isGameWon()) {
+				if (current.isGameWon() || value === 'mine') {
 					current.pauseTimer()
 					setShowEndGame(true)
 				}
