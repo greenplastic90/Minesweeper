@@ -38,18 +38,15 @@ const Timer = ({ game }) => {
 	//* starts timer when after first click
 	useEffect(() => {
 		if (game.timer === 'active') {
-			console.log('active')
 			//? only set intervals if there isn't an interval already
 			if (!timeIntervals.ones) setTimeIntervals({ ones: setInterval(() => updateTimer(setOnes), 1000), tens: setInterval(() => updateTimer(setTens), 1000 * 10), hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100) })
 		}
 		if (game.timer === 'reset') {
 			clearAllIntervals()
 			resetTimerToZeros()
-			console.log('reset')
 		}
 		if (game.timer === 'pause') {
 			clearAllIntervals()
-			console.log('pause')
 		}
 	}, [game.timer, timeIntervals.ones])
 
