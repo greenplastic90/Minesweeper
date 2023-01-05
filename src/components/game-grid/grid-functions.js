@@ -307,6 +307,14 @@ export class Field {
 				this.bgColorEnd = colorObj.hex()
 			}
 		}
+		// const blueMine = new MineColor(Color('hsl(215.5,79.3%,63.5%)'))
+		// const lightBlueMine = new MineColor(Color('hsl(195, 79%, 69%)'))
+		// const pinkMine = new MineColor(Color('hsl(349.5,100%,80.6%)'))
+		// const greenMine = new MineColor(Color('hsl(120,46.5%,43.7%)'))
+		// const purpleMine = new MineColor(Color('hsl(282.2,100%,48.4%)'))
+		// const yellowMine = new MineColor(Color('hsl(60,100%,60%)'))
+		// const redMine = new MineColor(Color('hsl(356.5,76.8%,53.9%)'))
+
 		const blueMine = new MineColor(Color('hsl(215.5,79.3%,63.5%)'))
 		const lightBlueMine = new MineColor(Color('hsl(195, 79%, 69%)'))
 		const pinkMine = new MineColor(Color('hsl(349.5,100%,80.6%)'))

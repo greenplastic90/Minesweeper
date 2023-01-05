@@ -144,7 +144,7 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 						<Mine width={mine_width} color={mineAnimationColors.mineColor} />
 					) : value !== 0 ? (
 						showValue && (
-							<Text cursor={'default'} fontSize={value_size} fontWeight={'bold'} color={colors.valueColor}>
+							<Text cursor={'default'} fontSize={value_size} fontWeight={'extrabold'} color={colors.valueColor}>
 								{value}
 							</Text>
 						)

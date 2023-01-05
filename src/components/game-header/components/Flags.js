@@ -1,5 +1,4 @@
 import { HStack, Image, Text } from '@chakra-ui/react'
-import { BsFillFlagFill } from 'react-icons/bs'
 import FlagImage from '../../../assets/icons/flag-1.svg'
 
 const Flags = ({ numberOfFlags }) => {
