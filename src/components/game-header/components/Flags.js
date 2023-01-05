@@ -1,5 +1,5 @@
 import { HStack, Image, Text } from '@chakra-ui/react'
-import FlagImage from '../../../assets/icons/flag-1.svg'
+import FlagImage from '../../../assets/icons/flag-3.svg'
 
 const Flags = ({ numberOfFlags }) => {
 	return (

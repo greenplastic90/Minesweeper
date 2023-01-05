@@ -1,9 +1,9 @@
 import { Box, Image, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { BsFillFlagFill } from 'react-icons/bs'
+
 import { TbX } from 'react-icons/tb'
-import FlagImage from '../../assets/icons/flag-1.svg'
+import FlagImage from '../../assets/icons/flag-3.svg'
 import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
 const Field = ({ field, game, setGame, setShowEndGame }) => {

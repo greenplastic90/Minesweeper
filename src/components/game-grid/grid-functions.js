@@ -315,14 +315,14 @@ export class Field {
 		// const yellowMine = new MineColor(Color('hsl(60,100%,60%)'))
 		// const redMine = new MineColor(Color('hsl(356.5,76.8%,53.9%)'))
 
-		const blueMine = new MineColor(Color('hsl(215.5,79.3%,63.5%)'))
-		const lightBlueMine = new MineColor(Color('hsl(195, 79%, 69%)'))
-		const pinkMine = new MineColor(Color('hsl(349.5,100%,80.6%)'))
-		const greenMine = new MineColor(Color('hsl(120,46.5%,43.7%)'))
-		const purpleMine = new MineColor(Color('hsl(282.2,100%,48.4%)'))
-		const yellowMine = new MineColor(Color('hsl(60,100%,60%)'))
-		const redMine = new MineColor(Color('hsl(356.5,76.8%,53.9%)'))
-		const mineColors = [blueMine, lightBlueMine, pinkMine, greenMine, purpleMine, yellowMine, redMine]
+		const blueMine = new MineColor(Color('hsl(186.5,79.3%,22.7%)'))
+		const purpleMine = new MineColor(Color('hsl(265.6,34.1%,35.1%)'))
+		const pinkMine = new MineColor(Color('hsl(338,57.1%,37.5%)'))
+		const orangeDarkMine = new MineColor(Color('hsl(12.7,65.9%,44.9%)'))
+		const brownMine = new MineColor(Color('hsl(11.7,63.6%,23.7%)'))
+		const grayMine = new MineColor(Color('hsl(210,11.1%,21.2%)'))
+
+		const mineColors = [orangeDarkMine, blueMine, purpleMine, pinkMine, brownMine, grayMine]
 
 		const randomColor = mineColors[Math.floor(Math.random() * mineColors.length)]
 		this.mineColor = randomColor

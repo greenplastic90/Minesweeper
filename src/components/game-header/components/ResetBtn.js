@@ -9,6 +9,7 @@ const ResetBtn = ({ setDifficulty, resetGame }) => {
 				setDifficulty(localStorageDifficulty())
 				resetGame()
 			}}
+			borderRadius={0}
 			fontWeight={'normal'}
 			fontSize='20px'>
 			Reset
