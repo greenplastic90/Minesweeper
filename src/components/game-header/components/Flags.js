@@ -8,7 +8,7 @@ const Flags = ({ numberOfFlags }) => {
 			{/* <BsFillFlagFill color={'#DF4826'} size={'20px'} /> */}
 
 			<Image w={'20px'} src={FlagImage} alt='flag' />
-			<Text fontWeight={'bold'} fontSize='20px' color={'brand.header_text'}>
+			<Text fontSize='30px' color={'brand.header_text'}>
 				{numberOfFlags}
 			</Text>
 		</HStack>

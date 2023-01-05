@@ -1,7 +1,7 @@
 import './App.css'
 import { VStack } from '@chakra-ui/react'
 import Game from './components/Game'
-import bgImage from './assets/background/background-minesweeper.svg'
+import bgImage from './assets/background/sand-minesweeper.svg'
 
 function App() {
 	return (

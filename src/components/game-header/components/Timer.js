@@ -54,13 +54,13 @@ const Timer = ({ game }) => {
 		<HStack spacing={'4px'}>
 			<ImClock2 color={'#f5c242'} fontSize={'20px'} />
 			<HStack spacing={0}>
-				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
+				<Text fontSize={'30px'} color={'brand.header_text'}>
 					{hundreds}
 				</Text>
-				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
+				<Text fontSize={'30px'} color={'brand.header_text'}>
 					{tens}
 				</Text>
-				<Text fontWeight={'bold'} fontSize={'20px'} color={'brand.header_text'}>
+				<Text fontSize={'30px'} color={'brand.header_text'}>
 					{ones}
 				</Text>
 			</HStack>

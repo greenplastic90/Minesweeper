@@ -9,8 +9,8 @@ const basicColors = {
 	green_light: '#B3D665',
 	green_ultra_ultra_light: '#C6E089',
 	green_ultra_light: '#C0DC83',
-	brown_dark: '#CDAA87',
-	brown_light: '#DEB58E',
+	brown_dark: '#7A663D',
+	brown_light: '#B79C6E',
 	brown_ultra_light: '#DDCBB6',
 	brown_ultra_ultra_light: '#E7D2BA',
 	blue: '#175FC7',
@@ -56,6 +56,11 @@ const colors = {
 	},
 }
 
+const fonts = {
+	body: 'VT323',
+}
+
 export const theme = extendTheme({
 	colors,
+	fonts,
 })

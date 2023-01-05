@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
-import { GameSetup } from './grid-functions'
 
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => {
 	const shakeAnimationDuration = 1.5
