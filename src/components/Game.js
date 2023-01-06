@@ -4,7 +4,7 @@ import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
 
 import GameGrid from './game-grid/GameGrid'
-import { Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
+import { createBlankLocalStorageHighscores, Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 
 const Game = () => {
 	const [game, setGame] = useState()
@@ -71,6 +71,7 @@ const Game = () => {
 	}
 	//* setup initial game
 	useEffect(() => {
+		createBlankLocalStorageHighscores()
 		setShowEndGame(false)
 
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
