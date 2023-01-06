@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
 
-const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => {
+const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
@@ -26,7 +26,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame }) => 
 					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} />
 				</GridItem>
 			))}
-			<EndGame resetGame={resetGame} showEndGame={showEndGame} />
+			<EndGame resetGame={resetGame} showEndGame={showEndGame} timer={timer} />
 		</SimpleGrid>
 	)
 }

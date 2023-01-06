@@ -13,6 +13,58 @@ const Game = () => {
 	const [resetToggle, setResetToggle] = useState(true)
 	const [showEndGame, setShowEndGame] = useState(false)
 
+	//* timer states
+	const [ones, setOnes] = useState(0)
+	const [tens, setTens] = useState(0)
+	const [hundreds, setHundreds] = useState(0)
+	const [timeIntervals, setTimeIntervals] = useState({ ones: null, tens: null, hundreds: null })
+
+	//* starts timer when after first click
+	useEffect(() => {
+		const updateTimer = (set) => {
+			set((current) => {
+				//* resets to 0 after 9 is reached
+				if (current === 9) {
+					return 0
+				}
+				return current + 1
+			})
+		}
+		const clearAllIntervals = () => {
+			setTimeIntervals((current) => {
+				clearInterval(current.ones)
+				clearInterval(current.tens)
+				clearInterval(current.hundreds)
+				current.ones = null
+				current.tens = null
+				current.hundreds = null
+				return current
+			})
+		}
+		const resetTimerToZeros = () => {
+			setOnes(0)
+			setTens(0)
+			setHundreds(0)
+		}
+		if (game) {
+			if (game.timer === 'active') {
+				//? only set intervals if there isn't an interval already
+				if (!timeIntervals.ones) setTimeIntervals({ ones: setInterval(() => updateTimer(setOnes), 1000), tens: setInterval(() => updateTimer(setTens), 1000 * 10), hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100) })
+			}
+			if (game.timer === 'reset') {
+				clearAllIntervals()
+				resetTimerToZeros()
+			}
+			if (game.timer === 'pause') {
+				clearAllIntervals()
+			}
+			//* pauses counter at 999 when reached
+			if (ones === 9 && tens === 9 && hundreds === 9) {
+				clearAllIntervals()
+			}
+		}
+	}, [game, hundreds, ones, tens, timeIntervals.ones])
+
 	const resetGame = () => {
 		setResetToggle((current) => !current)
 		setShowEndGame(false)
@@ -43,8 +95,8 @@ const Game = () => {
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (
 				<>
-					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} />
-					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} />
+					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
+					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
 				</>
 			)}
 		</VStack>

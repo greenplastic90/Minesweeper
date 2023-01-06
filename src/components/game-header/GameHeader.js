@@ -5,7 +5,7 @@ import Flags from './components/Flags'
 import ResetBtn from './components/ResetBtn'
 import Timer from './components/Timer'
 
-const GameHeader = ({ game, setDifficulty, resetGame }) => {
+const GameHeader = ({ game, setDifficulty, resetGame, timer }) => {
 	return (
 		<HStack pos={'relative'} w={'-webkit-fill-available'} justifyContent={'space-between'} bgColor={'brand.header'} p='10px'>
 			{/* dropdown */}
@@ -14,7 +14,7 @@ const GameHeader = ({ game, setDifficulty, resetGame }) => {
 				{/* flags */}
 				<Flags numberOfFlags={game.numberOfFlags} />
 				{/* timer */}
-				<Timer game={game} />
+				<Timer game={game} timer={timer} />
 			</HStack>
 			{/* rest button */}
 			<ResetBtn setDifficulty={setDifficulty} resetGame={resetGame} />
