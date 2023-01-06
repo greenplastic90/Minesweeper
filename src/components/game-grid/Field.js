@@ -1,4 +1,4 @@
-import { Box, Image, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
+import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -50,7 +50,7 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 
 					const timeUntilEndGameIsDisplayed = value === 'mine' ? current.explodeMineTimer : 0
 
-					setTimeout(() => setShowEndGame(true), 1000 * timeUntilEndGameIsDisplayed)
+					setTimeout(() => setShowEndGame(true), 1000 * (timeUntilEndGameIsDisplayed + 1))
 				}
 
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)

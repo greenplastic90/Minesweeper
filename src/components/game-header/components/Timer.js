@@ -2,13 +2,11 @@ import { HStack, Text } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { ImClock2 } from 'react-icons/im'
 const Timer = ({ game }) => {
-	const { fieldClickedIndex } = game
-	// const [first, setfirst] = useState(second)
 	const [ones, setOnes] = useState(0)
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
 	const [timeIntervals, setTimeIntervals] = useState({ ones: null, tens: null, hundreds: null })
-	//! Time resets on every click!
+
 	const updateTimer = (set) => {
 		set((current) => {
 			//* resets to 0 after 9 is reached
@@ -48,7 +46,11 @@ const Timer = ({ game }) => {
 		if (game.timer === 'pause') {
 			clearAllIntervals()
 		}
-	}, [game.timer, timeIntervals.ones])
+		//* pauses counter at 999 when reached
+		if (ones === 9 && tens === 9 && hundreds === 9) {
+			clearAllIntervals()
+		}
+	}, [game.timer, hundreds, ones, tens, timeIntervals.ones])
 
 	return (
 		<HStack spacing={'4px'}>
