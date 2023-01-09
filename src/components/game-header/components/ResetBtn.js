@@ -2,9 +2,10 @@ import { Button } from '@chakra-ui/react'
 import React from 'react'
 import { localStorageDifficulty } from '../../game-grid/grid-functions'
 
-const ResetBtn = ({ setDifficulty, resetGame }) => {
+const ResetBtn = ({ setDifficulty, resetGame, showEndGame }) => {
 	return (
 		<Button
+			disabled={showEndGame}
 			onClick={() => {
 				setDifficulty(localStorageDifficulty())
 				resetGame()

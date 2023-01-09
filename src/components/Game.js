@@ -96,7 +96,7 @@ const Game = () => {
 		<VStack spacing={0} boxShadow={'dark-lg'}>
 			{game && (
 				<>
-					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
+					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
 					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
 				</>
 			)}
