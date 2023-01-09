@@ -11,7 +11,7 @@ const Game = () => {
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
-	const [showEndGame, setShowEndGame] = useState(false)
+	const [showEndGame, setShowEndGame] = useState({ show: false, disableBtns: false })
 
 	//* timer states
 	const [ones, setOnes] = useState(0)
@@ -67,12 +67,12 @@ const Game = () => {
 
 	const resetGame = () => {
 		setResetToggle((current) => !current)
-		setShowEndGame(false)
+		setShowEndGame({ show: false, disableBtns: false })
 	}
 	//* setup initial game
 	useEffect(() => {
 		createBlankLocalStorageHighscores()
-		setShowEndGame(false)
+		setShowEndGame({ show: false, disableBtns: false })
 
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes
 

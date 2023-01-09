@@ -5,7 +5,7 @@ import { localStorageDifficulty } from '../../game-grid/grid-functions'
 const ResetBtn = ({ setDifficulty, resetGame, showEndGame }) => {
 	return (
 		<Button
-			disabled={showEndGame}
+			disabled={showEndGame.disableBtns}
 			onClick={() => {
 				setDifficulty(localStorageDifficulty())
 				resetGame()
