@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ImClock2, ImTrophy } from 'react-icons/im'
 import { BsArrowClockwise } from 'react-icons/bs'
 import { useEffect } from 'react'
-import { createBlankLocalStorageHighscores } from './grid-functions'
+import { createBlankLocalStorageHighscores, getRandomNum } from './grid-functions'
 import Color from 'color'
 
 const EndGame = ({ resetGame, showEndGame, timer }) => {
@@ -28,6 +28,7 @@ export default EndGame
 const Times = ({ timer, hasWon }) => {
 	const [currentScore, setCurrentScore] = useState(null)
 	const [highScore, setHighScore] = useState(null)
+
 	useEffect(() => {
 		createBlankLocalStorageHighscores()
 
@@ -35,10 +36,7 @@ const Times = ({ timer, hasWon }) => {
 		const localHighscores = JSON.parse(localStorage.getItem('minesweeper-highscores'))
 		const localDifficultyHighscore = localHighscores[difficulty]
 		const score = parseInt(timer)
-		// console.log('hasWon ->', hasWon)
-		// console.log('difficulty ->', difficulty)
-		// console.log('localHighscores ->', localHighscores)
-		// console.log('localHighscores ->', localHighscores)
+
 		if (hasWon) {
 			if (!localDifficultyHighscore || score < localDifficultyHighscore) {
 				const updatelocalHighscores = { ...localHighscores, [difficulty]: score }
@@ -59,9 +57,36 @@ const Times = ({ timer, hasWon }) => {
 	}, [hasWon, timer])
 
 	return (
-		<HStack width='full' pt={'20px'} pb={'100px'} spacing={'40px'} justifyContent='center' bgColor={'numbers.four'}>
-			<Time icon={<ImClock2 size={'30px'} color={'#f5c242'} />} time={currentScore} />
-			<Time icon={<ImTrophy size={'30px'} color={'#f5c242'} />} time={highScore} />
+		<VStack w={'full'} spacing={'30px'} bgColor={'numbers.four'}>
+			<HStack width='full' pt={'20px'} spacing={'40px'} justifyContent='center'>
+				<Time icon={<ImClock2 size={'30px'} color={'#f5c242'} />} time={currentScore} />
+				<Time icon={<ImTrophy size={'30px'} color={'#f5c242'} />} time={highScore} />
+			</HStack>
+			<WinOrLose hasWon={hasWon} />
+		</VStack>
+	)
+}
+
+const WinOrLose = ({ hasWon }) => {
+	const message = hasWon ? 'You Win' : 'You Lose'
+
+	return (
+		<HStack pb={'30px'}>
+			{message.split(' ').map((word, i) => {
+				let delayValue = 0
+				return (
+					<HStack key={i} spacing={0}>
+						{word.split('').map((letter, j) => {
+							delayValue += getRandomNum(0.1, 0.5)
+							return (
+								<Text key={j} as={motion.div} animate={hasWon && { y: [0, -10, 0], transition: { delay: delayValue, repeat: Infinity } }} fontSize={'50px'}>
+									{letter}
+								</Text>
+							)
+						})}
+					</HStack>
+				)
+			})}
 		</HStack>
 	)
 }

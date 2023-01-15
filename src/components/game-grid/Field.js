@@ -30,6 +30,8 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 
 	const onFieldLeftClick = () => {
+		//* if timer is pause, the game has been won or lost
+		//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
 		if (game.timer === 'pause') {
 			setEndGameTimeout((current) => {
 				clearTimeout(current)

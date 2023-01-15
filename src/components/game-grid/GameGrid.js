@@ -8,7 +8,7 @@ import Field from './Field'
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
-	const [endGameTimeout, setEndGameTimeout] = useState()
+	const [, setEndGameTimeout] = useState()
 	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
 
