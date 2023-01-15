@@ -534,6 +534,5 @@ export const getRandomNum = (min, max) => {
 export const createBlankLocalStorageHighscores = () => {
 	//? if no scores are avilable, create one with nulls
 	const localHighscores = localStorage.getItem('minesweeper-highscores')
-	console.log(JSON.parse(localHighscores))
 	if (!JSON.parse(localHighscores)) localStorage.setItem('minesweeper-highscores', JSON.stringify({ easy: null, medium: null, hard: null }))
 }

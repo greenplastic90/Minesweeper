@@ -6,7 +6,7 @@ import { TbX } from 'react-icons/tb'
 import FlagImage from '../../assets/icons/flag-3.svg'
 import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
 
-const Field = ({ field, game, setGame, setShowEndGame }) => {
+const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineColor, falseFlag } = field
 
 	const {
@@ -30,6 +30,16 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 
 	const onFieldLeftClick = () => {
+		if (game.timer === 'pause') {
+			setEndGameTimeout((current) => {
+				clearTimeout(current)
+				return current
+			})
+
+			setShowEndGame((current) => {
+				return { ...current, show: true }
+			})
+		}
 		if (!isDisabled && !hasFlag) {
 			setGame((current) => {
 				//* only generates the value arrays if this is the first click
@@ -45,20 +55,22 @@ const Field = ({ field, game, setGame, setShowEndGame }) => {
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
 
-				if (current.isGameWon() || value === 'mine') {
-					current.pauseTimer()
+				if (game.isGameWon() || value === 'mine') {
+					game.pauseTimer()
 
-					const timeUntilEndGameIsDisplayed = value === 'mine' ? current.explodeMineTimer : 0
+					const timeUntilEndGameIsDisplayed = value === 'mine' ? game.explodeMineTimer : 0
 					setShowEndGame((current) => {
-						return { ...current, disableBtns: true }
+						return { ...current, disableBtns: true, hasWon: value === 'mine' ? false : true }
 					})
-					setTimeout(
+
+					const timeOut = setTimeout(
 						() =>
 							setShowEndGame((current) => {
 								return { ...current, show: true }
 							}),
-						1000 * (timeUntilEndGameIsDisplayed + 1)
+						1000 * (timeUntilEndGameIsDisplayed + 1.5)
 					)
+					setEndGameTimeout(timeOut)
 				}
 
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)

@@ -13,7 +13,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 			{showEndGame.show && (
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} pt={['20px', null, '10%']}>
-						<Times timer={timer} hasWon={showEndGame.winner} />
+						<Times timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(186.5,79.3%,22.7%)').darken(0.25)}` }} bgColor='numbers.four' color='brand.header_text'>
 							<BsArrowClockwise onClick={resetGame} style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
 						</Button>
@@ -35,7 +35,10 @@ const Times = ({ timer, hasWon }) => {
 		const localHighscores = JSON.parse(localStorage.getItem('minesweeper-highscores'))
 		const localDifficultyHighscore = localHighscores[difficulty]
 		const score = parseInt(timer)
-
+		// console.log('hasWon ->', hasWon)
+		// console.log('difficulty ->', difficulty)
+		// console.log('localHighscores ->', localHighscores)
+		// console.log('localHighscores ->', localHighscores)
 		if (hasWon) {
 			if (!localDifficultyHighscore || score < localDifficultyHighscore) {
 				const updatelocalHighscores = { ...localHighscores, [difficulty]: score }

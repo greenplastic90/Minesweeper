@@ -8,6 +8,7 @@ import Field from './Field'
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
+	const [endGameTimeout, setEndGameTimeout] = useState()
 	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
 
@@ -23,7 +24,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 			{fields.map((field) => (
 				<GridItem key={field.id}>
-					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} />
+					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} setEndGameTimeout={setEndGameTimeout} />
 				</GridItem>
 			))}
 			<EndGame resetGame={resetGame} showEndGame={showEndGame} timer={timer} />
