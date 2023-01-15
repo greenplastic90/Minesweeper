@@ -69,25 +69,34 @@ const Times = ({ timer, hasWon }) => {
 
 const WinOrLose = ({ hasWon }) => {
 	const message = hasWon ? 'You Win!' : 'You Lose'
-	const colors = ['hsl(338,57.1%,37.5%)', 'hsl(12.7,65.9%,44.9%)', 'hsl(265.6,34.1%,35.1%)', 'hsl(11.7,63.6%,23.7%)', 'hsl(210,11.1%,21.2%)']
+	const colors = { purple: 'hsl(265.6,34.1%,35.1%)', orange_dark: 'hsl(12.7,65.9%,44.9%)', pink_dark: 'hsl(338,57.1%,37.5%)', blue_dark: 'hsl(186.5,79.3%,22.7%)', brown: 'hsl(11.7,63.6%,23.7%)' }
 
-	const colorPicker = () => {
-		const firstIndex = Math.round(getRandomNum(0, colors.length - 1))
+	const colorPicker = (previousIndex) => {
+		const colorsValues = Object.values(colors)
+		let index = Math.round(getRandomNum(0, colorsValues.length - 1))
 
-		return colors[firstIndex]
+		if (!(previousIndex === false)) {
+			while (previousIndex === index) {
+				index = Math.round(getRandomNum(0, colorsValues.length - 1))
+			}
+		}
+
+		return { chosenColor: colorsValues[index], colorIndex: index }
 	}
 
 	return (
 		<HStack pb={'30px'}>
 			{message.split(' ').map((word, i) => {
 				let delayValue = 0
+				let previousIndex = false
 				return (
 					<HStack key={i} spacing={0}>
 						{word.split('').map((letter, j) => {
 							delayValue += getRandomNum(0.1, 0.5)
-							const chosenColor = colorPicker()
+							const { chosenColor, colorIndex } = colorPicker(previousIndex)
+							previousIndex = colorIndex
 							return (
-								<Text key={j} as={motion.div} animate={hasWon && { color: [Color(chosenColor).lighten(0.5).hex(), chosenColor], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
+								<Text key={j} as={motion.div} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
 									{letter}
 								</Text>
 							)
