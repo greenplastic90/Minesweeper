@@ -14,7 +14,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} pt={['20px', null, '10%']}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
-						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(186.5,79.3%,22.7%)').darken(0.25)}` }} bgColor='numbers.five' color='brand.header_text'>
+						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
 							<BsArrowClockwise onClick={resetGame} style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
 						</Button>
 					</VStack>
@@ -25,6 +25,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 }
 
 export default EndGame
+
 const Times = ({ timer, hasWon }) => {
 	const [currentScore, setCurrentScore] = useState(null)
 	const [highScore, setHighScore] = useState(null)
@@ -57,10 +58,10 @@ const Times = ({ timer, hasWon }) => {
 	}, [hasWon, timer])
 
 	return (
-		<VStack w={'full'} spacing={'10px'} bgColor={'numbers.five'}>
+		<VStack w={'full'} spacing={'10px'}>
 			<HStack width='full' pt={'20px'} spacing={'40px'} justifyContent='center'>
-				<Time icon={<ImClock2 size={'60px'} color={'#f5c242'} />} time={currentScore} />
-				<Time icon={<ImTrophy size={'60px'} color={'#f5c242'} />} time={highScore} />
+				<Time icon={<ImClock2 size={'50px'} color={'#f5c242'} />} time={currentScore} />
+				<Time icon={<ImTrophy size={'50px'} color={'#f5c242'} />} time={highScore} />
 			</HStack>
 			<WinOrLose hasWon={hasWon} />
 		</VStack>
@@ -68,7 +69,7 @@ const Times = ({ timer, hasWon }) => {
 }
 
 const WinOrLose = ({ hasWon }) => {
-	const message = hasWon ? 'You Win!' : 'You Lose'
+	const message = hasWon ? 'You Win!' : 'Ouch!'
 	const colors = { purple: 'hsl(265.6,34.1%,35.1%)', orange_dark: 'hsl(12.7,65.9%,44.9%)', pink_dark: 'hsl(338,57.1%,37.5%)', blue_dark: 'hsl(186.5,79.3%,22.7%)', brown: 'hsl(11.7,63.6%,23.7%)' }
 
 	const colorPicker = (previousIndex) => {
@@ -85,7 +86,7 @@ const WinOrLose = ({ hasWon }) => {
 	}
 
 	return (
-		<HStack pb={'30px'}>
+		<HStack>
 			{message.split(' ').map((word, i) => {
 				let delayValue = 0
 				let previousIndex = false
@@ -96,7 +97,7 @@ const WinOrLose = ({ hasWon }) => {
 							const { chosenColor, colorIndex } = colorPicker(previousIndex)
 							previousIndex = colorIndex
 							return (
-								<Text key={j} as={motion.div} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
+								<Text key={j} as={motion.div} color={'white'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
 									{letter}
 								</Text>
 							)
