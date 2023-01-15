@@ -14,7 +14,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} pt={['20px', null, '10%']}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
-						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(186.5,79.3%,22.7%)').darken(0.25)}` }} bgColor='numbers.four' color='brand.header_text'>
+						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(186.5,79.3%,22.7%)').darken(0.25)}` }} bgColor='numbers.five' color='brand.header_text'>
 							<BsArrowClockwise onClick={resetGame} style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
 						</Button>
 					</VStack>
@@ -57,10 +57,10 @@ const Times = ({ timer, hasWon }) => {
 	}, [hasWon, timer])
 
 	return (
-		<VStack w={'full'} spacing={'30px'} bgColor={'numbers.four'}>
+		<VStack w={'full'} spacing={'10px'} bgColor={'numbers.five'}>
 			<HStack width='full' pt={'20px'} spacing={'40px'} justifyContent='center'>
-				<Time icon={<ImClock2 size={'30px'} color={'#f5c242'} />} time={currentScore} />
-				<Time icon={<ImTrophy size={'30px'} color={'#f5c242'} />} time={highScore} />
+				<Time icon={<ImClock2 size={'60px'} color={'#f5c242'} />} time={currentScore} />
+				<Time icon={<ImTrophy size={'60px'} color={'#f5c242'} />} time={highScore} />
 			</HStack>
 			<WinOrLose hasWon={hasWon} />
 		</VStack>
@@ -68,7 +68,14 @@ const Times = ({ timer, hasWon }) => {
 }
 
 const WinOrLose = ({ hasWon }) => {
-	const message = hasWon ? 'You Win' : 'You Lose'
+	const message = hasWon ? 'You Win!' : 'You Lose'
+	const colors = ['hsl(338,57.1%,37.5%)', 'hsl(12.7,65.9%,44.9%)', 'hsl(265.6,34.1%,35.1%)', 'hsl(11.7,63.6%,23.7%)', 'hsl(210,11.1%,21.2%)']
+
+	const colorPicker = () => {
+		const firstIndex = Math.round(getRandomNum(0, colors.length - 1))
+
+		return colors[firstIndex]
+	}
 
 	return (
 		<HStack pb={'30px'}>
@@ -78,8 +85,9 @@ const WinOrLose = ({ hasWon }) => {
 					<HStack key={i} spacing={0}>
 						{word.split('').map((letter, j) => {
 							delayValue += getRandomNum(0.1, 0.5)
+							const chosenColor = colorPicker()
 							return (
-								<Text key={j} as={motion.div} animate={hasWon && { y: [0, -10, 0], transition: { delay: delayValue, repeat: Infinity } }} fontSize={'50px'}>
+								<Text key={j} as={motion.div} animate={hasWon && { color: [Color(chosenColor).lighten(0.5).hex(), chosenColor], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
 									{letter}
 								</Text>
 							)
@@ -95,7 +103,7 @@ const Time = ({ icon, time }) => {
 	return (
 		<VStack>
 			{icon}
-			<Text fontWeight={'bold'} color='white'>
+			<Text fontSize={'30px'} color='white'>
 				{time ? time : '---'}
 			</Text>
 		</VStack>
