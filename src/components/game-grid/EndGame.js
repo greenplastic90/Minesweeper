@@ -69,9 +69,14 @@ const Times = ({ timer, hasWon }) => {
 }
 
 const WinOrLose = ({ hasWon }) => {
-	const message = hasWon ? 'You Win!' : 'Ouch!'
+	const [message, setMessage] = useState('')
+
 	const colors = { purple: 'hsl(265.6,34.1%,35.1%)', orange_dark: 'hsl(12.7,65.9%,44.9%)', pink_dark: 'hsl(338,57.1%,37.5%)', blue_dark: 'hsl(186.5,79.3%,22.7%)', brown: 'hsl(11.7,63.6%,23.7%)' }
 
+	const messagePicker = (msgArr) => {
+		const randIndex = Math.round(getRandomNum(0, msgArr.length - 1))
+		return msgArr[randIndex]
+	}
 	const colorPicker = (previousIndex) => {
 		const colorsValues = Object.values(colors)
 		let index = Math.round(getRandomNum(0, colorsValues.length - 1))
@@ -84,6 +89,13 @@ const WinOrLose = ({ hasWon }) => {
 
 		return { chosenColor: colorsValues[index], colorIndex: index }
 	}
+
+	useEffect(() => {
+		const winMessages = ['You Win!', 'Bravo!', 'Hazzah!', 'You Rock!', 'Congrats!', 'Smashing!']
+		const loseMessages = ['Ouch!', 'Boom!', "Don't Suck!", 'Watch Out!', 'Maybe Next Time!', 'Oh No!', 'Pay Attention!']
+		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
+		return () => setMessage('')
+	}, [hasWon])
 
 	return (
 		<HStack>
