@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { TbX } from 'react-icons/tb'
 import FlagImage from '../../assets/icons/flag-3.svg'
-import { GameSetup, getRandomNum, ConfettiSetup } from './grid-functions'
+import { GameSetup, getRandomNum, ConfettiSetup, isMobileOrTablet } from './grid-functions'
 
 const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineColor, falseFlag } = field
@@ -29,8 +29,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
-	const [mouseDownAndUpMilliseconds, setMouseDownAndUpMilliseconds] = useState({ mousedown: null, mouseup: null })
-	const holdDownInSeconds = 0.1
+	const [mouseDownAndUpMilliseconds, setMouseDownAndUpMilliseconds] = useState({ touchstart: null, touchend: null })
+	const [touchPressedInSeconds, setTouchPressedInSeconds] = useState(null)
+	const [touchStart, setTouchStart] = useState(null)
+	const holdDownInSeconds = 0.5
 
 	const onFieldLeftClick = useCallback(() => {
 		//* if timer is pause, the game has been won or lost
@@ -96,38 +98,47 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 		[field, isDisabled, setGame]
 	)
 
-	const handelLeftMouseClickPressLengths = (e) => {
-		e.preventDefault()
-		const { mouseup } = mouseDownAndUpMilliseconds
-		const leftMouseClicked = e.button === 0
-		let objToUpdate = { ...mouseDownAndUpMilliseconds }
+	const handelLongPress = (e) => {
+		const touchEnd = e.timeStamp
+		console.log('touchStart ->', touchStart, 'touchEnd ->', touchEnd)
 
-		if (leftMouseClicked) {
-			//? when mousedown is pressed, resets value of mouseup if mouseup isn't null
-			if (e.type === 'mousedown' && mouseup !== null) {
-				objToUpdate = { [e.type]: e.timeStamp, mouseup: null }
-			} else {
-				objToUpdate = { ...objToUpdate, [e.type]: e.timeStamp }
-			}
+		const timePressedInSeconds = (touchEnd - touchStart) / 1000
 
-			setMouseDownAndUpMilliseconds(objToUpdate)
-		}
+		timePressedInSeconds < holdDownInSeconds ? onFieldLeftClick() : handleToggleFlag()
+
+		// console.log(touch)
 	}
-	useEffect(() => {
-		const { mousedown, mouseup } = mouseDownAndUpMilliseconds
 
-		let millisecondDifference = null
+	// const handelLeftMouseClickPressLengths = (e) => {
+	// 	// e.preventDefault()
+	// 	console.log(e.type, e.timeStamp)
+	// 	const { touchend } = mouseDownAndUpMilliseconds
 
-		if (mousedown !== null && mouseup !== null) {
-			millisecondDifference = (mouseup - mousedown) / 1000
-		}
-		console.log('millisecondDifference ->', millisecondDifference)
-		if (millisecondDifference > holdDownInSeconds) {
-			handleToggleFlag()
-			// const runFunction = millisecondDifference < holdDownInSeconds ? handleToggleFlag : onFieldLeftClick
-			// runFunction()
-		}
-	}, [handleToggleFlag, mouseDownAndUpMilliseconds])
+	// 	let objToUpdate = { ...mouseDownAndUpMilliseconds }
+
+	// 	//? when touchstart is pressed, resets value of touchend if touchend isn't null
+	// 	if (e.type === 'touchstart' && touchend !== null) {
+	// 		objToUpdate = { [e.type]: e.timeStamp, touchend: null }
+	// 	} else {
+	// 		objToUpdate = { ...objToUpdate, [e.type]: e.timeStamp }
+	// 	}
+
+	// 	setMouseDownAndUpMilliseconds(objToUpdate)
+	// }
+
+	// useEffect(() => {
+	// 	const { touchstart, touchend } = mouseDownAndUpMilliseconds
+
+	// 	let pressLength = null
+
+	// 	if (touchstart !== null && touchend !== null) {
+	// 		pressLength = (touchend - touchstart) / 1000
+	// 		setTouchPressedInSeconds(pressLength)
+	// 	}
+
+	// 	//* useEffect cleanup
+	// 	return () => setTouchPressedInSeconds(null)
+	// }, [mouseDownAndUpMilliseconds])
 
 	//* expose false flag (falg that has been placed where no mine is present)
 	useEffect(() => {
@@ -183,10 +194,13 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 			<VStack
 				as={motion.div}
 				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
-				onContextMenu={handleToggleFlag}
-				// onClick={onFieldLeftClick}
-				onMouseDown={handelLeftMouseClickPressLengths}
-				onMouseUp={handelLeftMouseClickPressLengths}
+				onContextMenu={isMobileOrTablet() ? () => {} : handleToggleFlag}
+				onClick={isMobileOrTablet() ? () => {} : onFieldLeftClick}
+				onTouchStart={(e) => {
+					setTouchStart(e.timeStamp)
+				}}
+				onTouchEnd={handelLongPress}
+				userSelect={'none'}
 				w={box_width}
 				h={box_width}
 				bgColor={colors.bgColor}
@@ -215,7 +229,15 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 					exposeFalseFlag ? (
 						<TbX size='100%' color={'#DF4826'} />
 					) : (
-						<Image h={value_size} src={FlagImage} alt='flag' />
+						<Image
+							onContextMenu={(e) => {
+								e.preventDefault()
+							}}
+							userSelect={'none'}
+							h={value_size}
+							src={FlagImage}
+							alt='flag'
+						/>
 					)
 				) : null}
 			</VStack>
