@@ -29,8 +29,6 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
-	const [mouseDownAndUpMilliseconds, setMouseDownAndUpMilliseconds] = useState({ touchstart: null, touchend: null })
-	const [touchPressedInSeconds, setTouchPressedInSeconds] = useState(null)
 	const [touchStart, setTouchStart] = useState(null)
 	const holdDownInSeconds = 0.5
 
@@ -105,40 +103,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 		const timePressedInSeconds = (touchEnd - touchStart) / 1000
 
 		timePressedInSeconds < holdDownInSeconds ? onFieldLeftClick() : handleToggleFlag()
-
-		// console.log(touch)
 	}
-
-	// const handelLeftMouseClickPressLengths = (e) => {
-	// 	// e.preventDefault()
-	// 	console.log(e.type, e.timeStamp)
-	// 	const { touchend } = mouseDownAndUpMilliseconds
-
-	// 	let objToUpdate = { ...mouseDownAndUpMilliseconds }
-
-	// 	//? when touchstart is pressed, resets value of touchend if touchend isn't null
-	// 	if (e.type === 'touchstart' && touchend !== null) {
-	// 		objToUpdate = { [e.type]: e.timeStamp, touchend: null }
-	// 	} else {
-	// 		objToUpdate = { ...objToUpdate, [e.type]: e.timeStamp }
-	// 	}
-
-	// 	setMouseDownAndUpMilliseconds(objToUpdate)
-	// }
-
-	// useEffect(() => {
-	// 	const { touchstart, touchend } = mouseDownAndUpMilliseconds
-
-	// 	let pressLength = null
-
-	// 	if (touchstart !== null && touchend !== null) {
-	// 		pressLength = (touchend - touchstart) / 1000
-	// 		setTouchPressedInSeconds(pressLength)
-	// 	}
-
-	// 	//* useEffect cleanup
-	// 	return () => setTouchPressedInSeconds(null)
-	// }, [mouseDownAndUpMilliseconds])
 
 	//* expose false flag (falg that has been placed where no mine is present)
 	useEffect(() => {
