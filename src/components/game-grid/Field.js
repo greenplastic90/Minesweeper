@@ -1,5 +1,6 @@
 import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 
 import { TbX } from 'react-icons/tb'
@@ -28,8 +29,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
+	const [mouseDownAndUpMilliseconds, setMouseDownAndUpMilliseconds] = useState({ mousedown: null, mouseup: null })
+	const holdDownInSeconds = 0.1
 
-	const onFieldLeftClick = () => {
+	const onFieldLeftClick = useCallback(() => {
 		//* if timer is pause, the game has been won or lost
 		//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
 		if (game.timer === 'pause') {
@@ -57,10 +60,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
 				current.exposeFields(fieldsToExpose)
 
-				if (game.isGameWon() || value === 'mine') {
-					game.pauseTimer()
+				if (current.isGameWon() || value === 'mine') {
+					current.pauseTimer()
 
-					const timeUntilEndGameIsDisplayed = value === 'mine' ? game.explodeMineTimer : 0
+					const timeUntilEndGameIsDisplayed = value === 'mine' ? current.explodeMineTimer : 0
 					setShowEndGame((current) => {
 						return { ...current, disableBtns: true, hasWon: value === 'mine' ? false : true }
 					})
@@ -78,19 +81,55 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
 			})
 		}
-	}
+	}, [game, hasFlag, horizontal_boxes, index, isDisabled, setEndGameTimeout, setGame, setShowEndGame, value])
 
-	const handleToggleFlag = (e) => {
+	const handleToggleFlag = useCallback(
+		(e) => {
+			if (e) e.preventDefault()
+			if (!isDisabled) {
+				field.toggleFlag()
+				setGame((current) => {
+					return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+				})
+			}
+		},
+		[field, isDisabled, setGame]
+	)
+
+	const handelLeftMouseClickPressLengths = (e) => {
 		e.preventDefault()
-		if (!isDisabled) {
-			field.toggleFlag()
-			setGame((current) => {
-				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
-			})
+		const { mouseup } = mouseDownAndUpMilliseconds
+		const leftMouseClicked = e.button === 0
+		let objToUpdate = { ...mouseDownAndUpMilliseconds }
+
+		if (leftMouseClicked) {
+			//? when mousedown is pressed, resets value of mouseup if mouseup isn't null
+			if (e.type === 'mousedown' && mouseup !== null) {
+				objToUpdate = { [e.type]: e.timeStamp, mouseup: null }
+			} else {
+				objToUpdate = { ...objToUpdate, [e.type]: e.timeStamp }
+			}
+
+			setMouseDownAndUpMilliseconds(objToUpdate)
 		}
 	}
+	useEffect(() => {
+		const { mousedown, mouseup } = mouseDownAndUpMilliseconds
 
-	//* expose false flag
+		let millisecondDifference = null
+
+		if (mousedown !== null && mouseup !== null) {
+			millisecondDifference = (mouseup - mousedown) / 1000
+		}
+		console.log('millisecondDifference ->', millisecondDifference)
+		if (millisecondDifference > holdDownInSeconds) {
+			handleToggleFlag()
+			// const runFunction = millisecondDifference < holdDownInSeconds ? handleToggleFlag : onFieldLeftClick
+			// runFunction()
+		}
+	}, [handleToggleFlag, mouseDownAndUpMilliseconds])
+
+	//* expose false flag (falg that has been placed where no mine is present)
 	useEffect(() => {
 		if (falseFlag) {
 			setTimeout(() => {
@@ -140,13 +179,14 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 
 	return (
-		<Box pos={'relative'}>
+		<Box cursor={'pointer'} pos={'relative'}>
 			<VStack
 				as={motion.div}
 				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
-				// onDoubleClick={handleToggleFlag}
 				onContextMenu={handleToggleFlag}
-				onClick={onFieldLeftClick}
+				// onClick={onFieldLeftClick}
+				onMouseDown={handelLeftMouseClickPressLengths}
+				onMouseUp={handelLeftMouseClickPressLengths}
 				w={box_width}
 				h={box_width}
 				bgColor={colors.bgColor}
