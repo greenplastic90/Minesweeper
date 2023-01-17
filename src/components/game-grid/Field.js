@@ -32,7 +32,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [touchStart, setTouchStart] = useState(null)
 	const [flagAddedOrRemovedAnimationTimeout, setFlagAddedOrRemovedAnimationTimeout] = useState()
 	const [falgAddedOrRemovedAnimation, setFalgAddedOrRemovedAnimation] = useState(false)
-	const holdDownInSeconds = 0.3
+	const holdDownInSeconds = 0.15
 
 	const onFieldLeftClick = () => {
 		//* if timer is pause, the game has been won or lost
@@ -100,7 +100,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 
 		const timePressedInSeconds = (touchEnd - touchStart) / 1000
 
-		if (timePressedInSeconds < holdDownInSeconds) {
+		if (timePressedInSeconds <= holdDownInSeconds) {
 			onFieldLeftClick()
 			setFlagAddedOrRemovedAnimationTimeout((current) => {
 				clearTimeout(current)
