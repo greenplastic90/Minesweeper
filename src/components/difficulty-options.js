@@ -1,6 +1,6 @@
 export const easy = {
 	name: 'Easy',
-	mines: 10,
+	mines: 3,
 	horizontal_boxes: 10,
 	vertical_boxes: 8,
 	box_width: ['35px', '35px', '45px'],

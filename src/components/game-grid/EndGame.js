@@ -12,7 +12,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 		<>
 			{showEndGame.show && (
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
-					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} pt={['20px', null, '10%']}>
+					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
 							<BsArrowClockwise onClick={resetGame} style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
@@ -92,7 +92,7 @@ const WinOrLose = ({ hasWon }) => {
 
 	useEffect(() => {
 		const winMessages = ['You Win!', 'Bravo!', 'Hazzah!', 'You Rock!', 'Congrats!', 'Smashing!']
-		const loseMessages = ['Ouch!', 'Boom!', "Don't Suck!", 'Watch Out!', 'Maybe Next Time!', 'Oh No!', 'Pay Attention!']
+		const loseMessages = ['Ouch!', 'Boom!', "Don't Suck!", 'Watch Out!', 'Oh No!']
 		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
 		return () => setMessage('')
 	}, [hasWon])
