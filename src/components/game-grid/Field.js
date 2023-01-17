@@ -1,6 +1,6 @@
 import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { useCallback } from 'react'
+
 import { useEffect, useState } from 'react'
 
 import { TbX } from 'react-icons/tb'
@@ -30,9 +30,11 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 	const [touchStart, setTouchStart] = useState(null)
-	const holdDownInSeconds = 0.5
+	const [flagAddedOrRemovedAnimationTimeout, setFlagAddedOrRemovedAnimationTimeout] = useState()
+	const [falgAddedOrRemovedAnimation, setFalgAddedOrRemovedAnimation] = useState(false)
+	const holdDownInSeconds = 0.3
 
-	const onFieldLeftClick = useCallback(() => {
+	const onFieldLeftClick = () => {
 		//* if timer is pause, the game has been won or lost
 		//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
 		if (game.timer === 'pause') {
@@ -81,28 +83,30 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
 			})
 		}
-	}, [game, hasFlag, horizontal_boxes, index, isDisabled, setEndGameTimeout, setGame, setShowEndGame, value])
+	}
 
-	const handleToggleFlag = useCallback(
-		(e) => {
-			if (e) e.preventDefault()
-			if (!isDisabled) {
-				field.toggleFlag()
-				setGame((current) => {
-					return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
-				})
-			}
-		},
-		[field, isDisabled, setGame]
-	)
+	const handleToggleFlag = (e) => {
+		if (e) e.preventDefault()
+		if (!isDisabled) {
+			field.toggleFlag()
+			setGame((current) => {
+				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+			})
+		}
+	}
 
 	const handelLongPress = (e) => {
 		const touchEnd = e.timeStamp
-		console.log('touchStart ->', touchStart, 'touchEnd ->', touchEnd)
 
 		const timePressedInSeconds = (touchEnd - touchStart) / 1000
 
 		timePressedInSeconds < holdDownInSeconds ? onFieldLeftClick() : handleToggleFlag()
+	}
+
+	const handelTouchStart = (e) => {
+		setTouchStart(e.timeStamp)
+		setFlagAddedOrRemovedAnimationTimeout(setTimeout(() => setFalgAddedOrRemovedAnimation(true), 1000 * holdDownInSeconds))
+		setTimeout(() => setFalgAddedOrRemovedAnimation(false), 1000 * (holdDownInSeconds + 1))
 	}
 
 	//* expose false flag (falg that has been placed where no mine is present)
@@ -167,9 +171,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 						: handleToggleFlag
 				}
 				onClick={isMobileOrTablet() ? () => {} : onFieldLeftClick}
-				onTouchStart={(e) => {
-					setTouchStart(e.timeStamp)
-				}}
+				onTouchStart={handelTouchStart}
 				onTouchEnd={handelLongPress}
 				userSelect={'none'}
 				w={box_width}
