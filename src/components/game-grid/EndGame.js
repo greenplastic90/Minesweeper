@@ -15,7 +15,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
-							<BsArrowClockwise onClick={resetGame} style={{ transform: 'rotate(60deg)' }} size={'20px'} /> <Text pl={'15px'}>Play Again</Text>
+							<Text pl={'15px'}>{showEndGame.hasWon ? 'Play Again?' : 'Try Again?'}</Text>
 						</Button>
 					</VStack>
 				</VStack>
