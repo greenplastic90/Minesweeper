@@ -202,7 +202,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 					) : (
 						<Image
 							//? stops ios from showing same image menu when holding down on the flag image
-							style={{ webkitTouchCallout: 'none' }}
+							style={{ WebkitTouchCallout: 'none' }}
 							onContextMenu={(e) => {
 								e.preventDefault()
 							}}
