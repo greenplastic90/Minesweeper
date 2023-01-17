@@ -1,9 +1,9 @@
 import { Button } from '@chakra-ui/react'
 import React from 'react'
 
-const HowToPlayBtn = () => {
+const HowToPlayBtn = ({ btnWidth }) => {
 	return (
-		<Button fontWeight={'normal'} borderRadius={0}>
+		<Button w={btnWidth} fontWeight={'normal'} borderRadius={0}>
 			Instructions
 		</Button>
 	)
