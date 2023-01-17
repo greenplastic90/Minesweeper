@@ -15,7 +15,9 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
-							<Text pl={'15px'}>{showEndGame.hasWon ? 'Play Again?' : 'Try Again?'}</Text>
+							<Text color={'gray.100'} pl={'15px'}>
+								{showEndGame.hasWon ? 'Play Again?' : 'Try Again?'}
+							</Text>
 						</Button>
 					</VStack>
 				</VStack>
@@ -93,7 +95,7 @@ const WinOrLose = ({ hasWon }) => {
 
 	useEffect(() => {
 		const winMessages = ['You Win!', 'Bravo!', 'Hazzah!', 'You Rock!', 'Congrats!', 'Smashing!']
-		const loseMessages = ['Ouch!', 'Boom!', "Don't Suck!", 'Watch Out!', 'Oh No!']
+		const loseMessages = ['Ouch!', 'Boom!', 'Dont Suck!', 'Watch Out!', 'Oh No!']
 		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
 		return () => setMessage('')
 	}, [hasWon])
@@ -110,7 +112,7 @@ const WinOrLose = ({ hasWon }) => {
 							const { chosenColor, colorIndex } = colorPicker(previousIndex)
 							previousIndex = colorIndex
 							return (
-								<Text key={j} as={motion.div} color={'white'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
+								<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
 									{letter}
 								</Text>
 							)

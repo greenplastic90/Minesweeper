@@ -15,7 +15,7 @@ const HighScore = ({ navbarHighet, btnWidth }) => {
 	}, [])
 
 	return (
-		<VStack as={motion.div} animate={{ scale: [0, 1] }} pos={'absolute'} top={navbarHighet} right={1} w={btnWidth} py={'5px'} zIndex={3} bgColor={basicColors.white}>
+		<VStack as={motion.div} animate={{ scale: [0, 1] }} pos={'absolute'} top={navbarHighet} right={1} w={btnWidth} py={'5px'} zIndex={3} bgColor={'gray.100'}>
 			<ImTrophy size={'50px'} color={'#f5c242'} />
 			<Divider w={'80%'} color={basicColors.black} />
 			<VStack w={'full'} alignItems={'start'}>
