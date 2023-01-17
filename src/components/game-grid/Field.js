@@ -159,7 +159,13 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 			<VStack
 				as={motion.div}
 				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
-				onContextMenu={isMobileOrTablet() ? () => {} : handleToggleFlag}
+				onContextMenu={
+					isMobileOrTablet()
+						? (e) => {
+								e.preventDefault(e)
+						  }
+						: handleToggleFlag
+				}
 				onClick={isMobileOrTablet() ? () => {} : onFieldLeftClick}
 				onTouchStart={(e) => {
 					setTouchStart(e.timeStamp)
@@ -195,6 +201,8 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 						<TbX size='100%' color={'#DF4826'} />
 					) : (
 						<Image
+							//? stops ios from showing same image menu when holding down on the flag image
+							style={{ webkitTouchCallout: 'none' }}
 							onContextMenu={(e) => {
 								e.preventDefault()
 							}}
