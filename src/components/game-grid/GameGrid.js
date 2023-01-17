@@ -5,10 +5,10 @@ import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
 
-const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer }) => {
+const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer, setEndGameTimeout }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
-	const [, setEndGameTimeout] = useState()
+
 	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
 

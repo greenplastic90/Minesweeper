@@ -4,7 +4,7 @@ import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
 import bgImage from '../assets/background/sand-minesweeper.svg'
 import GameGrid from './game-grid/GameGrid'
-import { createBlankLocalStorageHighscores, Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
+import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
 
 const Game = () => {
@@ -13,7 +13,7 @@ const Game = () => {
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
 	const [showEndGame, setShowEndGame] = useState({ hasWon: false, show: false, disableBtns: false })
-
+	const [, setEndGameTimeout] = useState()
 	//* timer states
 	const [ones, setOnes] = useState(0)
 	const [tens, setTens] = useState(0)
@@ -93,15 +93,30 @@ const Game = () => {
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
 
+	const showEndGameWhenGameEnds = () => {
+		//* if timer is pause, the game has been won or lost
+		//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
+		if (game.timer === 'pause') {
+			setEndGameTimeout((current) => {
+				clearTimeout(current)
+				return current
+			})
+
+			setShowEndGame((current) => {
+				return { ...current, show: true }
+			})
+		}
+	}
+
 	return (
 		<>
 			<VStack pos={'relative'} w={'full'} h={'100vh'} justifyContent={'center'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
 				<NavBar />
-				<VStack spacing={0} boxShadow={'dark-lg'}>
+				<VStack onClick={isMobileOrTablet() ? () => {} : game && game.timer === 'pause' ? showEndGameWhenGameEnds : () => {}} onTouchStart={game && game.timer === 'pause' ? showEndGameWhenGameEnds : () => {}} spacing={0} boxShadow={'dark-lg'}>
 					{game && (
 						<>
 							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
-							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
+							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
 						</>
 					)}
 				</VStack>
