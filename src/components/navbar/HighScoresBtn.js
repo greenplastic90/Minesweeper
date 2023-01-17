@@ -1,10 +1,15 @@
 import { Button } from '@chakra-ui/react'
 import React from 'react'
 
-const HighScoresBtn = () => {
+const HighScoresBtn = ({ setShowHighScore }) => {
 	return (
 		<>
-			<Button fontWeight={'normal'} borderRadius={0}>
+			<Button
+				onClick={() => {
+					setShowHighScore((current) => !current)
+				}}
+				fontWeight={'normal'}
+				borderRadius={0}>
 				High Scores
 			</Button>
 		</>
