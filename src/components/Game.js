@@ -94,17 +94,25 @@ const Game = () => {
 	}, [difficulty, resetToggle])
 
 	const showEndGameWhenGameEnds = () => {
-		//* if timer is pause, the game has been won or lost
-		//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
-		if (game.timer === 'pause') {
-			setEndGameTimeout((current) => {
-				clearTimeout(current)
-				return current
-			})
+		const actualFunction = () => {
+			//* if timer is pause, the game has been won or lost
+			//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
+			if (game.timer === 'pause') {
+				setEndGameTimeout((current) => {
+					clearTimeout(current)
+					return current
+				})
 
-			setShowEndGame((current) => {
-				return { ...current, show: true }
-			})
+				setShowEndGame((current) => {
+					return { ...current, show: true }
+				})
+			}
+		}
+
+		if (game && game.timer === 'pause') {
+			return actualFunction
+		} else {
+			return () => {}
 		}
 	}
 
@@ -112,7 +120,7 @@ const Game = () => {
 		<>
 			<VStack pos={'relative'} w={'full'} h={'100vh'} justifyContent={'center'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
 				<NavBar />
-				<VStack onClick={isMobileOrTablet() ? () => {} : game && game.timer === 'pause' ? showEndGameWhenGameEnds : () => {}} onTouchStart={game && game.timer === 'pause' ? showEndGameWhenGameEnds : () => {}} spacing={0} boxShadow={'dark-lg'}>
+				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} spacing={0} boxShadow={'dark-lg'}>
 					{game && (
 						<>
 							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />

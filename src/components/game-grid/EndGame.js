@@ -30,6 +30,7 @@ const Times = ({ timer, hasWon }) => {
 	const [currentScore, setCurrentScore] = useState(null)
 	const [highScore, setHighScore] = useState(null)
 
+	//* updates and displays higscores as needed
 	useEffect(() => {
 		createBlankLocalStorageHighscores()
 
