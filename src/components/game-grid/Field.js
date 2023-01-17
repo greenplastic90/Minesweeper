@@ -100,7 +100,14 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 
 		const timePressedInSeconds = (touchEnd - touchStart) / 1000
 
-		timePressedInSeconds < holdDownInSeconds ? onFieldLeftClick() : handleToggleFlag()
+		if (timePressedInSeconds < holdDownInSeconds) {
+			onFieldLeftClick()
+			setFlagAddedOrRemovedAnimationTimeout((current) => {
+				clearTimeout(current)
+			})
+		} else {
+			handleToggleFlag()
+		}
 	}
 
 	const handelTouchStart = (e) => {
