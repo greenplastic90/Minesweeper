@@ -2,9 +2,10 @@ import { VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
-
+import bgImage from '../assets/background/sand-minesweeper.svg'
 import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
+import NavBar from './navbar/NavBar'
 
 const Game = () => {
 	const [game, setGame] = useState()
@@ -93,14 +94,19 @@ const Game = () => {
 	}, [difficulty, resetToggle])
 
 	return (
-		<VStack spacing={0} boxShadow={'dark-lg'}>
-			{game && (
-				<>
-					<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
-					<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
-				</>
-			)}
-		</VStack>
+		<>
+			<VStack pos={'relative'} w={'full'} h={'100vh'} justifyContent={'center'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+				<NavBar />
+				<VStack spacing={0} boxShadow={'dark-lg'}>
+					{game && (
+						<>
+							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
+							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} />
+						</>
+					)}
+				</VStack>
+			</VStack>
+		</>
 	)
 }
 

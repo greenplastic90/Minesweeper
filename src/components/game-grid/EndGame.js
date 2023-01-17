@@ -59,7 +59,7 @@ const Times = ({ timer, hasWon }) => {
 
 	return (
 		<VStack w={'full'} spacing={'10px'}>
-			<HStack width='full' pt={'20px'} spacing={'40px'} justifyContent='center'>
+			<HStack width='full' pt={'5px'} spacing={'40px'} justifyContent='center'>
 				<Time icon={<ImClock2 size={'50px'} color={'#f5c242'} />} time={currentScore} />
 				<Time icon={<ImTrophy size={'50px'} color={'#f5c242'} />} time={highScore} />
 			</HStack>
