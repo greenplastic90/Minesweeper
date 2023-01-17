@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react'
 
-const basicColors = {
+export const basicColors = {
 	white: 'hsl(0,0%,100%)',
 	black: 'hsl(0,0%,0%)',
 	green_darkest: 'hsl(92.7,40.7%,26.5%)',
