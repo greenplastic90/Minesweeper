@@ -6,12 +6,14 @@ import bgImage from '../assets/background/sand-minesweeper.svg'
 import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
+import HighScore from './navbar/HighScore'
 
 const Game = () => {
 	const [game, setGame] = useState()
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
+	const [showHighScores, setShowHighScores] = useState(false)
 	const [showEndGame, setShowEndGame] = useState({ hasWon: false, show: false, disableBtns: false })
 	const [, setEndGameTimeout] = useState()
 	//* timer states
@@ -89,7 +91,6 @@ const Game = () => {
 		}
 
 		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null, null, 'reset')
-		console.log(currentGame)
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
 
@@ -120,6 +121,7 @@ const Game = () => {
 		<>
 			<VStack pos={'relative'} w={'full'} h={'100vh'} justifyContent={'center'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
 				<NavBar />
+
 				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} spacing={0} boxShadow={'dark-lg'}>
 					{game && (
 						<>

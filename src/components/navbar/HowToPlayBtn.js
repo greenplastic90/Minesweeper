@@ -1,12 +1,12 @@
 import { Button } from '@chakra-ui/react'
 import React from 'react'
 
-const HighScores = () => {
+const HowToPlayBtn = () => {
 	return (
 		<Button fontWeight={'normal'} borderRadius={0}>
-			High Scores
+			Instructions
 		</Button>
 	)
 }
 
-export default HighScores
+export default HowToPlayBtn
