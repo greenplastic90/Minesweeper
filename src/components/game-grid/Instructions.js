@@ -37,7 +37,7 @@ const Instructions = () => {
 		setInstructions(isMobileOrTablet() ? instructionData.current.mobile : instructionData.current.browser)
 		setInterval(() => {
 			setShowDig((current) => !current)
-		}, 1000 * 3)
+		}, 1000 * 2)
 	}, [])
 
 	return (
@@ -58,9 +58,9 @@ const DisplayInformation = ({ data, isDig }) => {
 	const { digText, flagText } = text
 	return (
 		<VStack>
-			<Stack direction={isDig ? 'row' : 'row-reverse'}>
+			<HStack>
 				{isDig ? <TbShovel color={iconsStyle.color} size={iconsStyle.size} /> : <RiFlag2Fill color={iconsStyle.color} size={iconsStyle.size} />} {icon}{' '}
-			</Stack>
+			</HStack>
 			<Text fontSize={'30px'} color={'gray.100'}>
 				{isDig ? digText : flagText}
 			</Text>
