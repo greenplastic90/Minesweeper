@@ -16,7 +16,7 @@ const Instructions = () => {
 		}, 1000 * 3)
 	}, [])
 	return (
-		<VStack pointerEvents={'none'} pos={'absolute'} top={'20%'} w='200px' h='150px' mt={0} justifyContent={'center'} bg={'hsla(0, 0%, 0%, 0.6)'}>
+		<VStack pointerEvents={'none'} pos={'absolute'} top={'20%'} w='200px' h='150px' mt={0} justifyContent={'center'} borderRadius={'20px'} bg={'hsla(0, 0%, 0%, 0.8)'}>
 			{showDig ? <Dig /> : <Flag />}
 		</VStack>
 	)
@@ -28,8 +28,8 @@ const Dig = () => {
 	return (
 		<InstructionsContainer>
 			<IconsContainer>
-				<TbShovel color={basicColors.white} />
-				<BsMouse2 color={basicColors.white} />
+				<TbShovel color={basicColors.white} size={'50px'} />
+				<BsMouse2 color={basicColors.white} size={'50px'} />
 			</IconsContainer>
 			<TextContainer>{'LEFT CLICK'}</TextContainer>
 		</InstructionsContainer>
@@ -40,8 +40,8 @@ const Flag = () => {
 	return (
 		<InstructionsContainer>
 			<IconsContainer>
-				<BsMouse2 color={basicColors.white} />
-				<RiFlag2Fill color={basicColors.white} />
+				<BsMouse2 rotate={'10dge'} color={basicColors.white} size={'50px'} />
+				<RiFlag2Fill color={basicColors.white} size={'50px'} />
 			</IconsContainer>
 			<TextContainer>{'RIGHT CLICK'}</TextContainer>
 		</InstructionsContainer>
@@ -57,5 +57,9 @@ const IconsContainer = ({ children }) => {
 }
 
 const TextContainer = ({ children }) => {
-	return <Text color={'gray.100'}>{children}</Text>
+	return (
+		<Text fontSize={'30px'} color={'gray.100'}>
+			{children}
+		</Text>
+	)
 }
