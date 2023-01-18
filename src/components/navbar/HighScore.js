@@ -12,7 +12,7 @@ const HighScore = ({ navbarHighet, btnWidth, showHighScore, highScoreFirstClick 
 		createBlankLocalStorageHighscores()
 		const highScores = JSON.parse(localStorage.getItem('minesweeper-highscores'))
 		setLocalHighScores(highScores)
-	}, [])
+	}, [showHighScore])
 
 	return (
 		<>
