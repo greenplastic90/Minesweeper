@@ -1,9 +1,10 @@
-import { GridItem, SimpleGrid } from '@chakra-ui/react'
+import { GridItem, SimpleGrid, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import EndGame from './EndGame'
 import Field from './Field'
+import Instructions from './Instructions'
 
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer, setEndGameTimeout }) => {
 	const shakeAnimationDuration = 1.5
@@ -21,14 +22,17 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 	}, [fieldClickedValue, fieldClickedIndex])
 
 	return (
-		<SimpleGrid pos={'relative'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
-			{fields.map((field) => (
-				<GridItem key={field.id}>
-					<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} setEndGameTimeout={setEndGameTimeout} />
-				</GridItem>
-			))}
+		<VStack pos={'relative'}>
+			<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
+				{fields.map((field) => (
+					<GridItem key={field.id}>
+						<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} setEndGameTimeout={setEndGameTimeout} />
+					</GridItem>
+				))}
+			</SimpleGrid>
 			<EndGame resetGame={resetGame} showEndGame={showEndGame} timer={timer} />
-		</SimpleGrid>
+			<Instructions />
+		</VStack>
 	)
 }
 

@@ -1,8 +1,8 @@
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react'
+import { Button, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { ImClock2, ImTrophy } from 'react-icons/im'
-import { BsArrowClockwise } from 'react-icons/bs'
+
 import { useEffect } from 'react'
 import { createBlankLocalStorageHighscores, getRandomNum } from './grid-functions'
 import Color from 'color'
@@ -12,7 +12,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 	return (
 		<>
 			{showEndGame.show && (
-				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
+				<VStack pos={'absolute'} bottom={0} w='full' h={'full'} bg={'hsla(100, 100%, 10%, 0.3)'}>
 					<VStack w='full' h={'inherit'} justifyContent='space-between' as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} zIndex={3} backgroundColor={'hsl(0,0%,100%,0.1)'}>
 						<TimesAndGameOverMsg timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' h={'50px'} onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
