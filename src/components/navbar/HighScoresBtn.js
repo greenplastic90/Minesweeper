@@ -11,7 +11,7 @@ const HighScoresBtn = ({ btnWidth, setShowHighScore }) => {
 				w={btnWidth}
 				fontWeight={'normal'}
 				borderRadius={0}>
-				High Scores
+				HIGH SCORES
 			</Button>
 		</>
 	)

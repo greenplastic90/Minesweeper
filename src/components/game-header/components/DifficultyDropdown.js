@@ -10,9 +10,9 @@ const DifficultyDropdown = ({ setDifficulty, resetGame, showEndGame }) => {
 	}
 	return (
 		<Select disabled={showEndGame.disableBtns} fontSize={'20px'} bgColor={'brand.header_dropdown'} defaultValue={localStorage.getItem('mineSweeperDiffuculty')} onChange={(e) => handelDifficultyChange(e.target.value)} w={'fit-content'} borderRadius={0}>
-			<option value='easy'>Easy</option>
-			<option value='medium'>Medium</option>
-			<option value='hard'>Hard</option>
+			<option value='easy'>EASY</option>
+			<option value='medium'>MEDIUM</option>
+			<option value='hard'>HARD</option>
 		</Select>
 	)
 }

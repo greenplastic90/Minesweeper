@@ -15,8 +15,8 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
 						<Times timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
-							<Text color={'gray.100'} pl={'15px'}>
-								{showEndGame.hasWon ? 'Play Again?' : 'Try Again?'}
+							<Text fontSize={'20px'} color={'gray.100'} pl={'15px'}>
+								{showEndGame.hasWon ? 'PLAY AGAIN?' : 'RETRY?'}
 							</Text>
 						</Button>
 					</VStack>
@@ -102,24 +102,27 @@ const WinOrLose = ({ hasWon }) => {
 
 	return (
 		<HStack>
-			{message.split(' ').map((word, i) => {
-				let delayValue = 0
-				let previousIndex = false
-				return (
-					<HStack key={i} spacing={0}>
-						{word.split('').map((letter, j) => {
-							delayValue += getRandomNum(0.1, 0.5)
-							const { chosenColor, colorIndex } = colorPicker(previousIndex)
-							previousIndex = colorIndex
-							return (
-								<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
-									{letter}
-								</Text>
-							)
-						})}
-					</HStack>
-				)
-			})}
+			{message
+				.toUpperCase()
+				.split(' ')
+				.map((word, i) => {
+					let delayValue = 0
+					let previousIndex = false
+					return (
+						<HStack key={i} spacing={0}>
+							{word.split('').map((letter, j) => {
+								delayValue += getRandomNum(0.1, 0.5)
+								const { chosenColor, colorIndex } = colorPicker(previousIndex)
+								previousIndex = colorIndex
+								return (
+									<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'50px'}>
+										{letter}
+									</Text>
+								)
+							})}
+						</HStack>
+					)
+				})}
 		</HStack>
 	)
 }

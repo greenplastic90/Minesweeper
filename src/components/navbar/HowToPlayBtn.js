@@ -4,7 +4,7 @@ import React from 'react'
 const HowToPlayBtn = ({ btnWidth }) => {
 	return (
 		<Button w={btnWidth} fontWeight={'normal'} borderRadius={0}>
-			Instructions
+			INSTRUCTIONS
 		</Button>
 	)
 }

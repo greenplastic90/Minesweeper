@@ -8,7 +8,7 @@ const LogoAndName = () => {
 		<HStack>
 			<Logo />
 			<Text fontSize={'30px'} color={'white'}>
-				Minesweeper
+				MINESWEEPER
 			</Text>
 		</HStack>
 	)
