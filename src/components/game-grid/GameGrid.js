@@ -22,6 +22,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
 	}, [fieldClickedValue, fieldClickedIndex])
 
+	//* instructions will only show the first time the page is loaded, but not on resets
 	useEffect(() => {
 		!game.isFirstClick() && setisFirstGame(false)
 	}, [game])
