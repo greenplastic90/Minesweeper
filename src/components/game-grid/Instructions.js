@@ -43,7 +43,7 @@ const Instructions = () => {
 	return (
 		<>
 			{instructions && (
-				<VStack pointerEvents={'none'} pos={'absolute'} top={'20%'} w='200px' h='150px' mt={0} justifyContent={'center'} borderRadius={'20px'} bg={'hsla(0, 0%, 0%, 0.8)'}>
+				<VStack pointerEvents={'none'} pos={'absolute'} top={'20%'} w='200px' h='150px' mt={0} justifyContent={'center'} bg={'hsla(0, 0%, 0%, 0.8)'}>
 					{showDig ? <DisplayInformation data={instructions} isDig={true} /> : <DisplayInformation data={instructions} isDig={false} />}
 				</VStack>
 			)}
