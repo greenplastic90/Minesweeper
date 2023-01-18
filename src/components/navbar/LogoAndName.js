@@ -16,8 +16,8 @@ const LogoAndName = () => {
 
 const Logo = () => {
 	return (
-		<VStack w='45px' h='45px' justifyContent={'center'} bgColor={'numbers.six'}>
-			<Box w={'18px'} h={'18px'} bgColor={Color(basicColors.pink_dark).darken(0.5).hex()} borderRadius={'full'} />
+		<VStack w='45px' h='45px' justifyContent={'center'} bgColor={basicColors.blue_dark}>
+			<Box w={'18px'} h={'18px'} bgColor={Color(basicColors.blue_dark).darken(0.5).hex()} borderRadius={'full'} />
 		</VStack>
 	)
 }
