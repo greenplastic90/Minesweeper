@@ -1,4 +1,4 @@
-import { Button, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { ImClock2, ImTrophy } from 'react-icons/im'
@@ -13,9 +13,9 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 		<>
 			{showEndGame.show && (
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
-					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
+					<VStack w='full' h={'inherit'} justifyContent='space-between' as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} zIndex={3} backgroundColor={'hsl(0,0%,100%,0.1)'}>
 						<TimesAndGameOverMsg timer={timer} hasWon={showEndGame.hasWon} />
-						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
+						<Button w='full' h={'50px'} onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
 							<Text fontSize={'20px'} color={'gray.100'} pl={'15px'}>
 								{showEndGame.hasWon ? 'PLAY AGAIN?' : 'RETRY?'}
 							</Text>
@@ -62,8 +62,8 @@ const TimesAndGameOverMsg = ({ timer, hasWon }) => {
 	}, [hasWon, timer])
 
 	return (
-		<VStack w={'full'} spacing={'10px'}>
-			<HStack width='full' pt={'5px'} spacing={'40px'} justifyContent='center'>
+		<VStack w={'full'} h={'full'} justifyContent={'center'}>
+			<HStack width='full' spacing={'40px'} justifyContent='center'>
 				<Time icon={<ImClock2 size={'50px'} color={basicColors.yellow} />} time={currentScore} />
 				<Time icon={<ImTrophy size={'50px'} color={basicColors.yellow} />} time={highScore} />
 			</HStack>
@@ -132,6 +132,7 @@ const Time = ({ icon, time }) => {
 	return (
 		<VStack>
 			{icon}
+
 			<Text fontSize={'30px'} color='white'>
 				{time ? time : '---'}
 			</Text>
