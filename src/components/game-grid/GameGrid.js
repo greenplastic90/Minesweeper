@@ -9,6 +9,7 @@ import Instructions from './Instructions'
 const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer, setEndGameTimeout }) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
+	const [isFirstGame, setisFirstGame] = useState(true)
 
 	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
@@ -21,6 +22,10 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 		//* added fieldClickedIndex to the dependency array, so that if fieldClickedValue happens to be 0 twice in a row, this shake animation would still run
 	}, [fieldClickedValue, fieldClickedIndex])
 
+	useEffect(() => {
+		!game.isFirstClick() && setisFirstGame(false)
+	}, [game])
+
 	return (
 		<VStack pos={'relative'}>
 			<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
@@ -31,7 +36,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 				))}
 			</SimpleGrid>
 			<EndGame resetGame={resetGame} showEndGame={showEndGame} timer={timer} />
-			<Instructions />
+			{isFirstGame && game.isFirstClick() && <Instructions />}
 		</VStack>
 	)
 }
