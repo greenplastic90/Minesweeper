@@ -16,7 +16,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 					<VStack w='full' h={'inherit'} justifyContent='space-between' as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} zIndex={3} backgroundColor={'hsl(0,0%,100%,0.1)'}>
 						<TimesAndGameOverMsg timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' h={'50px'} onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
-							<Text fontSize={'20px'} color={'gray.100'} pl={'15px'}>
+							<Text as={motion.div} animate={{ scale: [0.9, 1, 0.9], transition: { repeat: Infinity } }} fontSize={'20px'} color={'gray.100'} pl={'15px'}>
 								{showEndGame.hasWon ? 'PLAY AGAIN?' : 'RETRY?'}
 							</Text>
 						</Button>
