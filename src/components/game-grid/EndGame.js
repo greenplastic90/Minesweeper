@@ -6,6 +6,7 @@ import { BsArrowClockwise } from 'react-icons/bs'
 import { useEffect } from 'react'
 import { createBlankLocalStorageHighscores, getRandomNum } from './grid-functions'
 import Color from 'color'
+import { basicColors } from '../../theme/theme'
 
 const EndGame = ({ resetGame, showEndGame, timer }) => {
 	return (
@@ -13,7 +14,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 			{showEndGame.show && (
 				<VStack pos={'absolute'} w='full' h='full' bg={'hsla(100, 100%, 10%, 0.3)'}>
 					<VStack as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} w='200px' zIndex={3} mt={'10px'} pt={['20px', null, '10%']} backgroundColor={'hsl(0,0%,100%,0.3)'}>
-						<Times timer={timer} hasWon={showEndGame.hasWon} />
+						<TimesAndGameOverMsg timer={timer} hasWon={showEndGame.hasWon} />
 						<Button w='full' onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
 							<Text fontSize={'20px'} color={'gray.100'} pl={'15px'}>
 								{showEndGame.hasWon ? 'PLAY AGAIN?' : 'RETRY?'}
@@ -28,7 +29,7 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 
 export default EndGame
 
-const Times = ({ timer, hasWon }) => {
+const TimesAndGameOverMsg = ({ timer, hasWon }) => {
 	const [currentScore, setCurrentScore] = useState(null)
 	const [highScore, setHighScore] = useState(null)
 
@@ -63,8 +64,8 @@ const Times = ({ timer, hasWon }) => {
 	return (
 		<VStack w={'full'} spacing={'10px'}>
 			<HStack width='full' pt={'5px'} spacing={'40px'} justifyContent='center'>
-				<Time icon={<ImClock2 size={'50px'} color={'#f5c242'} />} time={currentScore} />
-				<Time icon={<ImTrophy size={'50px'} color={'#f5c242'} />} time={highScore} />
+				<Time icon={<ImClock2 size={'50px'} color={basicColors.yellow} />} time={currentScore} />
+				<Time icon={<ImTrophy size={'50px'} color={basicColors.yellow} />} time={highScore} />
 			</HStack>
 			<WinOrLose hasWon={hasWon} />
 		</VStack>

@@ -21,15 +21,8 @@ export const basicColors = {
 	blue_dark: 'hsl(186.5,79.3%,22.7%)',
 	gray_dark: 'hsl(210,11.1%,21.2%)',
 	brown: 'hsl(11.7,63.6%,23.7%)',
+	yellow: 'hsl(43, 80%, 64%)',
 }
-// blue: 'hsl(215.5,79.3%,43.5%)',
-// 	light_blue: 'hsl(189.7,42.9%,45.3%)',
-// 	red: 'hsl(356.5,76.8%,43.9%)',
-// 	orange: 'hsl(28.2,98.4%,51.2%)',
-// 	purple: 'hsl(282.2,100%,28.4%)',
-// 	pink: 'hsl(349.5,100%,87.6%)',
-// 	aquamarine: 'hsl(159.8,100%,74.9%)',
-// 	yellow: 'hsl(60,100%,50%)',
 
 const colors = {
 	brand: {
