@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react'
+import { useMediaQuery, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
@@ -20,6 +20,8 @@ const Game = () => {
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
 	const [timeIntervals, setTimeIntervals] = useState({ ones: null, tens: null, hundreds: null })
+
+	const [isOrientationPortrait] = useMediaQuery('(orientation: portrait)')
 
 	const showEndGameWhenGameEnds = () => {
 		const actualFunction = () => {
@@ -120,14 +122,18 @@ const Game = () => {
 		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
 			<NavBar />
 
-			<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} className='TEST' spacing={0} boxShadow={'dark-lg'}>
-				{game && (
-					<>
-						<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
-						<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
-					</>
-				)}
-			</VStack>
+			{isOrientationPortrait ? (
+				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} className='TEST' spacing={0} boxShadow={'dark-lg'}>
+					{game && (
+						<>
+							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
+							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
+						</>
+					)}
+				</VStack>
+			) : (
+				<VStack></VStack>
+			)}
 			<Footer />
 		</VStack>
 	)
