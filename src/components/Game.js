@@ -7,6 +7,7 @@ import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
 import HighScore from './navbar/HighScore'
+import Footer from './footer/Footer'
 
 const Game = () => {
 	const [game, setGame] = useState()
@@ -118,20 +119,19 @@ const Game = () => {
 	}
 
 	return (
-		<>
-			<VStack pos={'relative'} w={'full'} h={'100vh'} justifyContent={'center'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-				<NavBar />
+		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+			<NavBar />
 
-				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} spacing={0} boxShadow={'dark-lg'}>
-					{game && (
-						<>
-							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
-							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
-						</>
-					)}
-				</VStack>
+			<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} className='TEST' spacing={0} boxShadow={'dark-lg'}>
+				{game && (
+					<>
+						<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
+						<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
+					</>
+				)}
 			</VStack>
-		</>
+			<Footer />
+		</VStack>
 	)
 }
 

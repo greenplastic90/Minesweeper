@@ -16,7 +16,7 @@ const NavBar = () => {
 	}
 
 	return (
-		<HStack pos={'absolute'} top={0} left={0} w={'full'} h={navbarHighet} px={'5px'} justifyContent={'space-between'} alignContent={'center'} backgroundColor={'hsl(0,0%,100%.0.0)'}>
+		<HStack w={'full'} h={navbarHighet} px={'5px'} justifyContent={'space-between'} alignContent={'center'} backgroundColor={'hsl(0,0%,100%.0.0)'}>
 			<LogoAndName />
 
 			<HighScoresBtn btnWidth={btnWidth} handelHighScoreClick={handelHighScoreClick} />
