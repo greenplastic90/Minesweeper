@@ -15,7 +15,7 @@ const RotateDevice = () => {
 			</VStack>
 
 			<Text>OH NO! WE CAN'T FIT EVERTHING ON YOUR SCREEN.</Text>
-			<Text>PLEASE ROTATE YOUR DEVICE.</Text>
+			<Text fontWeight={'bold'}>PLEASE ROTATE YOUR DEVICE.</Text>
 		</VStack>
 	)
 }
