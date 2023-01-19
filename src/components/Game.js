@@ -7,6 +7,7 @@ import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
 import Footer from './footer/Footer'
+import RotateDevice from './game-grid/RotateDevice'
 
 const Game = () => {
 	const [game, setGame] = useState()
@@ -132,7 +133,7 @@ const Game = () => {
 					)}
 				</VStack>
 			) : (
-				<VStack></VStack>
+				<RotateDevice />
 			)}
 			<Footer />
 		</VStack>
