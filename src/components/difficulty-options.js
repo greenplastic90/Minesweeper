@@ -1,3 +1,5 @@
+import { isMobileOrTablet } from './game-grid/grid-functions'
+
 export const easy = {
 	name: 'Easy',
 	mines: 10,
@@ -11,9 +13,9 @@ export const easy = {
 export const medium = {
 	name: 'Medium',
 	mines: 40,
-	horizontal_boxes: 18,
-	vertical_boxes: 14,
-	box_width: ['20px', null, '30px'],
+	horizontal_boxes: isMobileOrTablet() ? 14 : 18,
+	vertical_boxes: isMobileOrTablet() ? 18 : 14,
+	box_width: ['24px', null, '30px'],
 	mine_width: ['10px', null, '12px'],
 	border_width: '2px solid',
 	value_size: ['15px', null, '20px'],
