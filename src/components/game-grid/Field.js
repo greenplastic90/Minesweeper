@@ -30,8 +30,8 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
 	const [exposeFalseFlag, setExposeFalseFlag] = useState(false)
 	const [touchStart, setTouchStart] = useState(null)
-	const [flagAddedOrRemovedAnimationTimeout, setFlagAddedOrRemovedAnimationTimeout] = useState()
-	const [falgAddedOrRemovedAnimation, setFalgAddedOrRemovedAnimation] = useState(false)
+	const [, setFlagAddedOrRemovedAnimationTimeout] = useState()
+	const [, setFalgAddedOrRemovedAnimation] = useState(false)
 	const holdDownInSeconds = 0.15
 
 	const onFieldLeftClick = () => {

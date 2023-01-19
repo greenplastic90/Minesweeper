@@ -6,7 +6,6 @@ import bgImage from '../assets/background/sand-minesweeper.svg'
 import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
-import HighScore from './navbar/HighScore'
 import Footer from './footer/Footer'
 
 const Game = () => {
@@ -14,7 +13,6 @@ const Game = () => {
 	const [difficulty, setDifficulty] = useState(localStorageDifficulty())
 	//* resetToggle created to rerun create initial fieldsData useEffect in GameGrid
 	const [resetToggle, setResetToggle] = useState(true)
-	const [showHighScores, setShowHighScores] = useState(false)
 	const [showEndGame, setShowEndGame] = useState({ hasWon: false, show: false, disableBtns: false })
 	const [, setEndGameTimeout] = useState()
 	//* timer states
@@ -22,6 +20,29 @@ const Game = () => {
 	const [tens, setTens] = useState(0)
 	const [hundreds, setHundreds] = useState(0)
 	const [timeIntervals, setTimeIntervals] = useState({ ones: null, tens: null, hundreds: null })
+
+	const showEndGameWhenGameEnds = () => {
+		const actualFunction = () => {
+			//* if timer is pause, the game has been won or lost
+			//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
+			if (game.timer === 'pause') {
+				setEndGameTimeout((current) => {
+					clearTimeout(current)
+					return current
+				})
+
+				setShowEndGame((current) => {
+					return { ...current, show: true }
+				})
+			}
+		}
+
+		if (game && game.timer === 'pause') {
+			return actualFunction
+		} else {
+			return () => {}
+		}
+	}
 
 	//* starts timer when after first click
 	useEffect(() => {
@@ -94,29 +115,6 @@ const Game = () => {
 		const currentGame = new GameSetup(difficulty, initialFieldsCreated, null, null, null, 'reset')
 		setGame(currentGame)
 	}, [difficulty, resetToggle])
-
-	const showEndGameWhenGameEnds = () => {
-		const actualFunction = () => {
-			//* if timer is pause, the game has been won or lost
-			//* so if a click has happend after the game has ended, we want to display showEndGame and cancel the timer that was set to show it after all the mines have exploded
-			if (game.timer === 'pause') {
-				setEndGameTimeout((current) => {
-					clearTimeout(current)
-					return current
-				})
-
-				setShowEndGame((current) => {
-					return { ...current, show: true }
-				})
-			}
-		}
-
-		if (game && game.timer === 'pause') {
-			return actualFunction
-		} else {
-			return () => {}
-		}
-	}
 
 	return (
 		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
