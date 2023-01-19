@@ -29,7 +29,7 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 
 	return (
 		<VStack pos={'relative'}>
-			<SimpleGrid as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
+			<SimpleGrid w={'full'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
 				{fields.map((field) => (
 					<GridItem key={field.id}>
 						<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} setEndGameTimeout={setEndGameTimeout} />
