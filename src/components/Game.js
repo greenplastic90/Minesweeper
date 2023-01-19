@@ -8,6 +8,7 @@ import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, 
 import NavBar from './navbar/NavBar'
 import Footer from './footer/Footer'
 import RotateDevice from './game-grid/RotateDevice'
+import { basicColors } from '../theme/theme'
 
 const Game = () => {
 	const [game, setGame] = useState()
@@ -120,10 +121,10 @@ const Game = () => {
 	}, [difficulty, resetToggle])
 
 	return (
-		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ backgroundImage: `url('${bgImage}')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ background: `${basicColors.green_medium}`, backgroundRepeat: 'repeat-y', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
 			<NavBar />
 
-			{isOrientationPortrait ? (
+			{Boolean(isOrientationPortrait || !isMobileOrTablet()) ? (
 				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} className='TEST' spacing={0} boxShadow={'dark-lg'}>
 					{game && (
 						<>
