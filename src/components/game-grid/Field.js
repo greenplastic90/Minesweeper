@@ -32,6 +32,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [touchStart, setTouchStart] = useState(null)
 	const [, setFlagAddedOrRemovedAnimationTimeout] = useState()
 	const [, setFalgAddedOrRemovedAnimation] = useState(false)
+	const [isTouchMove, setIsTouchMove] = useState(false)
 	const holdDownInSeconds = 0.15
 
 	const onFieldLeftClick = () => {
@@ -83,7 +84,16 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 		}
 	}
 
+	const handleTouchMove = () => {
+		setIsTouchMove(true)
+	}
+
 	const handelLongPress = (e) => {
+		e.preventDefault()
+		if (isTouchMove) {
+			setIsTouchMove(false)
+			return
+		}
 		const touchEnd = e.timeStamp
 
 		const timePressedInSeconds = (touchEnd - touchStart) / 1000
@@ -99,6 +109,11 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	}
 
 	const handelTouchStart = (e) => {
+		e.preventDefault()
+		if (isTouchMove) {
+			setIsTouchMove(false)
+			return
+		}
 		setTouchStart(e.timeStamp)
 		setFlagAddedOrRemovedAnimationTimeout(setTimeout(() => setFalgAddedOrRemovedAnimation(true), 1000 * holdDownInSeconds))
 		setTimeout(() => setFalgAddedOrRemovedAnimation(false), 1000 * (holdDownInSeconds + 1))
@@ -168,6 +183,7 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				onClick={isMobileOrTablet() ? () => {} : onFieldLeftClick}
 				onTouchStart={handelTouchStart}
 				onTouchEnd={handelLongPress}
+				onTouchMove={handleTouchMove}
 				userSelect={'none'}
 				w={box_width}
 				h={box_width}
