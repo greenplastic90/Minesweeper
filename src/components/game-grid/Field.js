@@ -1,5 +1,6 @@
 import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import Soundfont from 'soundfont-player'
 
 import { useEffect, useState } from 'react'
 
@@ -89,7 +90,6 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	}
 
 	const handelLongPress = (e) => {
-		e.preventDefault()
 		if (isTouchMove) {
 			setIsTouchMove(false)
 			return
@@ -109,7 +109,6 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	}
 
 	const handelTouchStart = (e) => {
-		e.preventDefault()
 		if (isTouchMove) {
 			setIsTouchMove(false)
 			return
@@ -136,9 +135,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				field.isExposed = true
 				field.runMineAnimation = false
 				setMineAnimationColors(mineColor)
+				playNote(index)
 			}, 1000 * exposeMineTimer)
 		}
-	}, [exposeMineTimer, field, mineColor, runMineAnimation])
+	}, [exposeMineTimer, field, index, mineColor, runMineAnimation])
 
 	useEffect(() => {
 		//* set bgColor, bgHoverColor, bgColorAnimatedField
@@ -272,4 +272,22 @@ const Mine = ({ width, color }) => {
 
 const FieldTopLayer = ({ expose, exposeAnimationValues, color }) => {
 	return <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={color} animate={expose ? exposeAnimationValues : 'null'} />
+}
+
+function playNote(index) {
+	// Get the name of the piano key based on the index
+	const pianoKeys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+	const octave = Math.floor(index / pianoKeys.length)
+	const key = pianoKeys[index % pianoKeys.length]
+	const note = `${key}${octave}`
+	var ac = new AudioContext()
+
+	// Play the piano note using the SoundfontPlayer library
+	// Soundfont.instrument(ac, 'piano').then((piano) => {
+	// 	piano.play(note)
+	// })
+
+	Soundfont.instrument(ac, 'clavinet').then(function (clavinet) {
+		clavinet.play(note)
+	})
 }
