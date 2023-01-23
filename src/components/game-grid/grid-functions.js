@@ -121,9 +121,9 @@ export class GameSetup {
 		const chanceToBurst = getRandomNum(0, 3)
 
 		if (chanceToBurst < 1) {
-			return getRandomNum(0.1, 0.2)
+			return getRandomNum(0.4, 0.5)
 		}
-		return getRandomNum(0.3, 0.6)
+		return getRandomNum(0.7, 0.9)
 	}
 
 	generateRandomFieldValueArray(firstClickIndex) {
