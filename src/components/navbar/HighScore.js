@@ -17,7 +17,7 @@ const HighScore = ({ navbarHighet, btnWidth, showHighScore, highScoreFirstClick 
 	return (
 		<>
 			{highScoreFirstClick && (
-				<VStack as={motion.div} animate={showHighScore ? { scale: [0, 1] } : { scale: [1, 0] }} pos={'absolute'} top={navbarHighet} right={1} w={btnWidth} py={'5px'} zIndex={3} bgColor={'gray.100'}>
+				<VStack as={motion.div} animate={showHighScore ? { scale: [0, 1], y: [-30, 0] } : { scale: [1, 0], y: [0, -100] }} pos={'absolute'} top={navbarHighet} right={1} w={btnWidth} py={'5px'} zIndex={3} bgColor={'gray.100'}>
 					<ImTrophy size={'50px'} color={'#f5c242'} />
 					<Divider w={'80%'} color={basicColors.black} />
 					<VStack w={'full'} alignItems={'start'}>
