@@ -1,5 +1,6 @@
 import { HStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { basicColors } from '../../theme/theme'
 import HighScore from './HighScore'
 import HighScoresBtn from './HighScoresBtn'
 import LogoAndName from './LogoAndName'
@@ -7,7 +8,7 @@ import LogoAndName from './LogoAndName'
 const NavBar = () => {
 	const [showHighScore, setShowHighScore] = useState(false)
 	const [highScoreFirstClick, setHighScoreFirstClick] = useState(false)
-	const navbarHighet = '60px'
+	const navbarHighet = '70px'
 	const btnWidth = ['80px', null, '100px']
 
 	const handelHighScoreClick = () => {
@@ -16,7 +17,7 @@ const NavBar = () => {
 	}
 
 	return (
-		<HStack w={'full'} h={navbarHighet} px={'5px'} justifyContent={'space-between'} alignContent={'center'} backgroundColor={'hsl(0,0%,100%.0.0)'}>
+		<HStack w={'full'} h={navbarHighet} p={'5px'} justifyContent={'space-between'} alignContent={'center'} backgroundColor={`${basicColors.orange_dark}`}>
 			<LogoAndName />
 
 			<HighScoresBtn btnWidth={btnWidth} handelHighScoreClick={handelHighScoreClick} />
