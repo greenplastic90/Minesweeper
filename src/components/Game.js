@@ -121,7 +121,7 @@ const Game = () => {
 	}, [difficulty, resetToggle])
 
 	return (
-		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'} style={{ background: `${basicColors.green_medium}`, backgroundRepeat: 'repeat-y', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
+		<VStack w={'full'} h={'100vh'} justifyContent={'space-between'}>
 			<NavBar />
 
 			{Boolean(isOrientationPortrait || !isMobileOrTablet()) ? (

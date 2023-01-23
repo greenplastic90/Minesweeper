@@ -1,6 +1,5 @@
 import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import Soundfont from 'soundfont-player'
 
 import { useEffect, useState } from 'react'
 
