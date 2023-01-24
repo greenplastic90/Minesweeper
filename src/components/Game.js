@@ -2,13 +2,12 @@ import { useMediaQuery, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
-import bgImage from '../assets/background/sand-minesweeper.svg'
+import bgImage from '../assets/background/bg-image.png'
 import GameGrid from './game-grid/GameGrid'
 import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
 import Footer from './footer/Footer'
 import RotateDevice from './game-grid/RotateDevice'
-import { basicColors } from '../theme/theme'
 
 const Game = () => {
 	const [game, setGame] = useState()
