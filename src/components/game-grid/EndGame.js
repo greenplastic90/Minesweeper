@@ -97,7 +97,7 @@ const WinOrLose = ({ hasWon }) => {
 	useEffect(() => {
 		const winMessages = ['On top of the world', 'Big Cheese', 'Big Fish', 'Congrats!', 'Nailed it', 'King of the hill', "Cat's meow", 'Top Banana']
 		const loseMessages = ['Close, but no cigar', 'Just a temporary setback', 'Stick to tic-tac-toe', 'No big cheese this time', 'Not your day']
-		setMessage(true ? messagePicker(winMessages) : messagePicker(loseMessages))
+		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
 		return () => setMessage('')
 	}, [hasWon])
 
@@ -116,7 +116,7 @@ const WinOrLose = ({ hasWon }) => {
 								const { chosenColor, colorIndex } = colorPicker(previousIndex)
 								previousIndex = colorIndex
 								return (
-									<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'35px'}>
+									<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'40px'}>
 										{letter}
 									</Text>
 								)

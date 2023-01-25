@@ -1,6 +1,5 @@
 import { HStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { basicColors } from '../../theme/theme'
 import HighScore from './HighScore'
 import HighScoresBtn from './HighScoresBtn'
 import LogoAndName from './LogoAndName'
