@@ -16,7 +16,7 @@ const Footer = () => {
 	]
 
 	return (
-		<HStack w={'full'} justifyContent={'center'} pb={'20px'}>
+		<HStack w={'full'} justifyContent={['center', 'flex-start']} pb={'10px'} pl={[0, '10px']}>
 			{socials.map((social) => (
 				<Social key={social.link} icon={social.icon} link={social.link} />
 			))}
