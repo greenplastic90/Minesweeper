@@ -34,6 +34,7 @@ const TimesAndGameOverMsg = ({ timer, hasWon }) => {
 	const [highScore, setHighScore] = useState(null)
 
 	//* updates and displays higscores as needed
+
 	useEffect(() => {
 		createBlankLocalStorageHighscores()
 

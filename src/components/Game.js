@@ -102,6 +102,7 @@ const Game = () => {
 	useEffect(() => {
 		document.body.style.backgroundColor = basicColors.blue_dark
 		createBlankLocalStorageHighscores()
+
 		setShowEndGame({ hasWon: false, show: false, disableBtns: false })
 
 		const numOfFieldsToCreate = difficulty.horizontal_boxes * difficulty.vertical_boxes

@@ -271,21 +271,3 @@ const Mine = ({ width, color }) => {
 const FieldTopLayer = ({ expose, exposeAnimationValues, color }) => {
 	return <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={color} animate={expose ? exposeAnimationValues : 'null'} />
 }
-
-// function playNote(index) {
-// 	// Get the name of the piano key based on the index
-// 	const pianoKeys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-// 	const octave = Math.floor(index / pianoKeys.length)
-// 	const key = pianoKeys[index % pianoKeys.length]
-// 	const note = `${key}${octave}`
-// 	var ac = new AudioContext()
-
-// 	// Play the piano note using the SoundfontPlayer library
-// 	// Soundfont.instrument(ac, 'piano').then((piano) => {
-// 	// 	piano.play(note)
-// 	// })
-
-// 	Soundfont.instrument(ac, 'clavinet').then(function (clavinet) {
-// 		clavinet.play(key + '4')
-// 	})
-// }
