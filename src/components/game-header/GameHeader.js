@@ -9,7 +9,7 @@ const GameHeader = ({ game, setDifficulty, resetGame, timer, showEndGame }) => {
 	return (
 		<HStack
 			pos={'relative'}
-			w={'-webkit-fill-available'}
+			w={'fill-available'}
 			justifyContent={'space-between'}
 			bgColor={'brand.header'}
 			p='10px'>
