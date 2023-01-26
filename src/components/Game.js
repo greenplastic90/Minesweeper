@@ -113,6 +113,7 @@ const Game = () => {
 	//* setup initial game
 	useEffect(() => {
 		document.body.style.backgroundColor = basicColors.blue_dark
+		localStorage.setItem('mineSweeperDiffuculty', difficulty.name)
 		createBlankLocalStorageHighscores()
 
 		setShowEndGame({ hasWon: false, show: false, disableBtns: false })
