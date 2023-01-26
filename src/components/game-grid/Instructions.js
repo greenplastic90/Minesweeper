@@ -34,7 +34,9 @@ const Instructions = () => {
 	})
 
 	useEffect(() => {
-		setInstructions(isMobileOrTablet() ? instructionData.current.mobile : instructionData.current.browser)
+		setInstructions(
+			isMobileOrTablet() ? instructionData.current.mobile : instructionData.current.browser
+		)
 		setInterval(() => {
 			setShowDig((current) => !current)
 		}, 1000 * 2)
@@ -43,8 +45,20 @@ const Instructions = () => {
 	return (
 		<>
 			{instructions && (
-				<VStack pointerEvents={'none'} pos={'absolute'} top={'20%'} w='200px' h='150px' mt={0} justifyContent={'center'} bg={'hsla(0, 0%, 0%, 0.8)'}>
-					{showDig ? <DisplayInformation data={instructions} isDig={true} /> : <DisplayInformation data={instructions} isDig={false} />}
+				<VStack
+					pointerEvents={'none'}
+					pos={'absolute'}
+					top={'20%'}
+					w='200px'
+					h='150px'
+					mt={0}
+					justifyContent={'center'}
+					bg={'hsla(0, 0%, 0%, 0.8)'}>
+					{showDig ? (
+						<DisplayInformation data={instructions} isDig={true} />
+					) : (
+						<DisplayInformation data={instructions} isDig={false} />
+					)}
 				</VStack>
 			)}
 		</>
@@ -59,7 +73,12 @@ const DisplayInformation = ({ data, isDig }) => {
 	return (
 		<VStack>
 			<HStack>
-				{isDig ? <TbShovel color={iconsStyle.color} size={iconsStyle.size} /> : <RiFlag2Fill color={iconsStyle.color} size={iconsStyle.size} />} {icon}{' '}
+				{isDig ? (
+					<TbShovel color={iconsStyle.color} size={iconsStyle.size} />
+				) : (
+					<RiFlag2Fill color={iconsStyle.color} size={iconsStyle.size} />
+				)}{' '}
+				{icon}{' '}
 			</HStack>
 			<Text fontSize={'30px'} color={'gray.100'}>
 				{isDig ? digText : flagText}

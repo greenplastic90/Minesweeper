@@ -6,12 +6,24 @@ import EndGame from './EndGame'
 import Field from './Field'
 import Instructions from './Instructions'
 
-const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer, setEndGameTimeout }) => {
+const GameGrid = ({
+	game,
+	setGame,
+	showEndGame,
+	setShowEndGame,
+	resetGame,
+	timer,
+	setEndGameTimeout,
+}) => {
 	const shakeAnimationDuration = 1.5
 	const [runShakeAnimation, setRunShakeAnimation] = useState(false)
 	const [isFirstGame, setisFirstGame] = useState(true)
 
-	const [shakeAnimation] = useState({ y: game.randomShakeArray(), x: game.randomShakeArray(), transition: { duration: shakeAnimationDuration } })
+	const [shakeAnimation] = useState({
+		y: game.randomShakeArray(),
+		x: game.randomShakeArray(),
+		transition: { duration: shakeAnimationDuration },
+	})
 	const { fields, difficulty, fieldClickedValue, fieldClickedIndex } = game
 
 	useEffect(() => {
@@ -29,10 +41,20 @@ const GameGrid = ({ game, setGame, showEndGame, setShowEndGame, resetGame, timer
 
 	return (
 		<VStack pos={'relative'}>
-			<SimpleGrid w={'full'} as={motion.div} animate={runShakeAnimation ? shakeAnimation : 'null'} columns={difficulty.horizontal_boxes}>
+			<SimpleGrid
+				w={'full'}
+				as={motion.div}
+				animate={runShakeAnimation ? shakeAnimation : 'null'}
+				columns={difficulty.horizontal_boxes}>
 				{fields.map((field) => (
 					<GridItem key={field.id}>
-						<Field field={field} game={game} setGame={setGame} setShowEndGame={setShowEndGame} setEndGameTimeout={setEndGameTimeout} />
+						<Field
+							field={field}
+							game={game}
+							setGame={setGame}
+							setShowEndGame={setShowEndGame}
+							setEndGameTimeout={setEndGameTimeout}
+						/>
 					</GridItem>
 				))}
 			</SimpleGrid>

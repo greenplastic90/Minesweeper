@@ -8,7 +8,17 @@ import FlagImage from '../../assets/icons/flag-3.svg'
 import { GameSetup, getRandomNum, ConfettiSetup, isMobileOrTablet } from './grid-functions'
 
 const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
-	const { index, value, isExposed, hasFlag, isDisabled, runMineAnimation, exposeMineTimer, mineColor, falseFlag } = field
+	const {
+		index,
+		value,
+		isExposed,
+		hasFlag,
+		isDisabled,
+		runMineAnimation,
+		exposeMineTimer,
+		mineColor,
+		falseFlag,
+	} = field
 
 	const {
 		difficulty: { mine_width, value_size, box_width, border_width, horizontal_boxes },
@@ -24,7 +34,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	const [borders, setBorders] = useState({ top: false, bottom: false, left: false, right: false })
 	const [exposeAnimation, setExposeAnimation] = useState(false)
 	const exposeAnimationDuration = 1.5
-	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({ scale: [1, 0], transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration } })
+	const [exposeValueFieldAnimationVisual, setExposeValueFieldAnimationVisual] = useState({
+		scale: [1, 0],
+		transition: { type: 'spring', stiffness: 1000, duration: exposeAnimationDuration },
+	})
 	//* showValue is created so that when animation is exposed, there is a slight delay before value is shown, otherwise the value shows over the animation for a brief time
 	const [showValue, setShowValue] = useState(false)
 	const [mineExplodeAnimation, setMineExplodeAnimation] = useState(false)
@@ -48,7 +61,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 				current.fieldClicked(index)
 
 				//* fields to expose
-				let fieldsToExpose = current.fields[index].value === 0 ? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes) : [index]
+				let fieldsToExpose =
+					current.fields[index].value === 0
+						? current.getAllSurroundingIndexsToExpose(index, horizontal_boxes)
+						: [index]
 				current.exposeFields(fieldsToExpose)
 
 				if (current.isGameWon() || value === 'mine') {
@@ -69,7 +85,14 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 					setEndGameTimeout(timeOut)
 				}
 
-				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+				return new GameSetup(
+					current.difficulty,
+					current.fields,
+					current.fieldClickedIndex,
+					current.fieldClickedValue,
+					current.mineClickedIndex,
+					current.timer
+				)
 			})
 		}
 	}
@@ -79,7 +102,14 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 		if (!isDisabled) {
 			field.toggleFlag()
 			setGame((current) => {
-				return new GameSetup(current.difficulty, current.fields, current.fieldClickedIndex, current.fieldClickedValue, current.mineClickedIndex, current.timer)
+				return new GameSetup(
+					current.difficulty,
+					current.fields,
+					current.fieldClickedIndex,
+					current.fieldClickedValue,
+					current.mineClickedIndex,
+					current.timer
+				)
 			})
 		}
 	}
@@ -113,7 +143,9 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 			return
 		}
 		setTouchStart(e.timeStamp)
-		setFlagAddedOrRemovedAnimationTimeout(setTimeout(() => setFalgAddedOrRemovedAnimation(true), 1000 * holdDownInSeconds))
+		setFlagAddedOrRemovedAnimationTimeout(
+			setTimeout(() => setFalgAddedOrRemovedAnimation(true), 1000 * holdDownInSeconds)
+		)
 		setTimeout(() => setFalgAddedOrRemovedAnimation(false), 1000 * (holdDownInSeconds + 1))
 	}
 
@@ -162,7 +194,10 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 	//* create border
 	useEffect(() => {
 		setBorders((current) => {
-			return { ...current, ...field.createBorders(current, numberOfFields, horizontal_boxes, fields) }
+			return {
+				...current,
+				...field.createBorders(current, numberOfFields, horizontal_boxes, fields),
+			}
 		})
 	}, [field, fields, horizontal_boxes, numberOfFields, game])
 
@@ -170,7 +205,13 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 		<Box cursor={'pointer'} pos={'relative'}>
 			<VStack
 				as={motion.div}
-				animate={mineExplodeAnimation ? { backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd] } : 'null'}
+				animate={
+					mineExplodeAnimation
+						? {
+								backgroundColor: [mineAnimationColors.bgColorStart, mineAnimationColors.bgColorEnd],
+						  }
+						: 'null'
+				}
 				onContextMenu={
 					isMobileOrTablet()
 						? (e) => {
@@ -202,7 +243,11 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 						<Mine width={mine_width} color={mineAnimationColors.mineColor} />
 					) : value !== 0 ? (
 						showValue && (
-							<Text cursor={'default'} fontSize={value_size} fontWeight={'extrabold'} color={colors.valueColor}>
+							<Text
+								cursor={'default'}
+								fontSize={value_size}
+								fontWeight={'extrabold'}
+								color={colors.valueColor}>
 								{value}
 							</Text>
 						)
@@ -225,7 +270,13 @@ const Field = ({ field, game, setGame, setShowEndGame, setEndGameTimeout }) => {
 					)
 				) : null}
 			</VStack>
-			{exposeAnimation && <FieldTopLayer expose={exposeAnimation} exposeAnimationValues={exposeValueFieldAnimationVisual} color={colors.bgColorAnimatedField} />}
+			{exposeAnimation && (
+				<FieldTopLayer
+					expose={exposeAnimation}
+					exposeAnimationValues={exposeValueFieldAnimationVisual}
+					color={colors.bgColorAnimatedField}
+				/>
+			)}
 			<DisplayConfetti runAnimation={mineExplodeAnimation} color={mineAnimationColors.mineColor} />
 		</Box>
 	)
@@ -256,7 +307,18 @@ const DisplayConfetti = ({ runAnimation, color }) => {
 			{runAnimation && (
 				<>
 					{confettiArrayData.map((c) => (
-						<Box key={c.id} as={motion.div} zIndex={2} top={`${c.position.top}%`} bottom={`${c.position.bottom}%`} left={`${c.position.left}%`} right={`${c.position.right}%`} pos={'absolute'} bgColor={c.color} animate={c.animation} />
+						<Box
+							key={c.id}
+							as={motion.div}
+							zIndex={2}
+							top={`${c.position.top}%`}
+							bottom={`${c.position.bottom}%`}
+							left={`${c.position.left}%`}
+							right={`${c.position.right}%`}
+							pos={'absolute'}
+							bgColor={c.color}
+							animate={c.animation}
+						/>
 					))}
 				</>
 			)}
@@ -269,5 +331,17 @@ const Mine = ({ width, color }) => {
 }
 
 const FieldTopLayer = ({ expose, exposeAnimationValues, color }) => {
-	return <Box as={motion.div} zIndex={1} top={0} bottom={0} left={0} right={0} pos={'absolute'} bgColor={color} animate={expose ? exposeAnimationValues : 'null'} />
+	return (
+		<Box
+			as={motion.div}
+			zIndex={1}
+			top={0}
+			bottom={0}
+			left={0}
+			right={0}
+			pos={'absolute'}
+			bgColor={color}
+			animate={expose ? exposeAnimationValues : 'null'}
+		/>
+	)
 }

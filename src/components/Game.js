@@ -4,7 +4,14 @@ import GameHeader from './game-header/GameHeader'
 import { v4 as uuidv4 } from 'uuid'
 import bgImage from '../assets/background/bg-image.png'
 import GameGrid from './game-grid/GameGrid'
-import { createBlankLocalStorageHighscores, Field, GameSetup, isMobileOrTablet, localStorageDifficulty, setBgColorShade } from './game-grid/grid-functions'
+import {
+	createBlankLocalStorageHighscores,
+	Field,
+	GameSetup,
+	isMobileOrTablet,
+	localStorageDifficulty,
+	setBgColorShade,
+} from './game-grid/grid-functions'
 import NavBar from './navbar/NavBar'
 import Footer from './footer/Footer'
 import RotateDevice from './game-grid/RotateDevice'
@@ -78,7 +85,12 @@ const Game = () => {
 		if (game) {
 			if (game.timer === 'active') {
 				//? only set intervals if there isn't an interval already
-				if (!timeIntervals.ones) setTimeIntervals({ ones: setInterval(() => updateTimer(setOnes), 1000), tens: setInterval(() => updateTimer(setTens), 1000 * 10), hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100) })
+				if (!timeIntervals.ones)
+					setTimeIntervals({
+						ones: setInterval(() => updateTimer(setOnes), 1000),
+						tens: setInterval(() => updateTimer(setTens), 1000 * 10),
+						hundreds: setInterval(() => updateTimer(setHundreds), 1000 * 100),
+					})
 			}
 			if (game.timer === 'reset') {
 				clearAllIntervals()
@@ -123,15 +135,40 @@ const Game = () => {
 	}, [difficulty, resetToggle])
 
 	return (
-		<VStack w={'full'} h={'100vh'} bgColor={basicColors.blue_dark} bgImage={bgImage} bgRepeat={'no-repeat'} bgSize={'cover'} justifyContent={'space-between'}>
+		<VStack
+			w={'full'}
+			h={'100vh'}
+			bgColor={basicColors.blue_dark}
+			bgImage={bgImage}
+			bgRepeat={'no-repeat'}
+			bgSize={'cover'}
+			justifyContent={'space-between'}>
 			<NavBar />
 
 			{Boolean(isOrientationPortrait || !isMobileOrTablet()) ? (
-				<VStack onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()} onTouchStart={showEndGameWhenGameEnds()} className='TEST' spacing={0} boxShadow={'dark-lg'}>
+				<VStack
+					onClick={isMobileOrTablet() ? () => {} : showEndGameWhenGameEnds()}
+					onTouchStart={showEndGameWhenGameEnds()}
+					spacing={0}
+					boxShadow={'dark-lg'}>
 					{game && (
 						<>
-							<GameHeader game={game} setDifficulty={setDifficulty} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} showEndGame={showEndGame} />
-							<GameGrid game={game} setGame={setGame} showEndGame={showEndGame} setShowEndGame={setShowEndGame} resetGame={resetGame} timer={`${hundreds}${tens}${ones}`} setEndGameTimeout={setEndGameTimeout} />
+							<GameHeader
+								game={game}
+								setDifficulty={setDifficulty}
+								resetGame={resetGame}
+								timer={`${hundreds}${tens}${ones}`}
+								showEndGame={showEndGame}
+							/>
+							<GameGrid
+								game={game}
+								setGame={setGame}
+								showEndGame={showEndGame}
+								setShowEndGame={setShowEndGame}
+								resetGame={resetGame}
+								timer={`${hundreds}${tens}${ones}`}
+								setEndGameTimeout={setEndGameTimeout}
+							/>
 						</>
 					)}
 				</VStack>

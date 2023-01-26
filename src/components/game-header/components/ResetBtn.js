@@ -12,7 +12,7 @@ const ResetBtn = ({ setDifficulty, resetGame, showEndGame }) => {
 			}}
 			borderRadius={0}
 			fontWeight={'normal'}
-			fontSize='20px'>
+			fontSize={['15px', '20px']}>
 			RESET
 		</Button>
 	)

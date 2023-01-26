@@ -25,7 +25,7 @@ export const hard = {
 	mines: 99,
 	horizontal_boxes: isMobileOrTablet() ? 16 : 24,
 	vertical_boxes: isMobileOrTablet() ? 30 : 20,
-	box_width: ['24px', null, '25px'],
+	box_width: ['19px', null, '25px'],
 	mine_width: ['11px', null, '12px'],
 	border_width: '3px solid',
 	value_size: ['16px', null, '17px'],

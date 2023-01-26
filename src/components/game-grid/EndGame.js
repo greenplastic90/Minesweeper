@@ -13,10 +13,29 @@ const EndGame = ({ resetGame, showEndGame, timer }) => {
 		<>
 			{showEndGame.show && (
 				<VStack pos={'absolute'} bottom={0} w='full' h={'full'} bg={'hsla(100, 100%, 10%, 0.3)'}>
-					<VStack w='full' h={'inherit'} justifyContent='space-between' as={motion.div} animate={{ scale: [0, 1], transition: { delay: 0 } }} zIndex={3} backgroundColor={'hsl(0,0%,100%,0.1)'}>
+					<VStack
+						w='full'
+						h={'inherit'}
+						justifyContent='space-between'
+						as={motion.div}
+						animate={{ scale: [0, 1], transition: { delay: 0 } }}
+						zIndex={3}
+						backgroundColor={'hsl(0,0%,100%,0.1)'}>
 						<TimesAndGameOverMsg timer={timer} hasWon={showEndGame.hasWon} />
-						<Button w='full' h={'50px'} onClick={resetGame} borderRadius={0} _hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }} bgColor='numbers.two' color='brand.header_text'>
-							<Text as={motion.div} animate={{ scale: [0.9, 1, 0.9], transition: { repeat: Infinity } }} fontSize={'20px'} color={'gray.100'} pl={'15px'}>
+						<Button
+							w='full'
+							h={'50px'}
+							onClick={resetGame}
+							borderRadius={0}
+							_hover={{ bg: `${Color('hsl(12.7,65.9%,44.9%)').darken(0.25)}` }}
+							bgColor='numbers.two'
+							color='brand.header_text'>
+							<Text
+								as={motion.div}
+								animate={{ scale: [0.9, 1, 0.9], transition: { repeat: Infinity } }}
+								fontSize={'20px'}
+								color={'gray.100'}
+								pl={'15px'}>
 								{showEndGame.hasWon ? 'PLAY AGAIN?' : 'RETRY?'}
 							</Text>
 						</Button>
@@ -76,7 +95,13 @@ const TimesAndGameOverMsg = ({ timer, hasWon }) => {
 const WinOrLose = ({ hasWon }) => {
 	const [message, setMessage] = useState('')
 
-	const colors = { purple: 'hsl(265.6,34.1%,35.1%)', orange_dark: 'hsl(12.7,65.9%,44.9%)', pink_dark: 'hsl(338,57.1%,37.5%)', blue_dark: 'hsl(186.5,79.3%,22.7%)', brown: 'hsl(11.7,63.6%,23.7%)' }
+	const colors = {
+		purple: 'hsl(265.6,34.1%,35.1%)',
+		orange_dark: 'hsl(12.7,65.9%,44.9%)',
+		pink_dark: 'hsl(338,57.1%,37.5%)',
+		blue_dark: 'hsl(186.5,79.3%,22.7%)',
+		brown: 'hsl(11.7,63.6%,23.7%)',
+	}
 
 	const messagePicker = (msgArr) => {
 		const randIndex = Math.round(getRandomNum(0, msgArr.length - 1))
@@ -96,8 +121,23 @@ const WinOrLose = ({ hasWon }) => {
 	}
 
 	useEffect(() => {
-		const winMessages = ['On top of the world', 'Big Cheese', 'Big Fish', 'Congrats!', 'Nailed it', 'King of the hill', "Cat's meow", 'Top Banana']
-		const loseMessages = ['Close, but no cigar', 'Just a temporary setback', 'Stick to tic-tac-toe', 'No big cheese this time', 'Not your day']
+		const winMessages = [
+			'On top of the world',
+			'Big Cheese',
+			'Big Fish',
+			'Congrats!',
+			'Nailed it',
+			'King of the hill',
+			"Cat's meow",
+			'Top Banana',
+		]
+		const loseMessages = [
+			'Close, but no cigar',
+			'Just a temporary setback',
+			'Stick to tic-tac-toe',
+			'No big cheese this time',
+			'Not your day',
+		]
 		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
 		return () => setMessage('')
 	}, [hasWon])
@@ -117,7 +157,22 @@ const WinOrLose = ({ hasWon }) => {
 								const { chosenColor, colorIndex } = colorPicker(previousIndex)
 								previousIndex = colorIndex
 								return (
-									<Text key={j} as={motion.div} color={'gray.100'} animate={hasWon && { color: [Color(chosenColor).lighten(0.2).hex(), chosenColor, Color(chosenColor).lighten(0.2).hex()], y: [0, -10, 0], transition: { delay: delayValue, duration: 2, repeat: Infinity } }} fontSize={'40px'}>
+									<Text
+										key={j}
+										as={motion.div}
+										color={'gray.100'}
+										animate={
+											hasWon && {
+												color: [
+													Color(chosenColor).lighten(0.2).hex(),
+													chosenColor,
+													Color(chosenColor).lighten(0.2).hex(),
+												],
+												y: [0, -10, 0],
+												transition: { delay: delayValue, duration: 2, repeat: Infinity },
+											}
+										}
+										fontSize={'40px'}>
 										{letter}
 									</Text>
 								)
