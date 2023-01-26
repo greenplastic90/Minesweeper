@@ -31,7 +31,9 @@ export class GameSetup {
 
 	isGameWon() {
 		if (this.firstClickIndex !== null) {
-			const won = this.fields.filter((field) => field.value !== 'mine').every((field) => field.isExposed)
+			const won = this.fields
+				.filter((field) => field.value !== 'mine')
+				.every((field) => field.isExposed)
 			if (won) this.disableAllFields()
 			return won
 		}
@@ -59,7 +61,9 @@ export class GameSetup {
 		const minesArray = []
 		minesArray.push(this.fields[index])
 
-		let indexesOfMinesToExpose = this.fields.filter((field) => field.value === 'mine' && !field.hasFlag).map((field) => field.index)
+		let indexesOfMinesToExpose = this.fields
+			.filter((field) => field.value === 'mine' && !field.hasFlag)
+			.map((field) => field.index)
 		//* -1 cause we aready pushed the first index into minesArray
 		let numOfMinesToExpose = indexesOfMinesToExpose.length - 1
 		let indexToFindMinesAround = index
@@ -85,7 +89,12 @@ export class GameSetup {
 				for (let k = j; k < j + loops; k++) {
 					const checkField = this.fields[k]
 					//? if found push into array and end for loops
-					if (checkField && checkField.value === 'mine' && !checkField.hasFlag && !minesArray.map((mine) => mine.index).includes(checkField.index)) {
+					if (
+						checkField &&
+						checkField.value === 'mine' &&
+						!checkField.hasFlag &&
+						!minesArray.map((mine) => mine.index).includes(checkField.index)
+					) {
 						foundMine = true
 
 						return checkField.index
@@ -112,7 +121,8 @@ export class GameSetup {
 		minesToExpose.forEach((mine) => {
 			mine.explodeMine(this.explodeMineTimer)
 
-			this.explodeMineTimer = this.explodeMineTimer + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose()
+			this.explodeMineTimer =
+				this.explodeMineTimer + this.generateTimeToExposeNextIndexBasedOnLengthOfMinesToExpose()
 		})
 
 		flagsNotCoveringMines.forEach((field) => field.exposeFalseFlag(this.explodeMineTimer))
@@ -121,9 +131,9 @@ export class GameSetup {
 		const chanceToBurst = getRandomNum(0, 3)
 
 		if (chanceToBurst < 1) {
-			return getRandomNum(0.4, 0.5)
+			return getRandomNum(0.1, 0.2)
 		}
-		return getRandomNum(0.7, 0.9)
+		return getRandomNum(0.4, 0.6)
 	}
 
 	generateRandomFieldValueArray(firstClickIndex) {
@@ -205,8 +215,14 @@ export class GameSetup {
 		const valuesArray = this.fields.map((field) => field.value)
 
 		const getImmediateSurroundingIndexs = (zeroValueIndex) => {
-			const surroundingIndexs = this.getFieldsSurroundingIndexWithNoMines(zeroValueIndex, valuesArray, boardWidth)
-			allSurroundingIndexsToExpose = [...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs])]
+			const surroundingIndexs = this.getFieldsSurroundingIndexWithNoMines(
+				zeroValueIndex,
+				valuesArray,
+				boardWidth
+			)
+			allSurroundingIndexsToExpose = [
+				...new Set([...allSurroundingIndexsToExpose, ...surroundingIndexs]),
+			]
 			surroundingIndexs.forEach((index) => {
 				if (valuesArray[index] === 0 && !surroundingIndexsThatAreZero.includes(index)) {
 					surroundingIndexsThatAreZero.push(index)
@@ -214,7 +230,8 @@ export class GameSetup {
 				surroundingIndexsThatAreZeroThatAreChecked.push(zeroValueIndex)
 			})
 			surroundingIndexsThatAreZero.forEach((index) => {
-				if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index)) getImmediateSurroundingIndexs(index)
+				if (!surroundingIndexsThatAreZeroThatAreChecked.includes(index))
+					getImmediateSurroundingIndexs(index)
 			})
 		}
 		getImmediateSurroundingIndexs(indexWithValueZero)
@@ -239,7 +256,8 @@ export class GameSetup {
 
 		for (let j = topLeftIndex; j <= bottomLeftIndex; j = j + width) {
 			for (let k = j; k < j + numOfLoops; k++) {
-				if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine') arrayOfIndexes.push(k)
+				if ((valuesArray[k] || valuesArray[k] === 0) && valuesArray[k] !== 'mine')
+					arrayOfIndexes.push(k)
 			}
 		}
 		return arrayOfIndexes
@@ -355,7 +373,10 @@ export class Field {
 
 			surroundingIndexs.forEach((fieldIndex) => {
 				//* if the field adjacent is not exposed OR it is exposed and the value is mine
-				if (!exposedArray[fieldIndex] || (exposedArray[fieldIndex] && valuesArray[fieldIndex] === 'mine')) {
+				if (
+					!exposedArray[fieldIndex] ||
+					(exposedArray[fieldIndex] && valuesArray[fieldIndex] === 'mine')
+				) {
 					if (fieldIndex + width === this.index) newBorders = { ...newBorders, top: true }
 
 					if (fieldIndex - width === this.index) newBorders = { ...newBorders, bottom: true }
@@ -420,7 +441,12 @@ export class Field {
 		if (this.value === 7) valueColor = 'numbers.seven'
 		if (this.value === 8) valueColor = 'numbers.eight'
 
-		return { bgColor: bgColor, bgHoverColor: bgHoverColor, bgColorAnimatedField: bgColorAnimatedField, valueColor: valueColor }
+		return {
+			bgColor: bgColor,
+			bgHoverColor: bgHoverColor,
+			bgColorAnimatedField: bgColorAnimatedField,
+			valueColor: valueColor,
+		}
 	}
 }
 
@@ -476,7 +502,9 @@ export class ConfettiSetup {
 				initialSwing = swingLeft ? getRandomNum(-10, -50) : getRandomNum(10, 50)
 				this.animation.x.push(initialSwing)
 			} else {
-				const swing = swingLeft ? getRandomNum(initialSwing - 20, initialSwing - 40) : getRandomNum(initialSwing + 20, initialSwing + 40)
+				const swing = swingLeft
+					? getRandomNum(initialSwing - 20, initialSwing - 40)
+					: getRandomNum(initialSwing + 20, initialSwing + 40)
 				this.animation.x.push(swing)
 			}
 			swingLeft = !swingLeft
@@ -534,11 +562,23 @@ export const getRandomNum = (min, max) => {
 export const createBlankLocalStorageHighscores = () => {
 	//? if no scores are avilable, create one with nulls
 	const localHighscores = localStorage.getItem('minesweeper-highscores')
-	if (!JSON.parse(localHighscores)) localStorage.setItem('minesweeper-highscores', JSON.stringify({ easy: null, medium: null, hard: null }))
+	if (!JSON.parse(localHighscores))
+		localStorage.setItem(
+			'minesweeper-highscores',
+			JSON.stringify({ easy: null, medium: null, hard: null })
+		)
 }
 
 export function isMobileOrTablet() {
-	if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+	if (
+		navigator.userAgent.match(/Android/i) ||
+		navigator.userAgent.match(/webOS/i) ||
+		navigator.userAgent.match(/iPhone/i) ||
+		navigator.userAgent.match(/iPad/i) ||
+		navigator.userAgent.match(/iPod/i) ||
+		navigator.userAgent.match(/BlackBerry/i) ||
+		navigator.userAgent.match(/Windows Phone/i)
+	) {
 		return true
 	} else {
 		return false
