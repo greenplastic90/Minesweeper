@@ -122,21 +122,28 @@ const WinOrLose = ({ hasWon }) => {
 
 	useEffect(() => {
 		const winMessages = [
-			'On top of the world',
-			'Big Cheese',
-			'Big Fish',
-			'Congrats!',
-			'Nailed it',
-			'King of the hill',
-			"Cat's meow",
-			'Top Banana',
+			'You won!',
+			'Mines cleared!',
+			'Victorious!',
+			'Congratulations!',
+			'Well done!',
+			'Impressive!',
+			'Great job!',
+			'Awesome!',
+			'Amazing!',
+			'Success!',
 		]
 		const loseMessages = [
-			'Close, but no cigar',
-			'Just a temporary setback',
-			'Stick to tic-tac-toe',
-			'No big cheese this time',
-			'Not your day',
+			'Better luck next time',
+			'Keep trying!',
+			"Don't give up!",
+			"You'll get it next time",
+			'Close but no cigar',
+			'Almost there!',
+			'So close!',
+			'A valiant effort',
+			'Keep practicing!',
+			"You'll get it!",
 		]
 		setMessage(hasWon ? messagePicker(winMessages) : messagePicker(loseMessages))
 		return () => setMessage('')
@@ -172,7 +179,7 @@ const WinOrLose = ({ hasWon }) => {
 												transition: { delay: delayValue, duration: 2, repeat: Infinity },
 											}
 										}
-										fontSize={'40px'}>
+										fontSize={['35px', '40px']}>
 										{letter}
 									</Text>
 								)
