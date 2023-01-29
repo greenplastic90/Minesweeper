@@ -1,10 +1,14 @@
 import { HStack, Link } from '@chakra-ui/react'
 import React from 'react'
-import { FaGithubSquare, FaLinkedin } from 'react-icons/fa'
+import { FaGithubSquare, FaLinkedin, FaPortrait } from 'react-icons/fa'
 
 const Footer = () => {
 	const sociaslAtt = { iconSize: '30px', color: 'white' }
 	const socials = [
+		{
+			icon: <FaPortrait size={sociaslAtt.iconSize} color={sociaslAtt.color} />,
+			link: 'https://www.basharothman.com/',
+		},
 		{
 			icon: <FaGithubSquare size={sociaslAtt.iconSize} color={sociaslAtt.color} />,
 			link: 'https://github.com/greenplastic90/Minesweeper',
